@@ -42,8 +42,8 @@ class Ajax extends CI_Controller {
 
 			$row[] = '
 			<a style="margin-right:10px" href="../Admin/dMahasiswaDetail/'.$this->encrypt->encode($field->nim).'" title="Detail"><i class="fas fa-info-circle text-info"></i></a>
-			<a style="margin-right:10px" href="#" title="Edit"><i class="fas fa-edit text-warning"></i></a>
-			<a style="margin-right:10px" href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+			<a style="margin-right:10px" href="../Admin/dMahasiswaEdit/'.$this->encrypt->encode($field->nim).'" title="Edit"><i class="fas fa-edit text-warning"></i></a>
+			<a style="margin-right:10px" href="#" id="'.$field->nim.'" onclick="deletemhs('.$field->nim.')" title="Delete"><i class="fas fa-trash text-danger"></i></a>
 			';
 
 

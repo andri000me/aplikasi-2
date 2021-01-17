@@ -42,8 +42,50 @@ $(function () {
     zIndex: 999999
   })
   $('.connectedSortable .card-header').css('cursor', 'move')
+
+  /*-- Select 2 --*/
+  $('.select2').select2()
+
+  /*-- Timeout Alert Error form_validation 5sec --*/
+  var timeout = 5000; 
+  $('.alert').delay(timeout).fadeOut(500);
+
+  /*-- Plugin for edit data mahasiswa --*/
+  $('[data-mask]').inputmask();
+
+  var table = $('#example').DataTable( {
+    "sDom": 'lrtip',
+    "lengthChange": false,
+    "rowReorder": {
+      "selector": 'td:nth-child(0)'
+    },
+    "responsive": true,
+  });
+  $('#seachExample').keyup(function(){
+    table.search($(this).val()).draw() ;
+  });
 })
 
+CKEDITOR.replace( 'editor2', {
+  filebrowserBrowseUrl: baseURL+'assets/ckfinder/ckfinder.html',
+  filebrowserUploadUrl: baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+} );
+
+/*-- Change Name Image on Update Profile --*/
+$('.custom-file-input').on('change', function(){
+  let fileName = $(this).val().split('\\').pop();
+  $(this).next('.custom-file-label').addClass("selected").html(fileName);
+})
+/*-- /. Change Name Image on Update Profile --*/
+
+/*-- Costum Sweetalert2 --*/
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: 'btn btn-success',
+    cancelButton: 'btn btn-danger'
+  }
+})
+/*-- /. Costum Sweetalert2 --*/
 
 /*-- DataTable To Load Data Mahasiswa --*/
 var mhs = $('#mhs_data').DataTable({
@@ -74,4 +116,48 @@ $('#seachMhs').keyup(function(){
 });
 /*-- /. DataTable To Load Data Mahasiswa --*/
 
+/*-- DataTable To Delete Data Mahasiswa --*/
+function deletemhs(nim){
+
+  swalWithBootstrapButtons.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'No, cancel!',
+    reverseButtons: true
+  }).then((result) => {
+    if (result.isConfirmed) {
+
+      $.ajax({
+
+        url : baseURL+'ajax/dMahasiswaDelete',
+        method:"post",
+        data:{nim:nim},
+        dataType: 'json',
+
+        success:function(data){
+          swalWithBootstrapButtons.fire(
+            'Deleted!',
+            'Your Data '+data.nim+' has been deleted.',
+            'success'
+            )
+          $('#mhs_data').DataTable().ajax.reload();
+        },
+
+        error:function(data){
+          swalWithBootstrapButtons.fire(
+            'Deleted!',
+            'Your Data '+data.nim+' has been deleted.',
+            'error'
+            )
+          $('#mhs_data').DataTable().ajax.reload();
+        }
+      });
+
+    } 
+  })
+};
+/*-- /. DataTable To Delete Data Mahasiswa --*/
 </script>

@@ -8,7 +8,7 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><small>Admin</small></li>
+              <li class="breadcrumb-item"><small>Esurat</small></li>
               <li class="breadcrumb-item"><a href="<?= base_url('admin/dMahasiswa')?>"><small><?= $page ;?></small></a></li>
             </ol>
           </div><!-- /.col -->
@@ -56,7 +56,7 @@
                   <th scope="col">NIM</th>
                   <th scope="col">Nama</th>
                   <th scope="col">Prodi</th>
-                  <th scope="col" width="90px;" class="text-center">Action</th>
+                  <th scope="col">Action</th>
                 </tr>
               </thead>
             </table>

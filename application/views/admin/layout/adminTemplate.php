@@ -24,7 +24,7 @@
   <!-- Toastr -->
   <link rel="stylesheet" href="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/toastr/toastr.min.css">
   <!-- SweetAlert -->
-  <link rel="stylesheet" href="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/bootstrap-sweetalert/dist/sweetalert.css">
+  <link rel="stylesheet" href="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/sweetalert2/sweetalert2.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?= base_url('assets/AdminLTE-3.1.0-rc/')?>dist/css/adminlte.min.css">
   <!-- overlayScrollbars -->
@@ -68,7 +68,9 @@
   <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/')?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- datepicker -->
   <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/moment/moment.min.js"></script>
-  <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+
+  <!-- date-range-picker -->
+  <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/daterangepicker/daterangepicker.js"></script>
   <!-- Toastr -->
   <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/toastr/toastr.min.js"></script>
   <!-- DataTables -->
@@ -81,14 +83,15 @@
   <!-- Select2 -->
   <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/select2/js/select2.full.min.js"></script>
   <!-- SweetAlert -->
-  <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/bootstrap-sweetalert/dist/sweetalert.min.js"></script>
+  <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/sweetalert2/sweetalert2.min.js"></script>
   <!-- overlayScrollbars -->
   <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/')?>plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
   <!-- AdminLTE App -->
   <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/')?>dist/js/adminlte.js"></script>
   <!-- AdminLTE for demo purposes -->
   <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/')?>dist/js/demo.js"></script>
-
+  <!-- CKeditor -->
+  <script src="<?= base_url('assets/ckeditor_4.15.1_full/');?>ckeditor.js"></script>
   <!-- Costum JS -->
   <?php include "adminJs.php" ; ?>
   <!-- Costum JS -->
