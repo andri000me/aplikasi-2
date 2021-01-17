@@ -3,32 +3,40 @@
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
+
  CKEDITOR.editorConfig = function (config) {
 
-	// config.contentsCss = [ 
-	// 'http://localhost/aplikasi/assets/ckeditor_4.15.1_full/contents.css', 
-	// 'http://localhost/aplikasi/assets/ckeditor_4.15.1_full/mystyles.css' 
-	// ];
  	config.language = 'en';
  	config.protectedSource.push( /<\?[\s\S]*?\?>/g );
 
+ 	// config.filebrowserBrowseUrl = 'http://localhost/aplikasi/assets/ckfinder/ckfinder.html';
+ 	// config.filebrowserImageBrowseUrl = 'http://localhost/aplikasi/assets/ckfinder/ckfinder.html?type=Images';
+ 	// config.filebrowserUploadUrl = 'http://localhost/aplikasi/assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
+ 	// config.filebrowserImageUploadUrl = 'http://localhost/aplikasi/assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
+ 	// config.contentsCss = [ 
+ 	// 'http://localhost/aplikasi/assets/ckeditor_4.15.1_full/contents.css', 
+ 	// 'http://localhost/aplikasi/assets/ckeditor_4.15.1_full/mystyles.css' 
+ 	// ];
+
  	config.toolbarGroups = [
- 	{ name: 'document', groups: ['document', 'mode', 'doctools'] },
- 	{ name: 'clipboard', groups: ['clipboard', 'undo'] },
- 	{ name: 'styles', groups: ['styles'] },
- 	{ name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing'] },
- 	{ name: 'forms', groups: ['forms'] },
- 	{ name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
- 	{ name: 'links', groups: ['links'] },
- 	{ name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'] },
- 	{ name: 'insert', groups: ['insert'] },
- 	{ name: 'colors', groups: ['colors'] },
- 	{ name: 'tools', groups: ['tools'] },
- 	{ name: 'others', groups: ['others'] },
- 	{ name: 'about', groups: ['about'] }
+ 	{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+ 	{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+ 	{ name: 'styles', groups: [ 'styles' ] },
+ 	{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+ 	{ name: 'forms', groups: [ 'forms' ] },
+ 	{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+ 	{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+ 	{ name: 'links', groups: [ 'links' ] },
+ 	{ name: 'insert', groups: [ 'insert' ] },
+ 	{ name: 'colors', groups: [ 'colors' ] },
+ 	{ name: 'tools', groups: [ 'tools' ] },
+ 	{ name: 'others', groups: [ 'others' ] },
+ 	{ name: 'about', groups: [ 'about' ] }
  	];
 
- 	config.removeButtons = 'NewPage,Preview,Print,Templates,Cut,Copy,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Save,Undo,Redo,Subscript,Superscript,BidiLtr,BidiRtl,Language,Anchor,Flash,Smiley,SpecialChar,ShowBlocks,About,Iframe,TextColor,BGColor';
+ 	config.removeButtons = 'ExportPdf,Save,NewPage,Preview,Print,Templates,Cut,Copy,Undo,Redo,Find,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,BidiLtr,BidiRtl,Language,Anchor,Flash,Smiley,SpecialChar,Iframe,About,ShowBlocks,BGColor,TextColor';
+ 	config.removePlugins = 'ExportPdf';
+
 
 	// This is optional, but will let us define multiple different styles for multiple editors using the same CSS file.
 	config.bodyClass = 'document-editor';

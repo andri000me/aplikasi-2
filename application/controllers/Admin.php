@@ -762,12 +762,14 @@ class Admin extends CI_Controller {
 
 		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
 
-		// $this->form_validation->set_rules('kodeSurat','Kode Surat','required');
-		// $this->form_validation->set_rules('namaSurat','Nama Surat','required');
-		// $this->form_validation->set_rules('kopSurat','Kops Kaprodi','required');
-		// $this->form_validation->set_rules('headerSurat','Header Surat','required');
-		// $this->form_validation->set_rules('isiSurat','Isi Surat','required');
-		// $this->form_validation->set_rules('footerSurat','Footer Surat','required');
+		$this->form_validation->set_rules('kodeSurat','Kode Surat','required|is_unique[esurat_surat.kd_surat]',[
+			'is_unique' => 'Kode Surat yang Anda Masukkan Sudah di Gunakan'
+		]);
+		$this->form_validation->set_rules('namaSurat','Nama Surat','required');
+		$this->form_validation->set_rules('kopSurat','Kops Kaprodi','required');
+		$this->form_validation->set_rules('headerSurat','Header Surat','required');
+		$this->form_validation->set_rules('isiSurat','Isi Surat','required');
+		$this->form_validation->set_rules('footerSurat','Footer Surat','required');
 
 		if($this->form_validation->run() == false){
 
@@ -778,24 +780,160 @@ class Admin extends CI_Controller {
 
 		}else{
 
-			$isi = $this->input->post('myData');
+			$input = '{"kops" : "'.$this->input->post('kopSurat').'", "header" : "'.$this->input->post('headerSurat').'", "isi" : "'.$this->input->post('isiSurat').'", "footer" : "'.$this->input->post('footerSurat').'"}';
+			$json = json_encode($input);
 
 			$data = [
 
-				// 'kd_surat' => $this->input->post('kodeSurat'),
-				// 'nm_surat' => $this->input->post('namaSurat'),
-				// 'kop_surat' => $this->input->post('kopSurat'),
-				// 'header_surat' => $this->input->post('headerSurat'),
-				'isi_surat' => $isi,
-				// 'footer_surat' => $this->input->post('footerSurat'),
-				// 'access' => $this->input->post('access')
+				'kd_surat' =>  $this->db->escape_str(strtoupper($this->input->post('kodeSurat')),true),
+				'nm_surat' =>  $this->db->escape_str(ucwords($this->input->post('namaSurat')),true),
+				'kop_surat' => $this->input->post('kopSurat'),
+				'header_surat' => $this->input->post('headerSurat'),
+				'isi_surat' => $this->input->post('isiSurat'),
+				'footer_surat' => $this->input->post('footerSurat'),
+				'access' => $this->db->escape_str($this->input->post('access'),true),
+				'detail' => $json
 
 			];
 
 			$this->db->insert('esurat_Surat',$data);
-			$this->toastr->success('List Surat  Telah Ditambahkan!');
+			$this->toastr->success('List Surat '.$this->input->post('namaSurat').' Telah Ditambahkan!');
 			$id_surat = $this->db->insert_id();
 			redirect('admin/sListSurat');
 		}
 	}
+
+	public function sListSuratDetail($id_surat = null){
+
+		/*-- Encrypt URL Id_Surat --*/
+		if (count($this->uri->segment_array()) > 3) {
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin/sListSurat');
+		}
+		if (!isset($id_surat)) {
+			$this->toastr->error('Data yang Anda Inginkan Tidak Mempunyai ID');
+			redirect('admin/sListSurat');
+		}
+		if (is_numeric($id_surat)) {
+			$this->toastr->error('Url Hanya Bisa Diakses Setelah Dienkripsi');
+			redirect('admin/sListSurat');
+		}
+		$oneSur = $this->db->get_where('esurat_surat',['id_surat' => $this->encrypt->decode($id_surat)]);
+		if($oneSur->num_rows() == null){
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin/sListSurat');
+		}
+		/*-- /. Encrypt URL Id_Surat --*/
+
+		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
+
+		/*-- Load One Data Surat --*/
+		$data['onesur'] = $this->admin_model->getOneListSurat($this->encrypt->decode($id_surat)); 
+
+		$data['title'] = "Admin | List Surat";
+		$data['parent'] = "List Surat";
+		$data['page'] = "Detail Surat";
+		$this->template->load('admin/layout/adminTemplate','admin/modulListSurat/adminListSuratDetail',$data);
+
+	}
+
+	public function sListSuratEdit($id_surat = null){
+
+		/*-- Encrypt URL Id_Surat --*/
+		if (count($this->uri->segment_array()) > 3) {
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin/sListSurat');
+		}
+		if (!isset($id_surat)) {
+			$this->toastr->error('Data yang Anda Inginkan Tidak Mempunyai ID');
+			redirect('admin/sListSurat');
+		}
+		if (is_numeric($id_surat)) {
+			$this->toastr->error('Url Hanya Bisa Diakses Setelah Dienkripsi');
+			redirect('admin/sListSurat');
+		}
+		$oneSur = $this->db->get_where('esurat_surat',['id_surat' => $this->encrypt->decode($id_surat)]);
+		if($oneSur->num_rows() == null){
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin/sListSurat');
+		}
+		/*-- /. Encrypt URL Id_Surat --*/
+
+		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
+
+		/*-- Load One Data Surat --*/
+		$data['onesur'] = $this->admin_model->getOneListSurat($this->encrypt->decode($id_surat)); 
+
+
+		$this->form_validation->set_rules('kodeSurat','Kode Surat','required');
+		$this->form_validation->set_rules('namaSurat','Nama Surat','required');
+		$this->form_validation->set_rules('kopSurat','Kops Kaprodi','required');
+		$this->form_validation->set_rules('headerSurat','Header Surat','required');
+		$this->form_validation->set_rules('isiSurat','Isi Surat','required');
+		$this->form_validation->set_rules('footerSurat','Footer Surat','required');
+
+		if($this->form_validation->run() == false){
+
+			$data['title'] = "Admin | List Surat";
+			$data['parent'] = "List Surat";
+			$data['page'] = "Edit Surat";
+			$this->template->load('admin/layout/adminTemplate','admin/modulListSurat/adminListSuratEdit',$data);
+
+		}else{
+
+			$data = [
+
+				'kd_surat' => $this->input->post('kodeSurat'),
+				'nm_surat' => $this->input->post('namaSurat'),
+				'kop_surat' => $this->input->post('kopSurat'),
+				'header_surat' => $this->input->post('headerSurat'),
+				'isi_surat' => $this->input->post('isiSurat'),
+				'footer_surat' => $this->input->post('footerSurat'),
+				'access' => $this->input->post('access')
+
+			];
+
+			$this->db->where('id_surat', $oneSur->row()->id_surat);
+			$this->db->update('esurat_surat',$data);
+			$this->toastr->success('Data Prodi '.$this->input->post('namaSurat').' Berhasil Diudate!');
+			redirect('admin/sListSurat');
+		}
+	}
+
+	public function sListSuratDelete($id_surat){
+
+		$this->db->delete('esurat_surat',['id_surat' => $this->encrypt->decode($id_surat)]);
+		$this->toastr->success('Data Surat Telah Di Hapus!');
+		redirect('admin/sListSurat');
+
+	}
+
+	public function sListSuratPrint($id_surat = null){
+
+		/*-- Encrypt URL Id_Surat --*/
+		if (count($this->uri->segment_array()) > 3) {
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin/sListSurat');
+		}
+		if (!isset($id_surat)) {
+			$this->toastr->error('Data yang Anda Inginkan Tidak Mempunyai ID');
+			redirect('admin/sListSurat');
+		}
+		if (is_numeric($id_surat)) {
+			$this->toastr->error('Url Hanya Bisa Diakses Setelah Dienkripsi');
+			redirect('admin/sListSurat');
+		}
+		$oneSur = $this->db->get_where('esurat_surat',['id_surat' => $this->encrypt->decode($id_surat)]);
+		if($oneSur->num_rows() == null){
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin/sListSurat');
+		}
+		/*-- /. Encrypt URL Id_Surat --*/
+
+		$data['onesur'] = $this->admin_model->getOneListSurat($this->encrypt->decode($id_surat));
+
+		$this->load->view('admin/modulListSurat/adminListSuratPrint', $data);
+		
+	}
+
 }

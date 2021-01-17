@@ -30,8 +30,22 @@
   toastr.info("<?php echo $this->session->flashdata('info'); ?>");
 <?php }?>
 
+
 $(function () {
   'use strict'
+
+  // CKEDITOR.replace('isiEditor',{
+  //   filebrowserBrowseUrl: baseURL+'assets/ckfinder/ckfinder.html',
+  //   filebrowserUploadUrl: baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json',
+  // } );
+
+
+  // CKEDITOR.replace( 'footerEditor', {
+  //   filebrowserBrowseUrl: baseURL+'assets/ckfinder/ckfinder.html',
+  //   filebrowserUploadUrl: baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+  //   contentsCss : baseURL+'/assets/ckeditor_4.15.1_full/mystyles.css',
+  //   height: '400px'  
+  // } );
 
   // Make the dashboard widgets sortable Using jquery UI
   $('.connectedSortable').sortable({
@@ -66,11 +80,7 @@ $(function () {
   });
 })
 
-CKEDITOR.replace( 'editor2', {
-  filebrowserBrowseUrl: baseURL+'assets/ckfinder/ckfinder.html',
-  filebrowserUploadUrl: baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-  contentsCss : baseURL+'/assets/ckeditor_4.15.1_full/mystyles.css',
-} );
+
 
 /*-- Change Name Image on Update Profile --*/
 $('.custom-file-input').on('change', function(){
