@@ -5,10 +5,10 @@
 
  CKEDITOR.editorConfig = function (config) {
 
-	config.contentsCss = [ 
-	'http://localhost/aplikasi/assets/ckeditor_4.15.1_full/contents.css', 
-	'http://localhost/aplikasi/assets/ckeditor_4.15.1_full/mystyles.css' 
-	];
+	// config.contentsCss = [ 
+	// 'http://localhost/aplikasi/assets/ckeditor_4.15.1_full/contents.css', 
+	// 'http://localhost/aplikasi/assets/ckeditor_4.15.1_full/mystyles.css' 
+	// ];
  	config.language = 'en';
  	config.protectedSource.push( /<\?[\s\S]*?\?>/g );
 

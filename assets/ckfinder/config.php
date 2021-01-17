@@ -26,14 +26,14 @@ $config = array();
 // https://ckeditor.com/docs/ckfinder/ckfinder3-php/configuration.html#configuration_options_authentication
 
 $config['authentication'] = function () {
-    return false;
+    return true;
 };
 
 /*============================ License Key ============================================*/
 // https://ckeditor.com/docs/ckfinder/ckfinder3-php/configuration.html#configuration_options_licenseKey
 
-$config['licenseName'] = '';
-$config['licenseKey']  = '';
+$config['licenseName'] = 'sdasdasdasdas';
+$config['licenseKey']  = '*B?D-*1**-P**J-*Q**-*K**-X*Z*-2**B';
 
 /*============================ CKFinder Internal Directory ============================*/
 // https://ckeditor.com/docs/ckfinder/ckfinder3-php/configuration.html#configuration_options_privateDir
