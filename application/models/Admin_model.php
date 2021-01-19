@@ -55,4 +55,5 @@ class Admin_model extends CI_Model {
 		$query = "SELECT * FROM esurat_surat WHERE id_surat = '$id_surat' ";
 		return $this->db->query($query)->row();
 	}
+
 }

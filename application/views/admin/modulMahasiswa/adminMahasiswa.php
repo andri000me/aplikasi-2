@@ -72,3 +72,86 @@
     </section>
     <!-- /.content -->
   </div>
+
+  <script type="text/javascript">
+
+    window.onload = function () {
+
+      /*-- DataTable To Load Data Mahasiswa --*/
+      var mhs = $('#mhs_data').DataTable({
+
+        "sDom": 'lrtip',
+        "lengthChange": false,
+        "processing": true, 
+        "serverSide": true, 
+        "order": [],
+        "ajax": {
+          "url": baseURL+'ajax/get_data_mhs',
+          "type": "POST"
+
+        },
+
+        "columnDefs": [{ 
+
+          "targets": [ 0 ], 
+          "orderable": false, 
+
+        }],
+
+        "responsive": true
+
+      });
+      $('#seachMhs').keyup(function(){
+        mhs.search($(this).val()).draw() ;
+      });
+      /*-- /. DataTable To Load Data Mahasiswa --*/
+
+    }
+    
+    /*-- DataTable To Delete Data Mahasiswa --*/
+    function deletemhs(nim){
+
+      swalWithBootstrapButtons.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+          $.ajax({
+
+            url : baseURL+'ajax/dMahasiswaDelete',
+            method:"post",
+            data:{nim:nim},
+            dataType: 'json',
+
+            success:function(data){
+              swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'Your Data '+data.nim+' has been deleted.',
+                'success'
+                )
+              $('#mhs_data').DataTable().ajax.reload();
+            },
+
+            error:function(data){
+              swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'Your Data '+data.nim+' has been deleted.',
+                'error'
+                )
+              $('#mhs_data').DataTable().ajax.reload();
+            }
+          });
+
+        } 
+      })
+    };
+    /*-- /. DataTable To Delete Data Mahasiswa --*/
+
+
+  </script>

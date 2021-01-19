@@ -1,5 +1,5 @@
   <script type="text/javascript">
-    
+
    /*-- Toastr  --*/
    toastr.options = {
     "closeButton": false,
@@ -46,20 +46,22 @@
         success: function(data){
           if (data.success == true ){
             if (data.url == true) {
-              swal({
+              Swal.fire({
+                icon: data.type,
                 title: data.title,
-                text: data.nama,
-                timer: 2000,
-                type: data.type,
-                showConfirmButton: false
-              }, function() {
+                text:data.nama,
+                showConfirmButton: false,
+                timer: 2000
+              }).then((result) => {
                 window.location.href = data.redirect;
               });
             }else{
-              swal({
+              Swal.fire({
+                icon: data.type,
                 title: data.title,
-                text: data.nama,
-                type: data.type
+                text:data.nama,
+                showConfirmButton: false,
+                timer: 2000
               });
             };
           }else{
@@ -88,21 +90,22 @@
         success: function(data){
           if (data.success == true ){
             if (data.url == true) {
-              swal({
+              Swal.fire({
+                icon: data.type,
                 title: data.title,
-                text: data.nama,
-                timer: 2000,
-                type: data.type,
-                showConfirmButton: false
-              }, function() {
+                text:data.nama,
+                showConfirmButton: false,
+                timer: 2000
+              }).then((result) => {
                 window.location.href = data.redirect;
-              });
+              });            
             }else{
-              swal({
+              Swal.fire({
+                icon: data.type,
                 title: data.title,
-                text: data.nama,
-                timer: 2000,
-                type: data.type
+                text:data.nama,
+                showConfirmButton: false,
+                timer: 2000
               });
             };
           }else{

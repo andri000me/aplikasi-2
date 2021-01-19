@@ -936,4 +936,22 @@ class Admin extends CI_Controller {
 		
 	}
 
+	public function sPermintaanSurat(){
+
+		if (count($this->uri->segment_array()) > 2) {
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin/sPermintaanSurat');
+		}
+
+		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
+
+		$data['surat'] = $this->admin_model->getListSurat(); /*-- Load Semua Data List Surat --*/
+
+		$data['title'] = "Admin | Data Permintaan Surat";
+		$data['parent'] = "Data Permintaan Surat";
+		$data['page'] = "Data Permintaan Surat";
+		$this->template->load('admin/layout/adminTemplate','admin/modulPermintaanSurat/adminPermintaanSurat',$data);
+
+	}
+
 }

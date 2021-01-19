@@ -152,3 +152,15 @@
   </section>
 
 </div>
+
+<script>
+  window.onload = function () {
+
+    /*-- Change Name Image on Update Profile --*/
+    $('.custom-file-input').on('change', function(){
+      let fileName = $(this).val().split('\\').pop();
+      $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    })
+    /*-- /. Change Name Image on Update Profile --*/
+  }
+</script>

@@ -14,7 +14,7 @@
   <!-- iCheck -->
   <link rel="stylesheet" href="<?= base_url('assets/AdminLTE-3.1.0-rc/')?>plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Datepicker -->
-  <link rel="stylesheet" href="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+  <link rel="stylesheet" href="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/daterangepicker/daterangepicker.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/datatables-bs4/css/dataTables.bootstrap4.css">
   <link rel="stylesheet" href="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/datatables-rowreorder/css/rowReorder.bootstrap4.min.css">
@@ -66,10 +66,8 @@
   </script>
   <!-- Bootstrap 4 -->
   <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/')?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- datepicker -->
-  <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/moment/moment.min.js"></script>
-
   <!-- date-range-picker -->
+  <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/moment/moment.min.js"></script>
   <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/daterangepicker/daterangepicker.js"></script>
   <!-- Toastr -->
   <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/toastr/toastr.min.js"></script>
@@ -82,7 +80,7 @@
   <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/')?>plugins/inputmask/jquery.inputmask.min.js"></script>
   <!-- Select2 -->
   <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/select2/js/select2.full.min.js"></script>
-  <!-- SweetAlert -->
+  <!-- SweetAlert2 -->
   <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/sweetalert2/sweetalert2.min.js"></script>
   <!-- overlayScrollbars -->
   <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/')?>plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>

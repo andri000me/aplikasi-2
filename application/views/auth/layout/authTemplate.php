@@ -18,7 +18,7 @@
   <!-- Core theme CSS (includes Bootstrap)-->
   <link href="<?= base_url('assets/startbootstrap-creative/dist/');?>css/styles.css" rel="stylesheet" />
   <!-- SweetAlert -->
-    <link rel="stylesheet" href="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/bootstrap-sweetalert/dist/sweetalert.css">
+  <link rel="stylesheet" href="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/sweetalert2/sweetalert2.min.css">
   <!-- Toastr -->
   <link rel="stylesheet" href="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/toastr/toastr.min.css">
 </head>
@@ -48,8 +48,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
   <!-- Core theme JS-->
   <script src="<?= base_url('assets/startbootstrap-creative/dist/');?>js/scripts.js"></script>
-  <!-- SweetAlert -->
-    <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/bootstrap-sweetalert/dist/sweetalert.min.js"></script>
+  <!-- SweetAlert2 -->
+  <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/sweetalert2/sweetalert2.min.js"></script>
   <!-- Toastr -->
   <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/');?>plugins/toastr/toastr.min.js"></script>
   <!-- Auth JS -->
