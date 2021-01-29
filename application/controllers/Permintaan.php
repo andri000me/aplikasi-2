@@ -107,39 +107,14 @@ class Permintaan extends CI_Controller {
 
 			$query = "SELECT * FROM esurat_surat WHERE id_surat = '".$id."'";
 
-			/*-- Load Semua Data Dosen Pada Input --*/
-			$data['dosenall'] = $this->admin_model->getDosen();
-			$data['mahasiswaall'] = $this->db->query("SELECT * FROM esurat_mhs")->result();
-
 		}elseif($name == 'pengajuan'){	/*-- Ketika Mahasiswa Mengajukan Surat --*/
 
 			$query = "SELECT * FROM esurat_surat WHERE id_surat = '".$id."'";
-
-			$mhs =  $this->db->get_where('esurat_mhs',['nim' => $this->session->userdata('nim')])->row();
-			$data['onepro'] = $this->admin_model->getOneProdi($mhs->kdpro);
 
 		}elseif($name == 'permintaan'){	/*-- Ketika Admin Mengkonfirmasi Surat Yang Di Ajukan Oleh Mahasiswa --*/
 
 			$query = "SELECT * FROM esurat_permintaan WHERE id_permintaan = '".$id."'";
 
-			/*-- Load One Data Permintaan Pada Input --*/
-			$data['onepmr'] = $this->admin_model->getOnePmr($id);
-			/*-- Load One Data Dosen Pada Input --*/
-			$data['onedos'] = $this->admin_model->getOneDosen($this->admin_model->getOnePmr($id)->dosen);
-			/*-- Load One Data Mahasiswa Pada Input --*/
-			$data['onemhs'] = $this->admin_model->getOneMhs($this->admin_model->getOnePmr($id)->permintaan_by);
-			/*-- Load One Data Prodi Pada Input --*/
-			$data['onepro'] = $this->admin_model->getOneProdi($this->admin_model->getOnePmr($id)->permintaan_kdpro);
-
-			/*-- Load One Data Mahasiswa Pada Hasil Surat --*/
-			$mahasiswa = $this->admin_model->getOneMhs($this->admin_model->getOnePmr($id)->permintaan_by);
-			/*-- Load One Data Dosen Pada Hasil Surat --*/
-			$dosen = $this->admin_model->getOneDosen($this->admin_model->getOnePmr($id)->dosen);
-			/*-- Load One Data Prodi Pada Hasil Surat --*/
-			$prodi = $this->admin_model->getOneProdi($this->admin_model->getOnePmr($id)->permintaan_kdpro);
-
-			/*-- Load Semua Data Dosen Pada Input --*/
-			$data['dosenall'] = $this->admin_model->getDosen();
 		}
 
 
@@ -150,7 +125,6 @@ class Permintaan extends CI_Controller {
 		/*------ /. Data-Data Komponen Surat ------*/
 
 
-
 		if($name == 'permohonan'){
 
 			/*------------------------------------------------------------------------*/
@@ -159,10 +133,67 @@ class Permintaan extends CI_Controller {
 
 			if( $result->kd_surat == $kd_surat && $result->id_surat == $id){
 
-				$data['title'] = "Admin | Dashboard";
-				$data['parent'] = "Dashboard";
-				$data['page'] = "Dashboard";
-				$this->template->load('admin/layout/adminTemplate','admin/modulDashboard/adminDashboard',$data);
+				switch ($searchKode->row()->kd_surat) {
+
+					case 'SP-KP':
+
+					/*-- Load Semua Data Dosen Pada Input --*/
+					$data['dosenall'] = $this->admin_model->getDosen();
+					$data['mahasiswaall'] = $this->db->query("SELECT * FROM esurat_mhs")->result();
+					/*-- Load Semua Data Dosen Pada Input --*/
+
+					$this->form_validation->set_rules('no_surat', 'NO Surat','trim|required|is_unique[esurat_konfirmasi.no_surat]',[
+						'is_unique' => 'Nomer Surat Tersebut Telah Dipakai Silahkan Tekan Tombol Generate lagi Untuk Meregerate No Surat Baru']);
+					$this->form_validation->set_rules('dosen', 'Data Penanggung Jawab','required');
+					$this->form_validation->set_rules('cosnim', 'Data Mahasiswa','required');
+					$this->form_validation->set_rules('kepadaYth', 'Kepada Surat di Tujukan','required');
+					$this->form_validation->set_rules('keperluan', 'Keperluan Surat ini di Ajukan','required');
+
+					if($this->form_validation->run() == false){
+
+						$data['name'] = $name;
+						$data['title'] = " Admin | Data Surat";
+						$data['parent'] = "Permohonan Surat";
+						$data['page'] = $searchKode->row()->nm_surat;
+						$this->template->load('admin/layout/adminTemplate','permintaan/SP-KP',$data);
+
+					}else{
+
+						$jsonSPKP = '{"permintaan_by":"'.$this->db->escape_str($this->input->post('cosnim'),true).'","kepadaYth":"'.$this->db->escape_str($this->input->post('kepadaYth'),true).'","kepadaAlamat":"'.$this->db->escape_str($this->input->post('kepadaAlamat'),true).'","permintaan_prodi":"'.$this->db->escape_str($this->admin_model->getOneMhs($this->input->post('cosnim'))->kdpro,true).'","dosen":"'.$this->db->escape_str($this->input->post('dosen'),true).'"}';
+
+						$jsonSPKPEnkripsi = '{"p":"'.$this->db->escape_str($this->input->post('p'),true).'","q":"'.$this->db->escape_str($this->input->post('q'),true).'","n":"'.$this->db->escape_str($this->input->post('n'),true).'","e":"'.$this->db->escape_str($this->input->post('e'),true).'","d":"'.$this->db->escape_str($this->input->post('d'),true).'","enkripsi":"'.$this->db->escape_str($this->input->post('enkripsi'),true).'"}';
+
+						$data = [
+
+							'no_surat' => $this->db->escape_str($this->input->post('no_surat'),true),
+							'kd_surat' => $this->db->escape_str($this->input->post('kodeSurat'),true),
+							'nm_surat' => $this->db->escape_str($this->input->post('namaSurat'),true),
+							'isi_surat' => $this->input->post('semua'),
+							'permintaan_by' => $this->db->escape_str($this->input->post('cosnim'),true),
+							'data_permintaan' => $jsonSPKP,
+							'permintaan_tgl' => $this->db->escape_str(date('Y-m-d H:i:s'),true),
+							'status_surat' => $this->db->escape_str('CONFIRM',true),
+							'keperluan' => $this->db->escape_str($this->input->post('keperluan'),true),
+							'penyetuju_by' => $this->db->escape_str($this->input->post('penyetuju_by'),true),
+							'ttd' => $this->db->escape_str($this->input->post('dosen'),true),
+							'disetujui_tgl' => $this->db->escape_str(date('Y-m-d'),true),
+							'enkripsi' => $jsonSPKPEnkripsi
+
+						];
+
+						$this->db->insert('esurat_konfirmasi',$data);
+						$this->toastr->success('Surat '.$searchKode->row()->nm_surat.' Berhasil diajukan');
+						redirect('admin/sPermintaanSurat');
+					}
+
+					break;
+					
+					default:
+						# code...
+					break;
+				}
+
+
 
 			}else{
 
@@ -185,6 +216,56 @@ class Permintaan extends CI_Controller {
 
 			if($result->kd_surat == $kd_surat && $result->id_surat == $id){
 
+				switch ($searchKode->row()->kd_surat) {
+
+					case 'SP-KP':
+
+					/*-- Load Semua Data Dosen Pada Input --*/
+					$mhs =  $this->db->get_where('esurat_mhs',['nim' => $this->session->userdata('nim')])->row();
+					$data['onepro'] = $this->admin_model->getOneProdi($mhs->kdpro);
+					$data['dosenall'] = $this->admin_model->getDosen();
+
+					$this->form_validation->set_rules('kepadaYth', 'Kepada Surat Ini Ditujukan','required');
+					$this->form_validation->set_rules('kepadaAlamat', 'Alamat Surat Ini Ditujukan','required');
+					$this->form_validation->set_rules('keperluan', 'Keperluan Surat Ini Dibuat','required');
+
+					if($this->form_validation->run() == false){
+
+						$data['name'] = $name;
+						$data['title'] =  "Mahasiswa| Pengajuan Surat";
+						$data['parent'] = "Pengajuan Surat";
+						$data['page'] = $searchKode->row()->nm_surat;
+						$this->template->load('mahasiswa/layout/mahasiswaTemplate','permintaan/SP-KP',$data);
+
+					}else{
+
+						$jsonSPKP = '{"permintaan_by":"'.$this->db->escape_str($this->input->post('cosnim'),true).'","kepadaYth":"'.$this->db->escape_str($this->input->post('kepadaYth'),true).'","kepadaAlamat":"'.$this->db->escape_str($this->input->post('kepadaAlamat'),true).'","permintaan_prodi":"'.$this->db->escape_str($this->input->post('kdpro'),true).'","dosen":"'.$this->db->escape_str($this->input->post('dosen'),true).'"}';
+
+						$data = [
+
+							'kd_surat' => $this->db->escape_str($this->input->post('kodeSurat'),true),
+							'nm_surat' => $this->db->escape_str($this->input->post('namaSurat'),true),
+							'isi_surat' => $this->input->post('semua'),
+							'permintaan_by' => $this->db->escape_str($this->input->post('nim'),true),
+							'data_permintaan' => $jsonSPKP,
+							'permintaan_tgl' => $this->db->escape_str(date('Y-m-d H:i:s'),true),
+							'status_surat' => $this->db->escape_str('PENDING',true),
+							'keperluan' => $this->input->post('keperluan')
+
+						];
+
+						$this->db->insert('esurat_permintaan',$data);
+						$this->toastr->success('Surat '.$searchKode->row()->nm_surat.' Berhasil diajukan');
+						redirect('mahasiswa/pengajuanSurat');
+
+					}
+					break;
+
+					default:
+						# code...
+					break;
+				}
+
 			}else{
 
 				if($this->session->userdata('username') == TRUE){
@@ -205,6 +286,138 @@ class Permintaan extends CI_Controller {
 			/*------------------------------------------------------------------------------------*/
 
 			if( $result->kd_surat == $kd_surat && $result->id_permintaan == $id){
+
+				switch ($searchKode->row()->kd_surat) {
+
+					case 'SP-KP':
+
+					/*-- Load One Data Permintaan Pada Input --*/
+					$data['onepmr'] = $this->db->query("SELECT *, data_permintaan->>'$.kepadaYth' as kepadaYth, data_permintaan->>'$.kepadaAlamat' as kepadaAlamat, enkripsi->>'$.enkripsi' as enkripsi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row();
+					/*-- Load One Data Dosen Pada Input --*/
+					$data['onedos'] = $this->admin_model->getOneDosen($this->db->query("SELECT data_permintaan->>'$.dosen' as dosen FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->dosen);
+					/*-- Load One Data Mahasiswa Pada Input --*/
+					$data['onemhs'] = $this->admin_model->getOneMhs($this->admin_model->getOnePmr($id)->permintaan_by);
+					/*-- Load One Data Prodi Pada Input --*/
+					$data['onepro'] = $this->admin_model->getOneProdi($this->db->query("SELECT data_permintaan->>'$.permintaan_prodi' as permintaan_prodi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->permintaan_prodi);
+
+					/*-- Load One Data Permintaan Pada Hasil Surat --*/
+					$permintaan = $this->db->query("SELECT *, data_permintaan->>'$.kepadaYth' as kepadaYth, data_permintaan->>'$.kepadaAlamat' as kepadaAlamat, enkripsi->>'$.enkripsi' as enkripsi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row();
+					/*-- Load One Data Mahasiswa Pada Hasil Surat --*/
+					$mahasiswa = $this->admin_model->getOneMhs($this->admin_model->getOnePmr($id)->permintaan_by);
+					/*-- Load One Data Dosen Pada Hasil Surat --*/
+					$dosen = $this->admin_model->getOneDosen($this->db->query("SELECT data_permintaan->>'$.dosen' as dosen FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->dosen);
+					/*-- Load One Data Prodi Pada Hasil Surat --*/
+					$prodi = $this->admin_model->getOneProdi($this->db->query("SELECT data_permintaan->>'$.permintaan_prodi' as permintaan_prodi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->permintaan_prodi);
+
+					/*-- Load Semua Data Dosen Pada Input --*/
+					$data['dosenall'] = $this->admin_model->getDosen();
+
+					$this->form_validation->set_rules('no_surat', 'NO Surat','trim|required|is_unique[esurat_konfirmasi.no_surat]',[
+						'is_unique' =>'Nomer Surat Tersebut Telah Dipakai Silahkan Tekan Tombol Generate lagi Untuk Meregerate No Surat Baru']);
+					$this->form_validation->set_rules('ttd', 'Tanda Tangan','required');
+
+					if($this->form_validation->run() == false){
+
+						$komponenSurat = [
+
+							'bulan' => bulan_romawi(date('Y-m-d')),
+							'tahun' => date('Y'),
+							'kepadaYth' => $permintaan->kepadaYth,
+							'kepadaAlamat' => $permintaan->kepadaAlamat,
+							'nama_mhs' => $mahasiswa->nmmhs,
+							'nim_mhs' => $mahasiswa->nim,
+							'angkatan_mhs' => semester($mahasiswa->thaka),
+							'prodi_mhs' => $prodi->prodi,
+							'dosen' => $dosen->nama,
+							'dosen_jabatan' => $dosen->jabatan
+
+						];
+
+						$data['isi'] = $this->admin_model->getOnePmr($id)->isi_surat;
+						$data['komponen'] = $komponenSurat;
+
+						$data['name'] = $name;
+						$data['title'] = " Admin | Data Surat";
+						$data['parent'] = "Permintaan Surat";
+						$data['page'] = $searchKode->row()->kd_surat;
+						$this->template->load('admin/layout/adminTemplate','permintaan/SP-KP',$data);
+
+					}else{
+
+						$data = [
+
+							'penyetuju_by' => $this->db->escape_str($this->input->post('penyetuju_by'),true),
+							'no_surat' => $this->db->escape_str($this->input->post('no_surat'),true),
+							'status_surat' => $this->db->escape_str('CONFIRM',true),
+							'ttd' => $this->db->escape_str($this->input->post('ttd'),true),
+							'disetujui_tgl' => $this->db->escape_str(date('Y-m-d'),true)
+
+						];
+
+						$this->db->where('id_permintaan', $this->input->post('zz'));
+						$this->db->update('esurat_permintaan',$data);
+
+						$nomor = $this->input->post('no_surat');
+
+						$this->db->query("
+
+							INSERT INTO esurat_konfirmasi (
+							no_surat, 
+							kd_surat, 
+							nm_surat, 
+							isi_surat,
+							permintaan_tgl, 
+							keperluan, 
+							permintaan_by,
+							data_permintaan,
+							status_surat,
+							penyetuju_by,
+							ttd,
+							disetujui_tgl,
+							enkripsi)  
+							SELECT 						
+							no_surat, 
+							kd_surat, 
+							nm_surat, 
+							isi_surat,
+							permintaan_tgl, 
+							keperluan, 
+							permintaan_by,
+							data_permintaan,
+							status_surat,
+							penyetuju_by,
+							ttd,
+							disetujui_tgl,
+							enkripsi from esurat_permintaan where no_surat = '$nomor'
+
+							");
+
+						$this->db->query("DELETE FROM esurat_permintaan where no_surat = '$nomor'");
+
+						$notif = [
+
+							'comment_subject' => 'Surat Di Konfirmasi',
+							'comment_text' => 'Surat Yang Anda Ajukan Pada tanggal '.$result->permintaan_tgl.' Telah Disetujui',
+							'comment_surat' => 'Y',
+							'comment_to' => $result->permintaan_by,
+							'comment_date' => $this->db->escape_str(date('Y-m-d'),true),
+							'comment_status' => 0
+
+						];
+
+						$this->db->insert('esurat_comments',$notif);
+
+						$this->toastr->success(' Surat Yang diajukan oleh '.$mahasiswa->nmmhs.' Telah di Konfirmasi!');
+						redirect('admin/sPermintaanSurat');
+
+					}
+
+					break;
+
+					default:
+					# code...
+					break;
+				}
 
 			}else{
 
@@ -232,5 +445,231 @@ class Permintaan extends CI_Controller {
 			}
 		}
 	}
+
+	public function fetchDosenWithTTD(){
+
+		$dosen_id = $this->input->post('dosen_id');
+		$nama =  $this->permintaan_model->fetchDosenWithTTD($dosen_id)->nama;
+
+		echo $nama;
+	}
+
+	public function fetchNIMWithNama(){
+
+		$nim = $this->input->post('nimCos');
+		$data['nama']=  $this->permintaan_model->fetchNIMWithNama($nim)->nmmhs;
+		$data['prodi'] = $this->admin_model->getOneProdi($this->permintaan_model->fetchNIMWithNama($nim)->kdpro)->prodi;
+		$data['semester'] = semester($this->permintaan_model->fetchNIMWithNama($nim)->thaka);
+
+		echo json_encode($data);
+	}
+
+	public function getNoSuratPmr() {
+
+		$id = $this->input->post('id');
+		$no_surat = $this->permintaan_model->getNoSuratPmr($id);
+
+		echo $no_surat;
+	}
+
+	public function getEnkripsiPmr(){
+
+		/* 
+		-- keterangan Masing Masing Fungsi yang dipake dari Library gmp --
+
+		gmp_div_qr = Bagi;
+		gmp_add    = Tambah;
+		gmp_mul    = Kali;
+		gmp_sub    = Kurang;
+		gmp_gcd    = Menghitung Nilai phi;
+		gmp_strval = Convert Nomer ke String;
+
+		*/
+	    //untuk membuat kunci yang lebih panjang coba gmp_random
+	    //$rand1 = gmp_random(1); // mengeluarkan random number dari 0 sampai 1 x limb
+	    //$rand2 = gmp_random(1); // mengeluarkan random number dari 0 sampai 1 x limb
+
+        //mencari bilangan random
+		$rand1=rand(1000,2000);
+		$rand2=rand(1000,2000);
+
+	    // mencari bilangan prima selanjutnya dari $rand1 &rand2
+		$p = gmp_nextprime($rand1); 
+		$q = gmp_nextprime($rand2);
+
+
+        //menghitung&menampilkan n=p*q
+		$n=gmp_mul($p,$q);
+
+        //menghitung&menampilkan totient/phi=(p-1)(q-1)
+		$totient=gmp_mul(gmp_sub($p,1),gmp_sub($q,1));
+
+	    //mencari e, dimana e merupakan coprime dari totient
+	    //e dikatakan coprime dari totient jika gcd/fpb dari e dan totient/phi = 1
+		for($e=5;$e<1000;$e++){
+
+	      //mencoba perulangan max 1000 kali, 
+			$gcd = gmp_gcd($e, $totient);
+			if(gmp_strval($gcd)=='1')
+				break;
+
+		}
+
+		//menghitung&menampilkan d
+		$i=1;
+		do{
+
+			$res = gmp_div_qr(gmp_add(gmp_mul($totient,$i),1), $e);
+			$i++;
+            if($i==10000) //maksimal percobaan 10000
+            break;
+
+        }while(gmp_strval($res[1])!='0');
+        $d=$res[0];
+
+        $no_surat = $this->input->post('no_surat');
+        $id = $this->input->post('id');
+        $hasilenkripsi = enkripsi($no_surat, $n, $e);
+
+        $jsonSPKPEnkripsi = '{"p":"'.gmp_strval($p).'","q":"'.gmp_strval($q).'","n":"'.gmp_strval($n).'","e":"'.gmp_strval($e).'","d":"'.gmp_strval($d).'","enkripsi":"'.$hasilenkripsi.'"}';
+
+        $enkripsi = [
+
+        	'no_surat' => $no_surat,
+        	'enkripsi' => $jsonSPKPEnkripsi
+
+        ];
+
+
+
+        $this->db->where('id_permintaan', $id);
+        $this->db->update('esurat_permintaan', $enkripsi);
+
+        $data['enkripsi'] = $hasilenkripsi;
+
+        echo json_encode($data);
+
+    }
+
+    public function getconvertPmr(){
+
+    	$domain = $this->input->post('domain');
+    	$nameController = "Auth/Surat/";
+    	$enkripsi = $this->input->post('enkripsi');
+    	$no_surat = $this->input->post('no_surat');
+    	$penggabungan = $domain.$nameController.$enkripsi;
+    	$filename = str_replace("/", "_", $no_surat);
+
+    	$params = [
+
+    		'data' => $penggabungan,
+    		'savename' => FCPATH."assets/esurat/img/QRCode/".$filename.".png"
+
+    	];
+
+    	$this->ciqrcode->generate($params);
+
+    	echo $filename;
+
+    }
+
+    public function getNoSuratCos() {
+
+    	$kd_suratCos = $this->input->post('kd_suratCos');
+    	$no_suratCos = $this->permintaan_model->getNoSuratCos($kd_suratCos);
+
+    	echo $no_suratCos;
+    }
+
+    public function getEnkripsiCos(){
+
+		/* 
+		-- keterangan Masing Masing Fungsi yang dipake dari Library gmp --
+
+		gmp_div_qr = Bagi;
+		gmp_add    = Tambah;
+		gmp_mul    = Kali;
+		gmp_sub    = Kurang;
+		gmp_gcd    = Menghitung Nilai phi;
+		gmp_strval = Convert Nomer ke String;
+
+		*/
+	    //untuk membuat kunci yang lebih panjang coba gmp_random
+	    //$rand1 = gmp_random(1); // mengeluarkan random number dari 0 sampai 1 x limb
+	    //$rand2 = gmp_random(1); // mengeluarkan random number dari 0 sampai 1 x limb
+
+        //mencari bilangan random
+		$rand1=rand(1000,2000);
+		$rand2=rand(1000,2000);
+
+	    // mencari bilangan prima selanjutnya dari $rand1 &rand2
+		$p = gmp_nextprime($rand1); 
+		$q = gmp_nextprime($rand2);
+
+
+        //menghitung&menampilkan n=p*q
+		$n=gmp_mul($p,$q);
+
+        //menghitung&menampilkan totient/phi=(p-1)(q-1)
+		$totient=gmp_mul(gmp_sub($p,1),gmp_sub($q,1));
+
+	    //mencari e, dimana e merupakan coprime dari totient
+	    //e dikatakan coprime dari totient jika gcd/fpb dari e dan totient/phi = 1
+		for($e=5;$e<1000;$e++){
+
+	      //mencoba perulangan max 1000 kali, 
+			$gcd = gmp_gcd($e, $totient);
+			if(gmp_strval($gcd)=='1')
+				break;
+
+		}
+
+		//menghitung&menampilkan d
+		$i=1;
+		do{
+
+			$res = gmp_div_qr(gmp_add(gmp_mul($totient,$i),1), $e);
+			$i++;
+            if($i==10000) //maksimal percobaan 10000
+            break;
+
+        }while(gmp_strval($res[1])!='0');
+        $d=$res[0];
+
+        $no_suratCos = $this->input->post('no_suratCos');
+        $hasilenkripsiCos = enkripsi($no_suratCos, $n, $e);
+
+        $data['pCos'] = gmp_strval($p);
+        $data['qCos'] = gmp_strval($q);
+        $data['nCos'] = gmp_strval($n);
+        $data['eCos'] = gmp_strval($e);
+        $data['dCos'] = gmp_strval($d);
+        $data['enkripsiCos'] = $hasilenkripsiCos;
+
+        echo json_encode($data);
+
+    }
+
+    public function getconvertCos(){
+
+    	$domainCos = $this->input->post('domainCos');
+    	$nameControllerCos = "Auth/Surat/";
+    	$enkripsiCos = $this->input->post('enkripsiCos');
+    	$no_suratCos = $this->input->post('no_suratCos');
+    	$penggabunganCos = $domainCos.$nameControllerCos.$enkripsiCos;
+    	$filename = str_replace("/", "_", $no_suratCos);
+
+    	$params = [
+
+    		'data' => $penggabunganCos,
+    		'savename' => FCPATH."assets/esurat/img/QRCode/".$filename.".png"
+
+    	];
+
+    	$this->ciqrcode->generate($params);
+
+    	echo $filename;
+
+    }
 
 }

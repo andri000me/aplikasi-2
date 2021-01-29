@@ -99,11 +99,11 @@ class Ajax extends CI_Controller {
 			$access = $this->db->query("SELECT * FROM esurat_surat WHERE kd_surat = '".$field->kd_surat."'")->row();
 
 			$row[] = '
-			<a style="margin-right:10px" href="../Permintaan/permintaanDetail/'
+			<a class="btn btn-sm btn-success" style="margin-right:10px" href="../Permintaan/permintaanDetail/'
 			.$this->encrypt->encode($field->kd_surat).'/' /*-- Kode Surat --*/
 			.$this->encrypt->encode($field->id_permintaan).'/' /*-- Id Permintaan --*/
 			.$this->encrypt->encode('permintaan'). /*-- Permintaan --*/
-			'"><i class="fas fa-info-circle text-info"></i></a>
+			'">CONFRIM&ensp;<i class="fas fa-check-square"></i></a>
 			';
 
 			$data[] = $row;
@@ -124,27 +124,87 @@ class Ajax extends CI_Controller {
 
 	}
 
-	// public function pengajuanDelete(){
+	public function permintaanDelete(){
 
-	// 	$id_permintaan = $this->input->post("id_permintaan");
-	// 	$query = $this->admin_model->getOneMhs($this->admin_model->getOnePmr($id_permintaan)->permintaan_by);
-	// 	$notif = [
+		$data = array('success' => false,'messages' => array());
+		$this->form_validation->set_rules('id_permintaan','ID Permintaan','required');
+		$this->form_validation->set_rules('alasanSurat','AlasanSurat','required');
+		$this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
+		$id_permintaan = $this->input->post("id_permintaan");
+		$alasanSurat = $this->input->post("alasanSurat");
+		$query = $this->admin_model->getOneMhs($this->admin_model->getOnePmr($id_permintaan)->permintaan_by);
+		// $notif = [
 
-	// 		'comment_subject' => 'Surat Di Tolak',
-	// 		'comment_text' => 'Surat Yang Anda Ajukan Pada tanggal '.$this->admin_model->getOnePmr($id_permintaan)->permintaan_tgl.' Di Tolak',
-	// 		'comment_surat' => 'N',
-	// 		'comment_to' => $this->admin_model->getOnePmr($id_permintaan)->permintaan_by,
-	// 		'comment_date' => $this->db->escape_str(date('Y-m-d'),true),
-	// 		'comment_status' => 0
+		// 	'comment_subject' => 'Surat Di Tolak',
+		// 	'comment_text' => 'Surat Yang Anda Ajukan Pada tanggal '.$this->admin_model->getOnePmr($id_permintaan)->permintaan_tgl.' Di Tolak',
+		// 	'comment_surat' => 'N',
+		// 	'comment_to' => $this->admin_model->getOnePmr($id_permintaan)->permintaan_by,
+		// 	'comment_date' => $this->db->escape_str(date('Y-m-d'),true),
+		// 	'comment_status' => 0
 
-	// 	];
+		// ];
 
-	// 	$this->db->insert('esurat_comments',$notif);
-	// 	$data['id_permintaan'] =  "Yang Diajuakan Oleh $query->nmmhs";
-	// 	$this->db->delete('esurat_permintaan',['id_permintaan' => $id_permintaan]);
+		// $this->db->insert('esurat_comments',$notif);
+		$data['id_permintaan'] =  "Yang Diajuakan Oleh $query->nmmhs";
+		$this->db->delete('esurat_permintaan',['id_permintaan' => $id_permintaan]);
 
-	// 	echo json_encode($data);
+		echo json_encode($data);
+
+	}
+
+	/*-- Server-side Data Surat Selesai --*/
+	public function get_data_sls(){
+
+
+		$list = $this->ajax_model->get_sls();
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $field) {
+
+			$no++;
+			$row = array();
+			$row[] = $no;
+			$row[] = $field->kd_surat;
+			$row[] = $field->no_surat;
+			$row[] = $field->nm_surat;
+			$row[] = $field->permintaan_by;
+			$row[] = date('d F Y', strtotime($field->permintaan_tgl));
+			$row[] = '
+			<a class="btn btn-success btn-sm text-white"><i class="fa fa-check"></i>&ensp;'.$field->status_surat.'</a>
+			';
+
+			$row[] = '
+			<a style="margin-right:10px" href="../Konfirmasi/konfirmasiDetail/'.$this->encrypt->encode($field->id_konfirmasi).'/'.$this->encrypt->encode($field->kd_surat).'"><i class="fas fa-info-circle text-info"></i></a>
+			<a style="margin-right:10px" href="#" id="'.$field->id_konfirmasi.'" onclick="deletesls('.$field->id_konfirmasi.')" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+			<a style="margin-right:10px" href="../Konfirmasi/konfirmasiDetail/'.$this->encrypt->encode($field->id_konfirmasi).'/'.$this->encrypt->encode($field->kd_surat).'" target="_blank" title="Edit"><i class="fas fa-print text-primary"></i></a>
+			';
+
+			$data[] = $row;
+
+		}
+
+		$output = array(
+
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->ajax_model->count_all_sls(),
+			"recordsFiltered" => $this->ajax_model->count_filtered_sls(),
+			"data" => $data,
+
+		);
+
+		/*-- Output Dalam Format JSON --*/
+		echo json_encode($output);
+
+	}
+
+	public function deleteSelesai(){
+
+		$id_konfirmasi = $this->input->post("id_konfirmasi");
+		$query = $this->db->get_where('esurat_konfirmasi',['id_konfirmasi' => $id_konfirmasi])->row();
+		$data['id_konfirmasi'] = $query->no_surat;
+		$this->db->delete('esurat_konfirmasi',['id_konfirmasi' => $id_konfirmasi]);
+		echo json_encode($data);
 		
-	// }
+	}
 
 }

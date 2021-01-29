@@ -35,13 +35,13 @@
 
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-      <?php include "adminHeader.php"?>
+      <?php include "mahasiswaHeader.php"?>
     </nav>
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-      <?php include "adminSidebar.php"?>
+      <?php include "mahasiswaSidebar.php"?>
     </aside>
 
     <!-- Content Wrapper. Contains page content -->
@@ -50,11 +50,11 @@
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">
-      <?php include "adminFooter.php"?>
+      <?php include "mahasiswaFooter.php"?>
     </footer>
 
     <!-- Modal -->
-    <?php include "adminModal.php" ; ?>
+    <?php include "mahasiswaModal.php" ; ?>
     <!-- /.Modal -->
 
   </div>
@@ -95,7 +95,7 @@
   <!-- CKeditor -->
   <script src="<?= base_url('assets/ckeditor_4.15.1_full/');?>ckeditor.js"></script>
   <!-- Costum JS -->
-  <?php include "adminJs.php" ; ?>
+  <?php include "mahasiswaJs.php" ; ?>
   <!-- Costum JS -->
 
 </body>

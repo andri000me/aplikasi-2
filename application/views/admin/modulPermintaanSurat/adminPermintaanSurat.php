@@ -1,4 +1,3 @@
-  <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -9,7 +8,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><small>Esurat</small></li>
-              <li class="breadcrumb-item"><a href="<?= base_url('admin/dMahasiswa')?>"><small><?= $page ;?></small></a></li>
+              <li class="breadcrumb-item"><a href="<?= base_url('admin/sPermintaanSurat')?>"><small><?= $page ;?></small></a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -34,7 +33,7 @@
       <div class="container-fluid">
 
 
-        <div class="card card-outline card-info">
+        <div class="card card-outline card-info collapsed-card">
           <div class="card-header">
             <h4 class="card-title " text-align="center"><strong>Add Permintaan Surat</strong></h4>
             <div class="card-tools">
@@ -94,7 +93,7 @@
         <div class="card-body table-responsive">
 
           <div class="input-group ">
-            <input class="form-control col-sm-12" name="seachPmr" id="seachPmr" type="text" placeholder="Search By NIM / Nama" aria-label="Search">
+            <input class="form-control col-sm-12" name="seachPmr" id="seachPmr" type="text" placeholder="Search By NIM / Tgl Pengajuan" aria-label="Search">
             <div class="input-group-append">
               <button class="btn btn-primary">
                 <i class="fas fa-search"></i>
@@ -112,7 +111,7 @@
                 <th scope="col">Permintaan By</th>
                 <th scope="col">Permintaan Tgl</th>
                 <th scope="col">Status Surat</th>
-                <!--                   <th scope="col" class="text-center">Action</th> -->
+                <th scope="col" class="text-center">Action</th>
               </tr>
             </thead>
           </table>
@@ -126,42 +125,40 @@
     <!-- /.container-fluid -->
   </section>
   <!-- /.content -->
-  
-</div>
 
-<script type="text/javascript">
+  <script type="text/javascript">
 
-  window.onload = function () {
+    window.onload = function () {
 
-    /*-- DataTable To Load Data Mahasiswa --*/
-    var permintaan = $('#pmr_data').DataTable({ 
+      /*-- DataTable To Load Data Mahasiswa --*/
+      var permintaan = $('#pmr_data').DataTable({ 
 
-      "sDom": 'lrtip',
-      "lengthChange": false,
-      "processing": true, 
-      "serverSide": true, 
-      "order": [],
-      "ajax": {
-        "url": baseURL+'ajax/get_data_pmr',
-        "type": "POST"
+        "sDom": 'lrtip',
+        "lengthChange": false,
+        "processing": true, 
+        "serverSide": true, 
+        "order": [],
+        "ajax": {
+          "url": baseURL+'ajax/get_data_pmr',
+          "type": "POST"
 
-      },
+        },
 
-      "columnDefs": [{ 
+        "columnDefs": [{ 
 
-        "targets": [ 0 ], 
-        "orderable": false, 
+          "targets": [ 0 ], 
+          "orderable": false, 
 
-      }],
+        }],
 
-      "responsive": true
+        "responsive": true
 
-    });
-    $('#seachPmr').keyup(function(){
-      permintaan.search($(this).val()).draw() ;
-    });
-    /*-- /. DataTable To Load Data Mahasiswa --*/
+      });
+      $('#seachPmr').keyup(function(){
+        permintaan.search($(this).val()).draw() ;
+      });
+      /*-- /. DataTable To Load Data Mahasiswa --*/
 
-  }
+    }
 
-</script>
+  </script>

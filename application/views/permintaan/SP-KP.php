@@ -1,4 +1,3 @@
-<div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <div class="content-header">
     <div class="container-fluid">
@@ -17,7 +16,7 @@
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><small>Admin</small></li>
               <li class="breadcrumb-item"><a href="<?= base_url('admin/sPermintaanSurat')?>"><small><?= $parent ;?></small></a></li>
-              <li class="breadcrumb-item"><a href="<?= base_url('pengajuan/pengajuanDetail/'.$this->encrypt->encode($onesur->kd_surat).'/'.$this->encrypt->encode($onesur->id_surat).'/'.$this->encrypt->encode('permohonan'))?>"><small><?= $page ;?></small></a></li>
+              <li class="breadcrumb-item"><a href="<?= base_url('permintaan/permintaanDetail/'.$this->encrypt->encode($onesur->kd_surat).'/'.$this->encrypt->encode($onesur->id_surat).'/'.$this->encrypt->encode('permohonan'))?>"><small><?= $page ;?></small></a></li>
             </ol>
 
             <?php elseif($name == 'pengajuan') : ?>
@@ -29,7 +28,7 @@
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><small>Mahasiswa</small></li>
                 <li class="breadcrumb-item"><a href="<?= base_url('mahasiswa/pengajuanSurat')?>"><small><?= $parent ;?></small></a></li>
-                <li class="breadcrumb-item"><a href="<?= base_url('pengajuan/pengajuanDetail/'.$this->encrypt->encode($onesur->kd_surat).'/'.$this->encrypt->encode($onesur->id_surat).'/'.$this->encrypt->encode('pengajuan'))?>"><small><?= $page ;?></small></a></li>
+                <li class="breadcrumb-item"><a href="<?= base_url('permintaan/permintaanDetail/'.$this->encrypt->encode($onesur->kd_surat).'/'.$this->encrypt->encode($onesur->id_surat).'/'.$this->encrypt->encode('pengajuan'))?>"><small><?= $page ;?></small></a></li>
               </ol>
 
               <?php elseif($name == 'permintaan') :?>
@@ -42,7 +41,7 @@
                 <ol class="breadcrumb float-sm-right">
                   <li class="breadcrumb-item"><small>Admin</small></li>
                   <li class="breadcrumb-item"><a href="<?= base_url('admin/sPermintaanSurat')?>"><small><?= $parent ;?></small></a></li>
-                  <li class="breadcrumb-item"><a href="<?= base_url('pengajuan/pengajuanDetail/'.$this->encrypt->encode($onesur->kd_surat).'/'.$this->encrypt->encode($onesur->id_permintaan).'/'.$this->encrypt->encode('permintaan'))?>"><small><?= $page ;?></small></a></li>
+                  <li class="breadcrumb-item"><a href="<?= base_url('permintaan/permintaanDetail/'.$this->encrypt->encode($onesur->kd_surat).'/'.$this->encrypt->encode($onesur->id_permintaan).'/'.$this->encrypt->encode('permintaan'))?>"><small><?= $page ;?></small></a></li>
                 </ol>
 
               <?php endif ;?>
@@ -94,7 +93,7 @@
               </div>
               <div class="card-body">
 
-                <form action="<?= base_url('pengajuan/pengajuanDetail/'.$this->encrypt->encode($onesur->kd_surat).'/'.$this->encrypt->encode($onesur->id_surat).'/'.$this->encrypt->encode('permohonan'));?>" method="post">
+                <form action="<?= base_url('permintaan/permintaanDetail/'.$this->encrypt->encode($onesur->kd_surat).'/'.$this->encrypt->encode($onesur->id_surat).'/'.$this->encrypt->encode('permohonan'));?>" method="post">
 
                   <input type="hidden" readonly name="penyetuju_by" class="form-control" value="<?= $user->username ;?>">
                   <input type="hidden" readonly name="p" class="form-control" id="spkpCosP">
@@ -274,9 +273,9 @@
                       <!-- Hasil Surat -->
                       <div class="form-group row">
 
-                        <label for="spkpHasilSurat" class="col-md-2 col-form-label"><?= $page ?></label>
+                        <label class="col-md-2 col-form-label"><?= $page ?></label>
                         <div class="col-md-12">
-                          <textarea name="semua"  class="form-control ckeditor" id="spkpHasilSurat" placeholder="Header Surat" rows="10" readonly> 
+                          <textarea name="semua" class="form-control" id="suratPermohonan" readonly> 
                             <?= $onesur->kop_surat ;?>
                             <?= $onesur->header_surat ;?>
                             <?= $onesur->isi_surat ;?>
@@ -309,6 +308,132 @@
         </section>
         <!-- / Main content -->
 
+        <script type="text/javascript">
+
+          window.onload = function () {
+
+            CKEDITOR.replace( 'suratPermohonan', {
+             filebrowserBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html',
+             filebrowserImageBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html?type=Images',
+             filebrowserUploadUrl : baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+             filebrowserImageUploadUrl:baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+             contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
+             height: '800'  
+           } );
+
+            $( "#generateCos" ).click(function() {
+              var kd_suratCos = $('#spkpCosKodeSurat').val();
+              Swal.fire({
+                title: 'Loading...',
+                html: 'Please wait Generating No Surat, Enkripsi and Convert',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                  Swal.showLoading()
+                  $.ajax({
+                    url : baseURL+'permintaan/getNoSuratCos',
+                    method :'post',
+                    data : {kd_suratCos:kd_suratCos},
+                    success:function(data){
+                      $('#spkpCosNo_surat').val(data);
+                      var no_suratCos = data;
+
+                      $.ajax({
+                        url : baseURL+'permintaan/getEnkripsiCos',
+                        method : 'post',
+                        data : 'no_suratCos=' +no_suratCos,
+                        dataType : 'json',
+                        success : function(data){
+                          $('#spkpCosP').val(data.pCos);
+                          $('#spkpCosQ').val(data.qCos);
+                          $('#spkpCosN').val(data.nCos);
+                          $('#spkpCosE').val(data.eCos);
+                          $('#spkpCosD').val(data.dCos);
+                          $('#spkpCosHasilEnkripsi').val(data.enkripsiCos);
+                          var urlCos = baseURL;
+                          var enkripsiCos = data.enkripsiCos;
+
+                          $.ajax({
+                            url : baseURL+'permintaan/getconvertCos',
+                            method:"post",
+                            data:'domainCos='+urlCos+'&enkripsiCos=' +enkripsiCos+'&no_suratCos='+no_suratCos,
+                            success:function(data){
+                              Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Generate No Surat, Enkripsi dan Convert'
+                              })
+                              var namafile = "<?php echo base_url('assets/esurat/img/QRCode/') ?>" + data.replace("/", "_")+".png";
+                              $("#qrcodeCos").attr("src",namafile);
+                            },
+                            error:function(data){
+
+                              Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Convert QR Code Error!',
+                              })
+                            }
+                          });
+                        },
+                        error:function(data){
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Enkripsi No Surat Error!'
+                          })
+                        }
+                      });
+                    },
+                    error:function(data){
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Generate No Surat Error!'
+                      })
+                    }
+                  });
+                }
+              })
+            });
+            /*-- / Ajax Generate No Surat, Enkripsi And Convert Costum Surat  --*/
+
+
+            /*-- Ajax Memilih Tanda Tangan Berdasarkan Dosen  --*/
+            $('#spkpCosDosen').change(function(){
+              var dosen_id = $('#spkpCosDosen').val();
+              if(dosen_id != ''){
+                $.ajax({
+                  url:baseURL+'permintaan/fetchDosenWithTTD',
+                  method:'POST',
+                  data:{dosen_id:dosen_id},
+                  success:function(data){
+                    $('#spkpCosTTD').val(data);
+                  }
+                });
+              }
+            });
+
+            /*-- Ajax Memilih Nim dan Nama Mahasiswa  --*/
+            $('#spkpCosNIM').change(function(){
+              var nimCos = $('#spkpCosNIM').val();
+              if(nimCos != ''){
+                $.ajax({
+                  url:baseURL+'permintaan/fetchNIMWithNama',
+                  method:'POST',
+                  dataType : 'json',
+                  data:{nimCos:nimCos},
+                  success:function(data){
+                    $('#spkpCosNama').val(data.nama);
+                    $('#spkpCosProdi').val(data.prodi);
+                    $('#spkpCosSemester').val(data.semester);
+                  }
+                });
+              }
+            });
+          }
+        </script>
+
         <?php elseif($name == 'pengajuan') : ?>
 
           <!---------------------------------------------------------------------------------------->
@@ -324,7 +449,7 @@
                   <h4 class="card-title " text-align="center"><strong><?= $page; ?></strong></h4>
                 </div>
                 <div class="card-body">
-                  <form action="<?= base_url('pengajuan/pengajuanDetail/'.$this->encrypt->encode($onesur->kd_surat).'/'.$this->encrypt->encode($onesur->id_surat).'/'.$this->encrypt->encode('pengajuan'));?>" method="post">
+                  <form action="<?= base_url('permintaan/permintaanDetail/'.$this->encrypt->encode($onesur->kd_surat).'/'.$this->encrypt->encode($onesur->id_surat).'/'.$this->encrypt->encode('pengajuan'));?>" method="post">
                     <div class="row">
                       <!-- col-md-6 -->
                       <div class="col-md-6">
@@ -371,7 +496,14 @@
                         <!-- Dosen -->
                         <div class="form-group">
                           <label for="spkpDosen" class="col-form-label">Dosen</label>
-                          <input type="text" name="dosen" class="form-control" id="spkpDosen" placeholder="Dosen" value="Wakil Dekan" readonly>
+                          <select name="dosen" id="spkpDosen" class="form-control select2" style="width: 100%;" >
+                            <option value="" selected>Pilih Dosen</option>
+                            <?php
+                            foreach ($dosenall as $dosen) {
+                              echo '<option value="'.$dosen->id.'">'.$dosen->nama.'</option>';
+                            }
+                            ;?>
+                          </select>
                           <?= form_error('dosen', '<small class="text-danger pl-3">', '</small>');?>
                         </div>
                         <!-- / Dosen -->
@@ -426,7 +558,7 @@
 
                       <!-- Semua Isi Surat -->
                       <div class="form-group col-md-12" style="display: none;">
-                        <textarea  name="semua" class="form-control ckeditor" id="spkpKeperluan" placeholder="Keperluan" readonly >
+                        <textarea  name="semua" class="form-control" id="spkpKeperluan" placeholder="Keperluan" readonly >
                           <?= $onesur->kop_surat ;?>
                           <?= $onesur->header_surat ;?>
                           <?= $onesur->isi_surat ;?>
@@ -470,7 +602,7 @@
                   </div>
                   <div class="card-body">
 
-                    <form action="<?= base_url('pengajuan/pengajuanDetail/'.$this->encrypt->encode($onesur->kd_surat).'/'.$this->encrypt->encode($onesur->id_permintaan).'/'.$this->encrypt->encode('permintaan'));?>" method="post">
+                    <form action="<?= base_url('permintaan/permintaanDetail/'.$this->encrypt->encode($onesur->kd_surat).'/'.$this->encrypt->encode($onesur->id_permintaan).'/'.$this->encrypt->encode('permintaan'));?>" method="post">
 
                       <input type="hidden" readonly name="zz" id="zz" value="<?= $onepmr->id_permintaan;?>"  class="form-control">
                       <input type="hidden" readonly name="penyetuju_by" class="form-control" value="<?= $user->username ;?>">
@@ -566,8 +698,16 @@
 
                                 <!-- Kepada Yth. Surat Di Ajukan -->
                                 <div class="form-group">
-                                  <label for="spkpKepada" class="col-form-label">Kepada Yth.</label>
-                                  <textarea type="text" rows="1" name="kepada" class="form-control" id="spkpKepada" placeholder="Kepada Yth." readonly><?= $onepmr->kepada ;?></textarea>
+                                  <label for="spkpKepadaYth" class="col-form-label">Kepada Yth.</label>
+                                  <textarea type="text" rows="1" name="kepadaYth" class="form-control" id="spkpKepadaYth" placeholder="Kepada Yth." readonly><?= $onepmr->kepadaYth ;?></textarea>
+                                  <?= form_error('kepada', '<small class="text-danger pl-3">', '</small>');?>
+                                </div>
+                                <!-- / Kepada Yth. Surat Di Ajukan -->
+
+                                <!-- Kepada Yth. Surat Di Ajukan -->
+                                <div class="form-group">
+                                  <label for="spkpKepadaAlamat" class="col-form-label">Kepada Alamat.</label>
+                                  <textarea type="text" rows="1" name="kepadaAlamat" class="form-control" id="spkpKepadaAlamat" placeholder="Kepada Alamat" readonly><?= $onepmr->kepadaAlamat ;?></textarea>
                                   <?= form_error('kepada', '<small class="text-danger pl-3">', '</small>');?>
                                 </div>
                                 <!-- / Kepada Yth. Surat Di Ajukan -->
@@ -649,9 +789,9 @@
                                 <!-- Hasil Surat -->
                                 <div class="form-group row">
 
-                                  <label for="spkpHasilSurat" class="col-md-2 col-form-label"><?= $page ?></label>
+                                  <label class="col-md-2 col-form-label"><?= $page ?></label>
                                   <div class="col-md-12">
-                                    <textarea  class="form-control ckeditor" id="spkpHasilSurat" placeholder="Header Surat" rows="10" > 
+                                    <textarea  class="form-control" id="suratKonfirmasi" placeholder="Header Surat" readonly> 
                                       <?= $this->parser->parse_string($isi, $komponen, TRUE);
                                       ?>
                                     </textarea>
@@ -669,6 +809,7 @@
                               <a class="btn btn-secondary btn-sm" href="<?php echo base_url('admin/sPermintaanSurat');?>">
                                 <i class="fas fa-arrow-left"></i>&ensp;Back
                               </a>
+
                               <button type="submit" class="btn btn-primary btn-sm float-right">Confirm &ensp;<i class="fas fa-arrow-right"></i></button>
                             </div>             
                           </form>
@@ -679,7 +820,88 @@
                     </div>
                     <!-- /.container-fluid -->
                   </section>
-                  <!-- / Main content -->
+
+                  <script type="text/javascript">
+                    window.onload = function () {
+                      CKEDITOR.replace( 'suratKonfirmasi', {
+                       filebrowserBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html',
+                       filebrowserImageBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html?type=Images',
+                       filebrowserUploadUrl : baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+                       filebrowserImageUploadUrl:baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+                       contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
+                       height: '800'  
+                     } );
+
+                      $( "#generatePmr" ).click(function() {
+                        var id = $('#zz').val();
+                        Swal.fire({
+                          title: 'Loading...',
+                          html: 'Please wait Generating No Surat, Enkripsi and Convert',
+                          allowEscapeKey: false,
+                          allowOutsideClick: false,
+                          didOpen: () => {
+                            Swal.showLoading()
+                            $.ajax({
+                              url : baseURL+'permintaan/getNoSuratPmr',
+                              method :'post',
+                              data : {id:id},
+                              success:function(data){
+                                $('#no_surat').val(data);
+                                var no_surat = data;
+                                $.ajax({
+                                  url : baseURL+'permintaan/getEnkripsiPmr',
+                                  method : 'post',
+                                  data : 'no_surat=' +no_surat+ '&id='+id,
+                                  dataType : 'json',
+                                  success : function(data){
+                                    $('#spkpHasilEnkripsi').val(data.enkripsi);
+                                    var url = baseURL;
+                                    var enkripsi = data.enkripsi;
+                                    $.ajax({
+                                      url : baseURL+'permintaan/getconvertPmr',
+                                      method:"post",
+                                      data:'domain='+url+'&enkripsi=' +enkripsi+'&no_surat='+no_surat,
+                                      success:function(data){
+                                        Swal.fire({
+                                          icon: 'success',
+                                          title: 'Success',
+                                          text: 'Generate No Surat, Enkripsi dan Convert'
+                                        })
+                                        var namafile = "<?php echo base_url('assets/esurat/img/QRCode/') ?>" + data.replace("/", "_")+".png";
+                                        $("#qrcode").attr("src",namafile);
+                                      },
+                                      error:function(data){
+
+                                        Swal.fire({
+                                          icon: 'error',
+                                          title: 'Oops...',
+                                          text: 'Convert QR Code Error!',
+                                        })
+                                      }
+                                    });
+                                  },
+                                  error:function(data){
+                                    Swal.fire({
+                                      icon: 'error',
+                                      title: 'Oops...',
+                                      text: 'Enkripsi No Surat Error!'
+                                    })
+                                  }
+                                });
+                              },
+                              error:function(data){
+                                Swal.fire({
+                                  icon: 'error',
+                                  title: 'Oops...',
+                                  text: 'Generate No Surat Error!'
+                                })
+                              }
+                            });
+                          }
+                        })
+                      });
+
+                    }
+                  </script>
 
                 <?php endif ;?>
-              </div>

@@ -1,4 +1,3 @@
-  <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -141,9 +140,6 @@
             </div>
             <!-- /.card -->
 
-
-
-
           </section>
           <!-- right col -->
         </div>
@@ -151,4 +147,3 @@
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-  </div>

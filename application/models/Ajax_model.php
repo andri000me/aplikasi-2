@@ -173,4 +173,87 @@ class Ajax_model extends CI_Model {
 
 	}
 
+	/*-----------------------------------*/
+	/*--  Server Side Data Surat Selesai --*/
+	/*-------------------------------------*/
+
+	/*-- nama tabel dari database  --*/
+	var $tableSelesai = 'esurat_konfirmasi';
+	/*-- field yang ada di table selesai yang akan ditampilkan --*/
+	var $column_order_selesai = array(null,'kd_surat', 'no_surat','nm_surat','permintaan_by','permintaan_tgl','status_surat');
+	/*-- field yang diizin untuk pencarian --*/
+	var $column_search_selesai = array('permintaan_by','permintaan_tgl');
+	/*-- Default Order --*/
+	var $order_selesai = array('id_konfirmasi' => 'desc');
+
+	
+	private function _get_sls_query(){
+
+		$this->db->from($this->tableSelesai);
+
+		$i = 0;
+		/*-- looping awal  --*/
+		foreach ($this->column_search_selesai as $item){
+
+			/*-- jika datatable mengirimkan pencarian dengan metode POST   --*/
+			if($_POST['search']['value']) {
+
+				/*-- looping awal  --*/
+				if($i===0){
+
+					$this->db->group_start(); 
+					$this->db->like($item, $_POST['search']['value']);
+
+				}else{
+
+					$this->db->or_like($item, $_POST['search']['value']);
+
+				}
+
+				if(count($this->column_search_selesai) - 1 == $i) 
+					$this->db->group_end(); 
+			}
+
+			$i++;
+		}
+
+		if(isset($_POST['order'])){
+
+			$this->db->order_by($this->column_order_selesai[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+
+		}else if(isset($this->order_selesai)){
+
+			$order_selesai = $this->order_selesai;
+			$this->db->order_by(key($order_selesai), $order_selesai[key($order_selesai)]);
+
+		}
+	}
+
+	function get_sls(){
+
+		$this->_get_sls_query();
+		if($_POST['length'] != -1)
+			$this->db->limit($_POST['length'], $_POST['start']);
+		$query = $this->db->get();
+		return $query->result();
+
+	}
+
+
+	function count_filtered_sls(){
+
+		$this->_get_sls_query();
+		$query = $this->db->get();
+		return $query->num_rows();
+
+	}
+
+
+	function count_all_sls(){
+
+		$this->db->from($this->tableSelesai);
+		return $this->db->count_all_results();
+
+	}
+
 }

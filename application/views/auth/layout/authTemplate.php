@@ -25,7 +25,9 @@
 <body id="page-top">
 
   <!-- Header -->
-  <?php include "authHeader.php";?>
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+    <?php include "authHeader.php";?>
+  </nav>
   <!-- /.Header -->
 
   <!-- Content Wrapper. Contains page content -->
@@ -33,7 +35,9 @@
   <!-- /.content-wrapper -->
 
   <!-- Footer -->
-  <?php include "authFooter.php" ; ?>
+  <footer class="bg-light py-4">
+    <?php include "authFooter.php" ; ?>
+  </footer>
   <!-- /.Footer -->
 
   <!-- Modal-->

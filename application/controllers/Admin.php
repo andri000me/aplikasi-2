@@ -954,4 +954,20 @@ class Admin extends CI_Controller {
 
 	}
 
+	public function sSuratSelesai(){
+
+		if (count($this->uri->segment_array()) > 2) {
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin/sPermintaanSurat');
+		}
+
+		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
+
+		$data['title'] = "Admin | Data Surat Selesai";
+		$data['parent'] = "Data Surat Selesai";
+		$data['page'] = "Data Surat Selesai";
+		$this->template->load('admin/layout/adminTemplate','admin/modulSuratSelesai/adminSuratSelesai',$data);
+
+	}
+
 }

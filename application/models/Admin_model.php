@@ -56,4 +56,13 @@ class Admin_model extends CI_Model {
 		return $this->db->query($query)->row();
 	}
 
+	public function getOnePmr($id_permintaan){
+		$query = "SELECT * FROM esurat_permintaan WHERE id_permintaan LIKE '$id_permintaan' ";
+		return $this->db->query($query)->row();
+	}
+	public function getOneKfm($id_konfirmasi){
+		$query = "SELECT * FROM esurat_konfirmasi WHERE id_konfirmasi LIKE '$id_konfirmasi' ";
+		return $this->db->query($query)->row();
+	}
+
 }

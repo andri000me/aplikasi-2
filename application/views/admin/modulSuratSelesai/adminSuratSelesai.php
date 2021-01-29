@@ -8,7 +8,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><small>Esurat</small></li>
-              <li class="breadcrumb-item"><a href="<?= base_url('admin/dMahasiswa')?>"><small><?= $page ;?></small></a></li>
+              <li class="breadcrumb-item"><a href="<?= base_url('admin/sSuratSelesai')?>"><small><?= $page ;?></small></a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -48,14 +48,17 @@
               </div>
             </div>
 
-            <table id="mhs_data" class="table table-bordered table-striped display nowrap" style="width:100%">
+            <table id="sls_data" class="table table-bordered table-striped display nowrap" style="width:100%">
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">NIM</th>
-                  <th scope="col">Nama</th>
-                  <th scope="col">Prodi</th>
-                  <th scope="col">Action</th>
+                  <th scope="col">Kd Surat</th>
+                  <th scope="col">No Surat</th>
+                  <th scope="col">Nama Surat</th>
+                  <th scope="col">Permintaan By</th>
+                  <th scope="col">Permintaan Tgl</th>
+                  <th scope="col">Status Surat</th>
+                  <th scope="col" class="text-center">Action</th>
                 </tr>
               </thead>
             </table>
@@ -67,7 +70,6 @@
         <!-- /.card -->
       </div>
       <!-- /.container-fluid -->
-
     </section>
     <!-- /.content -->
 
@@ -76,7 +78,7 @@
       window.onload = function () {
 
         /*-- DataTable To Load Data Mahasiswa --*/
-        var mhs = $('#mhs_data').DataTable({
+        var mhs = $('#sls_data').DataTable({
 
           "sDom": 'lrtip',
           "lengthChange": false,
@@ -84,7 +86,7 @@
           "serverSide": true, 
           "order": [],
           "ajax": {
-            "url": baseURL+'ajax/get_data_mhs',
+            "url": baseURL+'ajax/get_data_sls',
             "type": "POST"
 
           },
@@ -107,13 +109,13 @@
       }
       
       /*-- DataTable To Delete Data Mahasiswa --*/
-      function deletemhs(nim){
+      function deletesls(id_konfirmasi){
 
         swalWithBootstrapButtons.fire({
           title: 'Are you sure?',
           text: "You won't be able to revert this!",
           icon: 'warning',
-          showCancelButton: true,
+          showCancelButton: true, 
           confirmButtonText: 'Yes, delete it!',
           cancelButtonText: 'No, cancel!',
           reverseButtons: true
@@ -122,27 +124,27 @@
 
             $.ajax({
 
-              url : baseURL+'ajax/dMahasiswaDelete',
+              url : baseURL+'ajax/deleteSelesai',
               method:"post",
-              data:{nim:nim},
+              data:{id_konfirmasi:id_konfirmasi},
               dataType: 'json',
 
               success:function(data){
                 swalWithBootstrapButtons.fire(
                   'Deleted!',
-                  'Your Data '+data.nim+' has been deleted.',
+                  'Your Data '+data.id_konfirmasi+' has been deleted.',
                   'success'
                   )
-                $('#mhs_data').DataTable().ajax.reload();
+                $('#sls_data').DataTable().ajax.reload();
               },
 
               error:function(data){
                 swalWithBootstrapButtons.fire(
                   'Deleted!',
-                  'Your Data '+data.nim+' has been deleted.',
+                  'Your Data '+data.id_konfirmasi+' has been deleted.',
                   'error'
                   )
-                $('#mhs_data').DataTable().ajax.reload();
+                $('#sls_data').DataTable().ajax.reload();
               }
             });
 
