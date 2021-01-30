@@ -35,7 +35,7 @@
     		<div class="card card-outline collapsed-card card-info">
     			<div class="card-header">
     				<h3 class="card-title">
-    					<?php echo $page; ?>&ensp;
+    					Detail Surat
     				</h3>
     				<div class="card-tools">
     					<button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">

@@ -38,22 +38,22 @@
             <h4 class="card-title " text-align="center"><strong><?= $page; ?></strong></h4>
           </div>
           <form class="form-horizontal" action="<?= base_url('admin/dMahasiswaEdit/'). $this->encrypt->encode($onemhs->nim).'';?>" method="post">
-            <div class="card-body">
-              <div class="form-group row ml-3 mr-3">
+            <div class="card-body ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('nim')) {echo 'text-danger';}?>">
                 <label for="editMhsNim" class="col-sm-2 col-form-label">NIM</label>
                 <div class="col-sm-10">
                   <input type="text" name="nim" class="form-control" id="editMhsNim" placeholder="NIM" value="<?= $onemhs->nim ;?>" readonly>
                   <?php echo form_error('nim', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('nama')) {echo 'text-danger';}?>">
                 <label for="editMhsNm" class="col-sm-2 col-form-label">Nama Mahasiswa</label>
                 <div class="col-sm-10">
                   <input type="text" name="nama" class="form-control <?php if(form_error('nama')) {echo 'is-invalid';}?>" id="editMhsNm" placeholder="Nama Mahasiswa" value="<?= $onemhs->nmmhs ;?>">
                   <?php echo form_error('nama', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('prodi')) {echo 'text-danger';}?>">
                 <label for="editMhsProdi" class="col-sm-2 col-form-label">Prodi</label>
                 <div class="col-sm-10">
                   <select name="prodi" class="form-control select2" id="editMhsProdi">
@@ -68,7 +68,7 @@
                   <?php echo form_error('prodi', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('angkatan')) {echo 'text-danger';}?>">
                 <label for="editMhsThAka" class="col-sm-2 col-form-label">Tahun Angkatan</label>
                 <div class="col-sm-10">
                   <div class="input-group">
@@ -80,7 +80,7 @@
                   <?php echo form_error('angkatan', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('kelamin')) {echo 'text-danger';}?>">
                 <label for="editMhsKelamin" class="col-sm-2 col-form-label">Jenis Kelamin</label>
                 <div class="col-sm-10">
                   <div class="input-group">
@@ -113,7 +113,7 @@
                   <?php echo form_error('kelamin', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('status')) {echo 'text-danger';}?>">
                 <label for="editMhsStatus" class="col-sm-2 col-form-label">Status</label>
                 <div class="col-sm-10">
                   <select class="form-control" id="editMhsStatus" name="status">
@@ -124,14 +124,14 @@
                   <?php echo form_error('status', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('als_status')) {echo 'text-danger';}?>">
                 <label for="editMhsAlsan_sta" class="col-sm-2 col-form-label">Alasan Status</label>
                 <div class="col-sm-10">
                   <input type="text" name="als_status" class="form-control " id="editMhsAlsan_sta" placeholder="Alasan Status" value="<?= $onemhs->alasan_status ;?>">
                   <?php echo form_error('als_status', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('tempat')) {echo 'text-danger';}?>">
                 <label for="editMhsTpt/TglLhr" class="col-sm-2 col-form-label">Tempat / Tanggal Lahir</label>
                 <div class="col-sm-3">
                   <input type="text" name="tempat" class="form-control mb-2 <?php if(form_error('tempat')) {echo 'is-invalid';}?>" id="editMhsTpt/TglLhr" placeholder="Tempat" value="<?= $onemhs->tptlhr ;?>">
@@ -149,21 +149,21 @@
                   <?php echo form_error('tanggal', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('alamat')) {echo 'text-danger';}?>">
                 <label for="editMhsAlamat" class="col-sm-2 col-form-label">Alamat</label>
                 <div class="col-sm-10">
                   <textarea name="alamat" class="form-control <?php if(form_error('alamat')) {echo 'is-invalid';}?>" id="editMhsAlamat" placeholder="Alamat"><?= $onemhs->alamat?></textarea>
                   <?php echo form_error('alamat', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('ortu')) {echo 'text-danger';}?>">
                 <label for="editMhsNmOrtu" class="col-sm-2 col-form-label">Nama Orang Tua</label>
                 <div class="col-sm-10">
                   <input type="text" name="ortu" class="form-control <?php if(form_error('ortu')) {echo 'is-invalid';}?>" id="editMhsNmOrtu" placeholder="Alamat" value="<?= $onemhs->nmortu ;?>">
                   <?php echo form_error('ortu', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('email')) {echo 'text-danger';}?>">
                 <label for="editMhsEmail" class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-10">
                   <div class="input-group">
@@ -175,7 +175,7 @@
                   <?php echo form_error('email', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('password')) {echo 'text-danger';}?>">
                 <label for="editMhsPassword" class="col-sm-2 col-form-label">Password</label>
                 <div class="col-sm-10">
                   <input type="text" name="password" class="form-control" id="editMhsPassword" placeholder="Password">
@@ -183,7 +183,7 @@
                   <?php echo form_error('password', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('tlp')) {echo 'text-danger';}?>">
                 <label for="editMhsTelp" class="col-sm-2 col-form-label">No Telepon</label>
                 <div class="col-sm-10">
                   <div class="input-group">
@@ -195,7 +195,7 @@
                   <?php echo form_error('tlp', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('kelas')) {echo 'text-danger';}?>">
                 <label for="editMhsKelas" class="col-sm-2 col-form-label">Kelas</label>
                 <div class="col-sm-10">
                   <input type="text" name="kelas" class="form-control <?php if(form_error('kelas')) {echo 'is-invalid';}?>" id="editMhsKelas" placeholder="Kelas" value="<?= $onemhs->kelas ;?>">

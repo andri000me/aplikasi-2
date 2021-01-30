@@ -39,22 +39,22 @@
           <!-- /.card-header -->
           <!-- form start -->
           <form class="form-horizontal" action="<?php echo base_url('admin/dDosenEdit/'.$this->encrypt->encode($onedos->id).'')?>" method="post">
-            <div class="card-body">
-              <div class="form-group row ml-3 mr-3">
+            <div class="card-body ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('nama')) {echo 'text-danger';}?>">
                 <label for="detailDosenNama" class="col-sm-2 col-form-label">Nama</label>
                 <div class="col-sm-10">
                   <input type="text" name="nama" class="form-control <?php if(form_error('nama')) {echo 'is-invalid';}?>" id="detailDosenNama" placeholder="Nama" value="<?= $onedos->nama;?>">
                   <?php echo form_error('nama', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('nip')) {echo 'text-danger';}?>">
                 <label for="detailDosenNIP" class="col-sm-2 col-form-label">NIP</label>
                 <div class="col-sm-10">
                   <input type="text" name="nip" class="form-control <?php if(form_error('nip')) {echo 'is-invalid';}?>" id="detailDosenNIP" placeholder="NIP" value="<?= $onedos->nip ;?>">
                   <?php echo form_error('nip', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('jabatan')) {echo 'text-danger';}?>">
                 <label for="detailDosenJabatan" class="col-sm-2 col-form-label">Jabatan</label>
                 <div class="col-sm-10">
                   <input type="text" name="jabatan" class="form-control <?php if(form_error('jabatan')) {echo 'is-invalid';}?>" id="detailDosenJabatan" placeholder="Jabatan" value="<?= $onedos->jabatan?>">

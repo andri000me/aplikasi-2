@@ -39,31 +39,30 @@
           <!-- /.card-header -->
           <!-- form start -->
           <form class="form-horizontal" action="<?php echo base_url('admin/dAdministratorAdd')?>" method="post">
-            <div class="card-body">
-              <?php echo $this->session->flashdata('message'); ?>
-              <div class="form-group row ml-3 mr-3">
+            <div class="card-body ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('username')) {echo 'text-danger';}?>">
                 <label for="addUserSettings" class="col-sm-2 col-form-label">Username</label>
                 <div class="col-sm-10">
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text">@</span>
                     </div>
-                    <input type="text" name="username" class="form-control <?php if(form_error('username')) {echo 'is-invalid';}?>" id="addUserSettings" placeholder="Username" value="<?php echo set_value('username');?>">
+                    <input type="text" name="username" class="form-control <?php if(form_error('username')) {echo 'is-invalid';}?>" id="addUserSettings" placeholder="Username" value="<?php echo set_value('username');?>" autocomplete="off">
                   </div>
                   <?php echo form_error('username', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('password')) {echo 'text-danger';}?>">
                 <label for="addPasswordSett" class="col-sm-2 col-form-label">Password</label>
                 <div class="col-sm-10">
-                  <input type="password" name="password" class="form-control <?php if(form_error('password')) {echo 'is-invalid';}?>" id="addPasswordSett" placeholder="Password">
+                  <input type="password" name="password" class="form-control <?php if(form_error('password')) {echo 'is-invalid';}?>" id="addPasswordSett" placeholder="Password" autocomplete="off">
                   <?php echo form_error('password', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('repeatpassword')) {echo 'text-danger';}?>">
                 <label for="addPasswordSettings" class="col-sm-2 col-form-label">Retry Password</label>
                 <div class="col-sm-10">
-                  <input type="password" name="repeatpassword" class="form-control <?php if(form_error('repeatpassword')) {echo 'is-invalid';}?>" id="addPasswordSettings" placeholder="Retry Password" >
+                  <input type="password" name="repeatpassword" class="form-control <?php if(form_error('repeatpassword')) {echo 'is-invalid';}?>" id="addPasswordSettings" placeholder="Retry Password" autocomplete="off">
                   <?php echo form_error('repeatpassword', '<small class="text-danger pl-3">', '</small>');?> 
                 </div>
               </div>

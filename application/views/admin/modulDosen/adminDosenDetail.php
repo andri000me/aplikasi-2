@@ -39,20 +39,20 @@
           <!-- /.card-header -->
           <!-- form start -->
           <form class="form-horizontal">
-            <div class="card-body">
-              <div class="form-group row ml-3 mr-3">
+            <div class="card-body ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailDosenNama" class="col-sm-2 col-form-label">Nama</label>
                 <div class="col-sm-10">
                   <input type="text"  class="form-control" id="detailDosenNama" placeholder="Nama" value="<?= $onedos->nama;?>" disabled>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailDosenNIP" class="col-sm-2 col-form-label">NIP</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="detailDosenNIP" placeholder="NIP" value="<?= $onedos->nip ;?>" disabled>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailDosenJabatan" class="col-sm-2 col-form-label">Jabatan</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="detailDosenJabatan" placeholder="Jabatan" value="<?= $onedos->jabatan?>" disabled>

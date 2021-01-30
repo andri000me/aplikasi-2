@@ -38,21 +38,21 @@
             <h4 class="card-title " text-align="center"><strong><?= $page; ?></strong></h4>
           </div>
           <form class="form-horizontal">
-            <div class="card-body">
+            <div class="card-body ml-3 mr-3">
 
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailMhsNim" class="col-sm-2 col-form-label">NIM</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="detailMhsNim" placeholder="NIM" value="<?= $onemhs->nim ;?>" disabled>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailMhsNm" class="col-sm-2 col-form-label">Nama Mahasiswa</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="detailMhsNm" placeholder="Nama Mahasiswa" value="<?= $onemhs->nmmhs ;?>" disabled>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailMhsProdi" class="col-sm-2 col-form-label">Prodi</label>
                 <div class="col-sm-10">
                   <?php 
@@ -65,7 +65,7 @@
                   ?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailMhsThAka" class="col-sm-2 col-form-label">Tahun Angkatan</label>
                 <div class="col-sm-10">
                   <div class="input-group">
@@ -76,7 +76,7 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailMhsKelamin" class="col-sm-2 col-form-label">Jenis Kelamin</label>
                 <div class="col-sm-10">
                   <div class="input-group">
@@ -93,19 +93,19 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailMhsStatus" class="col-sm-2 col-form-label">Status</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="detailMhsStatus" placeholder="Status" value="<?= $onemhs->status ;?>" disabled>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailMhsAlsan_sta" class="col-sm-2 col-form-label">Alasan Status</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="detailMhsAlsan_sta" placeholder="Alasan Status" value="<?= $onemhs->alasan_status ;?>" disabled>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailMhsTpt/TglLhr" class="col-sm-2 col-form-label">Tempat / Tanggal Lahir</label>
                 <div class="col-sm-3">
                   <input type="text" class="form-control mb-2" id="detailMhsTpt/TglLhr" placeholder="Tempat" value="<?= $onemhs->tptlhr ;?>" disabled>
@@ -121,19 +121,19 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailMhsAlamat" class="col-sm-2 col-form-label">Alamat</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="detailMhsAlamat" placeholder="Alamat" value="<?= $onemhs->alamat ;?>" disabled>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailMhsNmOrtu" class="col-sm-2 col-form-label">Nama Orang Tua</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="detailMhsNmOrtu" placeholder="Alamat" value="<?= $onemhs->nmortu ;?>" disabled>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailMhsEmail" class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-10">
                   <div class="input-group">
@@ -144,7 +144,7 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailMhsTelp" class="col-sm-2 col-form-label">No Telepon</label>
                 <div class="col-sm-10">
                   <div class="input-group">
@@ -156,7 +156,7 @@
                   <!-- /.input group -->
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailMhsKelas" class="col-sm-2 col-form-label">Kelas</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="detailMhsKelas" placeholder="Kelas" value="<?= $onemhs->kelas ;?>" disabled>

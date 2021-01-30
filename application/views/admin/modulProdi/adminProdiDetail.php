@@ -39,32 +39,32 @@
           <!-- /.card-header -->
           <!-- form start -->
           <form class="form-horizontal" action="<?php echo base_url('admin/dProdiAdd')?>" method="post">
-            <div class="card-body">
-              <div class="form-group row ml-3 mr-3">
+            <div class="card-body ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailProdiKode" class="col-sm-2 col-form-label">Kode Prodi</label>
                 <div class="col-sm-10">
                   <input type="text" name="kdpro" class="form-control" id="detailProdiKode" placeholder="Kode Prodi" value="<?= $onepro->kdpro ;?>" readonly>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailProdiNama" class="col-sm-2 col-form-label">Nama Prodi</label>
                 <div class="col-sm-10">
                   <input type="text" name="nmpro" class="form-control" id="detailProdiNama" placeholder="Nama Prodi" value="<?= $onepro->prodi ;?>" readonly>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailProdiJenjang" class="col-sm-2 col-form-label">Jenjang Prodi</label>
                 <div class="col-sm-10">
                   <input type="text" name="jenpro" class="form-control" id="detailProdiJenjang" placeholder="Jenjang Prodi" value="<?= $onepro->jen;?>" readonly>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailProdiKaprodi" class="col-sm-2 col-form-label">Nama Kaprodi</label>
                 <div class="col-sm-10">
                   <input type="text" name="kapro" class="form-control" id="detailProdiKaprodi" placeholder="Nama Kaprodi" value="<?= $onepro->kaprodi ;?>" readonly>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detailProdikdmk" class="col-sm-2 col-form-label">Kode MK Prodi</label>
                 <div class="col-sm-10">
                   <input type="text" name="kdmkpro" class="form-control" id="detailProdikdmk" placeholder="Kode MK Prodi" value="<?= $onepro->kdmk ;?>" readonly>

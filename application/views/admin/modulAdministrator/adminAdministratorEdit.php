@@ -39,8 +39,8 @@
           <!-- /.card-header -->
           <!-- form start -->
           <?php echo form_open_multipart('admin/dAdministratorEdit/'.$this->encrypt->encode($oneadm->id).'');?>
-          <div class="card-body">
-            <div class="form-group row ml-3  mr-3">
+          <div class="card-body ml-3 mr-3">
+            <div class="form-group row <?php if(form_error('username')) {echo 'text-danger';}?>">
               <label for="editdAdministratorUsername" class="col-sm-2 col-form-label">Username</label>
               <div class="col-sm-10">
                 <div class="input-group">
@@ -52,7 +52,7 @@
                 <?php echo form_error('username', '<small class="text-danger pl-3">', '</small>');?>
               </div>
             </div>
-            <div class="form-group row ml-3 mr-3">
+            <div class="form-group row <?php if(form_error('password')) {echo 'text-danger';}?>">
               <label for="editdAdministratorPassword" class="col-sm-2 col-form-label">Password</label>
               <div class="col-sm-10">
                 <input type="text" name="password" class="form-control" id="editdAdministratorPassword" placeholder="Password">
@@ -60,14 +60,14 @@
                 <?php echo form_error('password', '<small class="text-danger pl-3">', '</small>');?>
               </div>
             </div>
-            <div class="form-group row ml-3 mr-3">
+            <div class="form-group row <?php if(form_error('fullname')) {echo 'text-danger';}?>">
               <label for="editdAdministratorFullName" class="col-sm-2 col-form-label">Full Name</label>
               <div class="col-sm-10">
                 <input type="text" name="fullname" class="form-control <?php if(form_error('fullname')) {echo 'is-invalid';}?>" id="editdAdministratorFullName" placeholder="Fullname" value="<?php echo $oneadm->fullname?>">
                 <?php echo form_error('fullname', '<small class="text-danger pl-3">', '</small>');?>
               </div>
             </div>
-            <div class="form-group row ml-3 mr-3">
+            <div class="form-group row <?php if(form_error('email')) {echo 'text-danger';}?>">
               <label for="editdAdministratorEmail" class="col-sm-2 col-form-label">Email</label>
               <div class="col-sm-10">
                 <div class="input-group">
@@ -79,7 +79,7 @@
                 <?php echo form_error('email', '<small class="text-danger pl-3">', '</small>');?>
               </div>
             </div>
-            <div class="form-group row ml-3 mr-3">
+            <div class="form-group row">
               <div class="col-sm-2">
                <label for="editdAdministratorImage"  class="col-form-label">Picture</label>
              </div>
@@ -98,26 +98,26 @@
               </div>
             </div>`
           </div>
-          <div class="form-group row ml-3 mr-3">
+          <div class="form-group row <?php if(form_error('phone')) {echo 'text-danger';}?>">
             <label for="editdAdministratorPhone" class="col-sm-2 col-form-label">Phone</label>
             <div class="col-sm-10">
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="fas fa-phone"></i></span>
                 </div>
-                <input type="text" name="phone" class="form-control" id="editdAdministratorPhone" value="<?php echo $oneadm->phone; ?>" data-inputmask='"mask": "9999-9999-99999"' placeholder="9999-9999-99999" data-mask>
+                <input type="text" name="phone" class="form-control <?php if(form_error('phone')) {echo 'is-invalid';}?>" id="editdAdministratorPhone" value="<?php echo $oneadm->phone; ?>" data-inputmask='"mask": "9999-9999-99999"' placeholder="9999-9999-99999" data-mask>
               </div>
               <?php echo form_error('phone', '<small class="text-danger pl-3">', '</small>');?>
             </div>
           </div>
-          <div class="form-group row ml-3 mr-3">
+          <div class="form-group row <?php if(form_error('address')) {echo 'text-danger';}?>">
             <label for="editdAdministratorAddress" class="col-sm-2 col-form-label">Address</label>
             <div class="col-sm-10">
-              <textarea class="form-control" name="address" id="editdAdministratorAddress" placeholder="Addess"><?php echo $oneadm->address; ?></textarea>
+              <textarea class="form-control <?php if(form_error('address')) {echo 'is-invalid';}?>" name="address" id="editdAdministratorAddress" placeholder="Addess"><?php echo $oneadm->address; ?></textarea>
               <?php echo form_error('address', '<small class="text-danger pl-3">', '</small>');?>
             </div>
           </div>
-          <div class="form-group row ml-3 mr-3">
+          <div class="form-group row">
             <label for="editdAdministratorActive" class="col-sm-2 col-form-label">Active</label>
             <div class="col-sm-10">
               <div class="form-group clearfix">

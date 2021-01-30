@@ -39,36 +39,36 @@
           <!-- /.card-header -->
           <!-- form start -->
           <form class="form-horizontal" action="<?php echo base_url('admin/dProdiAdd')?>" method="post">
-            <div class="card-body">
-              <div class="form-group row ml-3 mr-3">
+            <div class="card-body ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('kdpro')) {echo 'text-danger';}?>">
                 <label for="addProdiKode" class="col-sm-2 col-form-label">Kode Prodi</label>
                 <div class="col-sm-10">
                   <input type="text" name="kdpro" class="form-control <?php if(form_error('kdpro')) {echo 'is-invalid';}?>" id="addProdiKode" placeholder="Kode Prodi" value="<?= set_value('kdpro');?>">
                   <?php echo form_error('kdpro', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('nmpro')) {echo 'text-danger';}?>">
                 <label for="addProdiNama" class="col-sm-2 col-form-label">Nama Prodi</label>
                 <div class="col-sm-10">
                   <input type="text" name="nmpro" class="form-control <?php if(form_error('kdpro')) {echo 'is-invalid';}?>" id="addProdiNama" placeholder="Nama Prodi" value="<?= set_value('nmpro')?>">
                   <?php echo form_error('nmpro', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('jenpro')) {echo 'text-danger';}?>">
                 <label for="addProdiJenjang" class="col-sm-2 col-form-label">Jenjang Prodi</label>
                 <div class="col-sm-10">
                   <input type="text" name="jenpro" class="form-control <?php if(form_error('kdpro')) {echo 'is-invalid';}?>" id="addProdiJenjang" placeholder="Jenjang Prodi" value="<?= set_value('jenpro')?>">
                   <?php echo form_error('jenpro', '<small class="text-danger pl-3">', '</small>');?> 
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('kapro')) {echo 'text-danger';}?>">
                 <label for="addProdiKaprodi" class="col-sm-2 col-form-label">Nama Kaprodi</label>
                 <div class="col-sm-10">
                   <input type="text" name="kapro" class="form-control <?php if(form_error('kdpro')) {echo 'is-invalid';}?>" id="addProdiKaprodi" placeholder="Nama Kaprodi" value="<?= set_value('kapro')?>">
                   <?php echo form_error('kapro', '<small class="text-danger pl-3">', '</small>');?> 
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row <?php if(form_error('kdmkpro')) {echo 'text-danger';}?>">
                 <label for="addProdikdmk" class="col-sm-2 col-form-label">Kode MK Prodi</label>
                 <div class="col-sm-10">
                   <input type="text" name="kdmkpro" class="form-control <?php if(form_error('kdpro')) {echo 'is-invalid';}?>" id="addProdikdmk" placeholder="Kode MK Prodi" value="<?= set_value('kdmkpro')?>">

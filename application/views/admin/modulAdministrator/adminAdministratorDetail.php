@@ -40,8 +40,8 @@
           <!-- /.card-header -->
           <!-- form start -->
           <form class="form-horizontal">
-            <div class="card-body">
-              <div class="form-group row ml-3  mr-3">
+            <div class="card-body ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detaildAdministratorUsername" class="col-sm-2 col-form-label">Username</label>
                 <div class="col-sm-10">
                   <div class="input-group">
@@ -52,13 +52,13 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detaildAdministratorFullName" class="col-sm-2 col-form-label">Full Name</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="detaildAdministratorFullName" placeholder="Fullname" value="<?php echo $oneadm->fullname?>" disabled>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <label for="detaildAdministratorEmail" class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-10">
                   <div class="input-group">
@@ -69,7 +69,7 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group row ml-3 mr-3">
+              <div class="form-group row">
                 <div class="col-sm-2">
                  <label for="detaildAdministratorImage"  class="col-form-label">Picture</label>
                </div>
@@ -81,7 +81,7 @@
                 </div>
               </div>
             </div>
-            <div class="form-group row ml-3 mr-3">
+            <div class="form-group row">
               <label for="detaildAdministratorPhone" class="col-sm-2 col-form-label">Phone</label>
               <div class="col-sm-10">
                 <div class="input-group">
@@ -98,7 +98,7 @@
                 <textarea class="form-control" id="detaildAdministratorAddress" rows="3" placeholder="Addess" disabled><?php echo $oneadm->address; ?></textarea>
               </div>
             </div>
-            <div class="form-group row ml-3 mr-3">
+            <div class="form-group row">
               <label for="detaildAdministratorActive" class="col-sm-2 col-form-label">Active</label>
               <div class="col-sm-10">
                 <?php if($oneadm->is_active > 0) : ?>
@@ -110,7 +110,7 @@
                  <?php endif;?>
                </div>
              </div>
-             <div class="form-group row ml-3 mr-3">
+             <div class="form-group row">
               <label for="detaildAdministratorDateCreated" class="col-sm-2 col-form-label">Date Created</label>
               <div class="col-sm-10">
                 <div class="input-group">
