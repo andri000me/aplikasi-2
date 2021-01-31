@@ -256,4 +256,10 @@ class Ajax_model extends CI_Model {
 
 	}
 
+	public function getSearchEn($pecahkode){
+		$query = "SELECT *, enkripsi->>'$.enkripsi' as enkripsikode, enkripsi->>'$.n' as enkripsikodeN, enkripsi->>'$.d' as enkripsikodeD FROM esurat_konfirmasi WHERE enkripsi->>'$.enkripsi' like '$pecahkode'";
+		// $query = "SELECT * FROM esurat_selesai WHERE enkripsi LIKE '$pecahkode' ";
+		return $this->db->query($query)->row();
+	}
+
 }

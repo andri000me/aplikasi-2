@@ -11,19 +11,7 @@
               <li class="breadcrumb-item"><a href="<?= base_url('admin/sValidasiSurat')?>"><small><?= $page ;?></small></a></li>
             </ol>
           </div><!-- /.col -->
-        </div><!-- /.row -->
-        <?php if($this->session->flashdata('message') == TRUE) : ?>
-          <!-- Row Note -->
-          <div class="row">
-            <div class="col-12">
-              <div class="alert callout callout-info bg-danger" role="alert">
-                <h5><i class="fas fa-info"></i> Note:</h5>
-                <?= $this->session->flashdata('message'); ?>
-              </div>
-            </div>
-            <!--/. Col -->
-          </div>
-        <?php endif ;?>             
+        </div><!-- /.row -->         
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
@@ -49,9 +37,10 @@
                   <textarea class="form-control" name="no_surat" id="qr_reader_results" placeholder="Enkripsi" rows="5" value="" readonly></textarea>
                 </div>
                 <button class="btn btn-primary btn-sm float-sm-right" id="searchen"><i class="fa fa-search"></i>&ensp;Search</button>
-
-                <input type="hidden"  name="kode" readonly id="kode" class="form-control" placeholder="n (desimal)">
-
+                <div class="form-group">
+                  <label class="col-form-label" for="inputWarning">Enkripsi</label>
+                  <textarea class="form-control" name="kode" readonly id="kode" placeholder="enkripsi"></textarea>
+                </div>
                 <div class="form-group">
                   <label class="col-form-label" for="inputWarning">n (desimal)</label>
                   <input type="text"  name="n" readonly id="n" class="form-control" placeholder="n (desimal)">
@@ -75,3 +64,128 @@
 
       </section>
       <!-- /.content -->
+
+      <script type="text/javascript">
+
+        window.onload = function () {
+
+          function docReady(fn) {
+            /*-- see if DOM is already available  --*/
+            if (document.readyState === "complete"
+              || document.readyState === "interactive") {
+              /*-- call on next available tick  --*/
+            setTimeout(fn, 1);
+          } else {
+            document.addEventListener("DOMContentLoaded", fn);
+          }
+        }
+
+        docReady(function () {
+          var resultContainer = document.getElementById('qr_reader_results');
+          var lastResult, countResults = 0;
+          function onScanSuccess(qrCodeMessage) {
+            if (qrCodeMessage !== lastResult) {
+              ++countResults;
+              lastResult = qrCodeMessage;
+              resultContainer.innerHTML
+              += `${qrCodeMessage}`;
+            }
+          }
+
+          var html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-reader", { fps: 10, qrbox: 250 });
+          html5QrcodeScanner.render(onScanSuccess);
+        });
+
+        $('#searchen').on('click', function(e){
+          e.preventDefault();
+          var kode = $('#qr_reader_results').val();
+          var website = baseURL;
+
+          Swal.fire({
+            title: 'Loading...',
+            html: 'Please wait Search Chipertext',
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading()
+              $.ajax({
+                url : baseURL+'ajax/searchEn',
+                method :'post',
+                data:'kode='+kode+'&website=' +website,
+                dataType:'json',
+                success:function(data){
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Chipertext Found!'
+                  })
+                  $('#kode').val(data.enkripsikode);
+                  $('#n').val(data.enkripsikodeN);
+                  $('#d').val(data.enkripsikodeD);
+                },
+                error:function(data){
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Chipertext Not Found!'
+                  })
+                }
+              });
+            }
+          })
+        });
+
+
+        $('#dekripsi').click(function(){
+          var kode = $('#kode').val();
+          var n = $('#n').val();
+          var d = $('#d').val();
+
+          Swal.fire({
+            title: 'Loading...',
+            html: 'Please wait Search Chipertext',
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading()
+              $.ajax({
+                url : baseURL+'ajax/getDekripsi',
+                method :'post',
+                data:'kode='+ kode +'&n='+ n +'&d=' +d,
+                dataType:'json',
+                success:function(data){
+                  if(data.success == true){
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Success',
+                      text: 'Chipertext Berhasil di Dekripsi!'
+                    })
+                    $('#hasildekripsi').val(data.dekripsi[1]);
+                  }else{
+                    $.each(data.messages, function(key, value){
+                      var element = $('#' + key);
+                      element.closest('.form-control')
+                      .removeClass('is-invalid')
+                      .addClass(value.length > 0 ? 'is-invalid' : 'is-valid');
+                      element.closest('div.form-group').find('.text-danger')
+                      .remove();
+                      element.after(value);
+                    });
+                  }
+                },
+                error:function(data){
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Chipertext Gagal di Dekripsi!'
+                  })
+                }
+              });
+            }
+          })
+        })
+
+
+      }
+    </script>

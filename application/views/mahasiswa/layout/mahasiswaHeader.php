@@ -58,8 +58,8 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-        <i class="fas fa-th-large"></i>
+      <a class="nav-link" href="#" data-toggle="modal" data-target="#logOutModal" data-backdrop="static" data-keyboard="true" title="Logout">
+        <i class="fas fa-sign-out-alt"></i>
       </a>
     </li>
   </ul>

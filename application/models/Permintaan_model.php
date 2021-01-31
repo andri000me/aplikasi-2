@@ -53,14 +53,6 @@ class Permintaan_model extends CI_Model {
 
 	}
 
-
-	public function fetchDosenWithTTD($dosen_id){
-
-		$query = "SELECT * FROM esurat_dosen WHERE id = '$dosen_id' ";
-		return $this->db->query($query)->row();
-
-	}
-
 	public function fetchNIMWithNama($nim){
 
 		$query = "SELECT * FROM esurat_mhs WHERE nim = '$nim' ";

@@ -101,7 +101,7 @@ class Konfirmasi extends CI_Controller {
 				$data['title'] = " Admin | Data Surat";
 				$data['parent'] = "Surat Selesai";
 				$data['page'] = $searchKode->row()->nm_surat;
-				$this->template->load('admin/layout/adminTemplate','konfirmasi/SP-KP',$data);
+				$this->template->load('admin/layout/adminTemplate','surat/konfirmasi/konfirmasi_SP-KP',$data);
 
 				break;
 				

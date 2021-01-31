@@ -142,9 +142,10 @@ class Permintaan extends CI_Controller {
 					$data['mahasiswaall'] = $this->db->query("SELECT * FROM esurat_mhs")->result();
 					/*-- Load Semua Data Dosen Pada Input --*/
 
-					$this->form_validation->set_rules('no_surat', 'NO Surat','trim|required|is_unique[esurat_konfirmasi.no_surat]',[
+					$this->form_validation->set_rules('no_surat', 'No Surat','trim|required|is_unique[esurat_konfirmasi.no_surat]',[
 						'is_unique' => 'Nomer Surat Tersebut Telah Dipakai Silahkan Tekan Tombol Generate lagi Untuk Meregerate No Surat Baru']);
-					$this->form_validation->set_rules('dosen', 'Data Penanggung Jawab','required');
+					$this->form_validation->set_rules('dosen', 'Dosen Pengampu','required');
+					$this->form_validation->set_rules('ttd', 'Tanda Tangan','required');
 					$this->form_validation->set_rules('cosnim', 'Data Mahasiswa','required');
 					$this->form_validation->set_rules('kepadaYth', 'Kepada Surat di Tujukan','required');
 					$this->form_validation->set_rules('keperluan', 'Keperluan Surat ini di Ajukan','required');
@@ -155,7 +156,7 @@ class Permintaan extends CI_Controller {
 						$data['title'] = " Admin | Data Surat";
 						$data['parent'] = "Permohonan Surat";
 						$data['page'] = $searchKode->row()->nm_surat;
-						$this->template->load('admin/layout/adminTemplate','permintaan/SP-KP',$data);
+						$this->template->load('admin/layout/adminTemplate','surat/permintaan/permintaan_SP-KP',$data);
 
 					}else{
 
@@ -174,8 +175,8 @@ class Permintaan extends CI_Controller {
 							'permintaan_tgl' => $this->db->escape_str(date('Y-m-d H:i:s'),true),
 							'status_surat' => $this->db->escape_str('CONFIRM',true),
 							'keperluan' => $this->db->escape_str($this->input->post('keperluan'),true),
-							'penyetuju_by' => $this->db->escape_str($this->input->post('penyetuju_by'),true),
-							'ttd' => $this->db->escape_str($this->input->post('dosen'),true),
+							'penyetuju_by' => $this->db->escape_str($this->session->userdata('username'),true),
+							'ttd' => $this->db->escape_str($this->input->post('ttd'),true),
 							'disetujui_tgl' => $this->db->escape_str(date('Y-m-d'),true),
 							'enkripsi' => $jsonSPKPEnkripsi
 
@@ -228,6 +229,7 @@ class Permintaan extends CI_Controller {
 					$this->form_validation->set_rules('kepadaYth', 'Kepada Surat Ini Ditujukan','required');
 					$this->form_validation->set_rules('kepadaAlamat', 'Alamat Surat Ini Ditujukan','required');
 					$this->form_validation->set_rules('keperluan', 'Keperluan Surat Ini Dibuat','required');
+					$this->form_validation->set_rules('dosen', 'Dosen Pengampu','required');
 
 					if($this->form_validation->run() == false){
 
@@ -235,7 +237,7 @@ class Permintaan extends CI_Controller {
 						$data['title'] =  "Mahasiswa| Pengajuan Surat";
 						$data['parent'] = "Pengajuan Surat";
 						$data['page'] = $searchKode->row()->nm_surat;
-						$this->template->load('mahasiswa/layout/mahasiswaTemplate','permintaan/SP-KP',$data);
+						$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/permintaan/permintaan_SP-KP',$data);
 
 					}else{
 
@@ -312,7 +314,7 @@ class Permintaan extends CI_Controller {
 					/*-- Load Semua Data Dosen Pada Input --*/
 					$data['dosenall'] = $this->admin_model->getDosen();
 
-					$this->form_validation->set_rules('no_surat', 'NO Surat','trim|required|is_unique[esurat_konfirmasi.no_surat]',[
+					$this->form_validation->set_rules('no_surat', 'No Surat','trim|required|is_unique[esurat_konfirmasi.no_surat]',[
 						'is_unique' =>'Nomer Surat Tersebut Telah Dipakai Silahkan Tekan Tombol Generate lagi Untuk Meregerate No Surat Baru']);
 					$this->form_validation->set_rules('ttd', 'Tanda Tangan','required');
 
@@ -340,13 +342,13 @@ class Permintaan extends CI_Controller {
 						$data['title'] = " Admin | Data Surat";
 						$data['parent'] = "Permintaan Surat";
 						$data['page'] = $searchKode->row()->kd_surat;
-						$this->template->load('admin/layout/adminTemplate','permintaan/SP-KP',$data);
+						$this->template->load('admin/layout/adminTemplate','surat/permintaan/permintaan_SP-KP',$data);
 
 					}else{
 
 						$data = [
 
-							'penyetuju_by' => $this->db->escape_str($this->input->post('penyetuju_by'),true),
+							'penyetuju_by' => $this->db->escape_str($this->session->userdata('username'),true),
 							'no_surat' => $this->db->escape_str($this->input->post('no_surat'),true),
 							'status_surat' => $this->db->escape_str('CONFIRM',true),
 							'ttd' => $this->db->escape_str($this->input->post('ttd'),true),
@@ -354,7 +356,7 @@ class Permintaan extends CI_Controller {
 
 						];
 
-						$this->db->where('id_permintaan', $this->input->post('zz'));
+						$this->db->where('id_permintaan', $result->id_permintaan);
 						$this->db->update('esurat_permintaan',$data);
 
 						$nomor = $this->input->post('no_surat');
@@ -446,12 +448,50 @@ class Permintaan extends CI_Controller {
 		}
 	}
 
-	public function fetchDosenWithTTD(){
+	public function permintaanTolak(){
 
-		$dosen_id = $this->input->post('dosen_id');
-		$nama =  $this->permintaan_model->fetchDosenWithTTD($dosen_id)->nama;
+		$id=$this->input->post("idalasan");
+		$alasan=$this->input->post("alasan");
 
-		echo $nama;
+		$data = array('success' => false,'messages' => array());
+		$this->form_validation->set_rules('alasan','Alasan Penolakan','required');
+		$this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
+
+		$query = $this->db->get_where('esurat_permintaan',['id_permintaan' => $id])->row();
+
+		if($this->form_validation->run()){
+
+
+			$notif = [
+
+				'comment_subject' => 'Surat Di Tolak',
+				'comment_text' => 'Surat Yang Anda Ajukan Pada tanggal '.$query->permintaan_tgl.' Telah Disetujui',
+				'comment_detail' => $alasan,
+				'comment_surat' => 'N',
+				'comment_to' => $query->permintaan_by,
+				'comment_date' => $this->db->escape_str(date('Y-m-d'),true),
+				'comment_status' => 0
+
+			];
+
+			$this->db->insert('esurat_comments',$notif);
+			$this->db->delete('esurat_permintaan',['id_permintaan' => $id]);
+			$data['toastr'] = $this->toastr->success('Surat Telah Ditolak');
+			$data['redirect'] = base_url('admin/sPermintaanSurat');
+			$data['url'] = true;
+
+
+
+			$data['success'] = true;
+
+		}else{
+
+			foreach ($_POST as $key => $value) {
+				$data['messages'][$key] = form_error($key);
+			}
+		}
+		echo json_encode($data);
+
 	}
 
 	public function fetchNIMWithNama(){

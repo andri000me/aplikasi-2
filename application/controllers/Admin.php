@@ -799,7 +799,7 @@ class Admin extends CI_Controller {
 			$this->db->insert('esurat_Surat',$data);
 			$this->toastr->success('List Surat '.$this->input->post('namaSurat').' Telah Ditambahkan!');
 			$id_surat = $this->db->insert_id();
-			redirect('admin/sListSurat');
+			redirect('admin/sListSuratDetail/'.$this->encrypt->encode($id_surat).'');
 		}
 	}
 
@@ -958,7 +958,7 @@ class Admin extends CI_Controller {
 
 		if (count($this->uri->segment_array()) > 2) {
 			$this->toastr->error('Url Yang Anda Masukkan Salah');
-			redirect('admin/sPermintaanSurat');
+			redirect('admin/sSuratSelesai');
 		}
 
 		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
@@ -968,6 +968,22 @@ class Admin extends CI_Controller {
 		$data['page'] = "Data Surat Selesai";
 		$this->template->load('admin/layout/adminTemplate','admin/modulSuratSelesai/adminSuratSelesai',$data);
 
+	}
+
+
+	public function sValidasiSurat(){
+
+		if (count($this->uri->segment_array()) > 2) {
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin/sValidasiSurat');
+		}
+
+		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
+
+		$data['title'] = "Admin | Validasi Surat";
+		$data['parent'] = "Validasi Surat";
+		$data['page'] = "Validasi Surat";
+		$this->template->load('admin/layout/adminTemplate','admin/modulValidasiSurat/adminValidasiSurat',$data);
 	}
 
 }

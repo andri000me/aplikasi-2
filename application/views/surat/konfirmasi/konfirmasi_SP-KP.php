@@ -12,31 +12,7 @@
               <li class="breadcrumb-item"><a href="<?= base_url('selesai/selesaiDetail/'.$this->encrypt->encode($onesls->id_konfirmasi).'/'.$this->encrypt->encode($onesls->kd_surat))?>"><small><?= $page ;?></small></a></li>
             </ol>
           </div><!-- /.col -->
-        </div><!-- /.row -->
-        <?php if(validation_errors()) : ?>
-          <!-- Row Note -->
-          <div class="row">
-            <div class="col-12">
-              <div class="alert callout callout-info bg-danger" role="alert">
-                <h5><i class="fas fa-info"></i> Note:</h5>
-                <?= validation_errors(); ?>
-              </div>
-            </div>
-            <!--/. Col -->
-          </div>
-        <?php endif ;?>
-        <?php if($this->session->flashdata('message') == TRUE) : ?>
-          <!-- Row Note -->
-          <div class="row">
-            <div class="col-12">
-              <div class="alert callout callout-info bg-danger" role="alert">
-                <h5><i class="fas fa-info"></i> Note:</h5>
-                <?= $this->session->flashdata('message'); ?>
-              </div>
-            </div>
-            <!--/. Col -->
-          </div>
-        <?php endif ;?>             
+        </div><!-- /.row -->         
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
@@ -60,7 +36,7 @@
 
                   <!-- No Surat And Button Generate -->
                   <div class="form-group">
-                    <label for="no_surat" class="col-form-label">No Surat<text class="text-danger"><b>*</b></text></label>
+                    <label for="no_surat" class="col-form-label">No Surat</label>
 
                     <input name="no_surat" id="no_surat" type="text" class="form-control" value="<?= $onesls->no_surat?>" readonly>
 
@@ -205,53 +181,57 @@
                   <!-- / col-md-6 -->
 
                 </div>
-                <!-- / Row -->
+                <!-- / Row -->         
 
-                <div class="card card-outline collapsed-card card-info">
-                  <div class="card-header">
-                    <h4 class="card-title " text-align="center"><strong>Surat Yang Di Minta</strong></h4>
-                    <div class="card-tools">
-                      <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
-                        <i class="fas fa-plus"></i>
-                      </button>
-                      <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
-                        <i class="fas fa-times"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="card-body">
-
-                    <!-- Hasil Surat -->
-                    <div class="form-group row">
-
-                      <label class="col-md-2 col-form-label"><?= $page ?></label>
-                      <div class="col-md-12">
-                        <textarea  class="form-control" id="spkpHasilSurat" placeholder="Header Surat" rows="10" disabled="true"> 
-                          <?= $this->parser->parse_string($isi, $komponen, TRUE);
-                          ?>
-                        </textarea>
-                      </div>
-
-                    </div>
-                    <!-- / Hasil Surat -->
-
-                  </div>
-                  <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-
-                <div class="form-group justify-content-between">
-                  <a class="btn btn-secondary btn-sm" href="<?php echo base_url('admin/sSuratSelesai');?>">
-                    <i class="fas fa-arrow-left"></i>&ensp;Back
-                  </a>
-                  <a class="btn btn-primary btn-sm float-right text-white" href="<?= base_url('Prints/printSurat/'.$this->encrypt->encode($onesls->id_konfirmasi).'/'.$this->encrypt->encode($onesls->kd_surat))?>" target="_blank">Print &ensp;<i class="fas fa-print" target="_blank"></i></a>
-                </div>             
-              </form>
-
+              </div>
+              <!-- /.card-body -->
             </div>
-            <!-- /.card-body -->
-          </div>
-          <!-- /.card -->
+            <!-- /.card -->
+
+            <div class="card card-outline collapsed-card card-info">
+              <div class="card-header">
+                <h4 class="card-title " text-align="center"><strong>Surat Yang Di Minta</strong></h4>
+                <div class="card-tools">
+                  <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                  <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+
+                <!-- Hasil Surat -->
+                <div class="form-group row">
+
+                  <label class="col-md-2 col-form-label"><?= $page ?></label>
+                  <div class="col-md-12">
+                    <textarea  class="form-control" id="spkpHasilSurat" placeholder="Header Surat" rows="10" disabled="true"> 
+                      <?= $this->parser->parse_string($isi, $komponen, TRUE);
+                      ?>
+                    </textarea>
+                  </div>
+
+                </div>
+                <!-- / Hasil Surat -->
+
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+            <div class="card card-outline card-info">
+            <div class="card-footer justify-content-between">
+              <a class="btn btn-secondary btn-sm" href="<?php echo base_url('admin/sSuratSelesai');?>">
+                <i class="fas fa-arrow-left"></i>&ensp;Back
+              </a>
+              <a class="btn btn-primary btn-sm float-right text-white" href="<?= base_url('Prints/printSurat/'.$this->encrypt->encode($onesls->id_konfirmasi).'/'.$this->encrypt->encode($onesls->kd_surat))?>" target="_blank">Print &ensp;<i class="fas fa-print" target="_blank"></i></a>
+            </div> 
+            </div>
+            <!-- /.card -->   
+
+          </form>
 
         </div>
         <!-- /.container-fluid -->

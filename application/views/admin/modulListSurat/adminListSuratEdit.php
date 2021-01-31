@@ -12,19 +12,7 @@
               <li class="breadcrumb-item"><a href="<?= base_url('admin/sListSuratEdit/'.$this->encrypt->encode($onesur->id_surat))?>"><small><?= $page ?></small></a></li>
             </ol>
           </div><!-- /.col -->
-        </div><!-- /.row -->
-        <?php if($this->session->flashdata('message') == TRUE) : ?>
-          <!-- Row Note -->
-          <div class="row">
-            <div class="col-12">
-              <div class="alert callout callout-info bg-danger" role="alert">
-                <h5><i class="fas fa-info"></i> Note:</h5>
-                <?= $this->session->flashdata('message'); ?>
-              </div>
-            </div>
-            <!--/. Col -->
-          </div>
-        <?php endif ;?>             
+        </div><!-- /.row -->          
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->

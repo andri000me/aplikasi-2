@@ -47,31 +47,7 @@
               <?php endif ;?>
 
             </div><!-- /.col -->
-          </div><!-- /.row -->
-          <?php if(validation_errors()) : ?>
-            <!-- Row Note -->
-            <div class="row">
-              <div class="col-12">
-                <div class="alert callout callout-info bg-danger" role="alert">
-                  <h5><i class="fas fa-info"></i> Note:</h5>
-                  <?= validation_errors(); ?>
-                </div>
-              </div>
-              <!--/. Col -->
-            </div>
-          <?php endif ;?>
-          <?php if($this->session->flashdata('message') == TRUE) : ?>
-            <!-- Row Note -->
-            <div class="row">
-              <div class="col-12">
-                <div class="alert callout callout-info bg-danger" role="alert">
-                  <h5><i class="fas fa-info"></i> Note:</h5>
-                  <?= $this->session->flashdata('message'); ?>
-                </div>
-              </div>
-              <!--/. Col -->
-            </div>
-          <?php endif ;?>             
+          </div><!-- /.row -->           
         </div><!-- /.container-fluid -->
       </div>
       <!-- /.content-header -->
@@ -86,16 +62,15 @@
         <!-- Main content -->
         <section class="content">
           <div class="container-fluid">
-            <!-- Default box -->
-            <div class="card card-outline card-info">
-              <div class="card-header">
-                <h4 class="card-title " text-align="center"><strong><?= $page; ?></strong></h4>
-              </div>
-              <div class="card-body">
 
-                <form action="<?= base_url('permintaan/permintaanDetail/'.$this->encrypt->encode($onesur->kd_surat).'/'.$this->encrypt->encode($onesur->id_surat).'/'.$this->encrypt->encode('permohonan'));?>" method="post">
+            <form action="<?= base_url('permintaan/permintaanDetail/'.$this->encrypt->encode($onesur->kd_surat).'/'.$this->encrypt->encode($onesur->id_surat).'/'.$this->encrypt->encode('permohonan'));?>" method="post">
+              <!-- Default box -->
+              <div class="card card-outline card-info">
+                <div class="card-header">
+                  <h4 class="card-title " text-align="center"><strong><?= $page; ?></strong></h4>
+                </div>
+                <div class="card-body">
 
-                  <input type="hidden" readonly name="penyetuju_by" class="form-control" value="<?= $user->username ;?>">
                   <input type="hidden" readonly name="p" class="form-control" id="spkpCosP">
                   <input type="hidden" readonly name="q" class="form-control" id="spkpCosQ">
                   <input type="hidden" readonly name="n" class="form-control" id="spkpCosN">
@@ -107,12 +82,12 @@
                     <div class="col-md-6">
 
                       <!-- No Surat And Button Generate -->
-                      <div class="form-group">
-                        <label for="spkpCosNo_surat" class="col-form-label">No Surat <text class="text-danger"><b>*</b></text></label>
+                      <div class="form-group <?php if(form_error('no_surat')) {echo 'text-danger';}?>">
+                        <label for="spkpCosNo_surat" class="col-form-label">No Surat</label>
                         <div class="input-group">
-                          <input name="no_surat" id="spkpCosNo_surat" type="text" class="form-control" readonly>
+                          <input name="no_surat" id="spkpCosNo_surat" type="text" class="form-control <?php if(form_error('no_surat')) {echo 'is-invalid';}?>" readonly>
                           <span class="input-group-append">
-                            <button type="button" class="btn btn-info" id="generateCos"><i class="fa fa-check text-white"></i>&ensp;Generate</button>
+                            <button type="button" class="btn <?php if(form_error('no_surat')) {echo 'btn-danger';}else{echo 'btn-info';}?>" id="generateCos"><i class="fa fa-check text-white"></i>&ensp;Generate</button>
                           </span>
                         </div>
                         <?= form_error('no_surat', '<small class="text-danger pl-3">', '</small>');?>
@@ -120,9 +95,9 @@
                       <!-- / No Surat And Button Generate -->
 
                       <!-- Dosen -->
-                      <div class="form-group">
+                      <div class="form-group <?php if(form_error('dosen')) {echo 'text-danger';}?>">
                         <label for="spkpCosDosen" class="col-form-label">Dosen</label>
-                        <select name="dosen" id="spkpCosDosen" class="form-control select2" style="width: 100%;" >
+                        <select name="dosen" id="spkpCosDosen" class="form-control select2 <?php if(form_error('dosen')) {echo 'select2-danger';}?>" <?php if(form_error('dosen')) {echo 'data-dropdown-css-class="select2-danger"';}?>  style="width: 100%;" >
                           <option value="" selected>Pilih Dosen</option>
                           <?php
                           foreach ($dosenall as $dosen) {
@@ -135,10 +110,17 @@
                       <!-- / Dosen -->
 
                       <!-- Tanda Tangan -->
-                      <div class="form-group">
+                      <div class="form-group <?php if(form_error('ttd')) {echo 'text-danger';}?>">
                         <label for="spkpCosTTD" class="col-form-label">Tanda Tangan</label>
-                        <input type="text" class="form-control" id="spkpCosTTD" placeholder="Tanda Tangan" readonly>
-                        <?= form_error('dosen', '<small class="text-danger pl-3">', '</small>');?>
+                        <select name="ttd" id="spkpCosTTD" class="form-control select2 <?php if(form_error('ttd')) {echo 'select2-danger';}?>" <?php if(form_error('ttd')) {echo 'data-dropdown-css-class="select2-danger"';}?>  style="width: 100%;" >
+                          <option value="" selected>Pilih Tanda Tangan</option>
+                          <?php
+                          foreach ($dosenall as $dosen) {
+                            echo '<option value="'.$dosen->id.'">'.$dosen->nama.'</option>';
+                          }
+                          ;?>
+                        </select>
+                        <?= form_error('ttd', '<small class="text-danger pl-3">', '</small>');?>
                       </div>
                       <!-- / Tanda Tangan -->
 
@@ -147,18 +129,20 @@
                     <div class="col-md-6">
 
                       <!-- Hasil Enkripsi -->
-                      <div class="form-group">
+                      <div class="form-group <?php if(form_error('no_surat')) {echo 'text-danger';}?>">
                         <label for="spkpCosHasilEnkripsi" class="col-form-label">Hasil Enkripsi</label>
-                        <textarea type="text" name="enkripsi" class="form-control" id="spkpCosHasilEnkripsi" placeholder="Hasil Enkripsi" readonly></textarea>
+                        <textarea type="text" name="enkripsi" class="form-control <?php if(form_error('no_surat')) {echo 'is-invalid';}?>" id="spkpCosHasilEnkripsi" placeholder="Hasil Enkripsi" readonly></textarea>
+                        <?= form_error('no_surat', '<small class="text-danger pl-3">', '</small>');?>
                       </div>
                       <!-- / Hasil Enkripsi -->
 
                       <!-- QR COde -->
-                      <div class="form-group">
+                      <div class="form-group <?php if(form_error('no_surat')) {echo 'text-danger';}?>">
                         <label for="qrcode" class="col-form-label">QR Code</label>
                         <div class="input-group">
-                          <img id="qrcodeCos" src="<?= base_url('assets/esurat/img/qrcode_sample.png')?>" alt="QRCode" width="150" />
+                          <img id="qrcodeCos" src="<?php if(form_error('no_surat')) {echo base_url('assets/esurat/img/qrcode_danger.png');}else{ echo base_url('assets/esurat/img/qrcode_sample.png') ;}?>" alt="QRCode" width="150" />
                         </div>
+                        <?= form_error('no_surat', '<small class="text-danger pl-3">', '</small>');?>
                       </div>
                       <!-- / QR COde -->
 
@@ -171,24 +155,24 @@
                     <div class="col-md-6">
 
                       <!-- Kepada Yth. Surat Di Ajukan -->
-                      <div class="form-group">
+                      <div class="form-group <?php if(form_error('kepadaYth')) {echo 'text-danger';}?>">
                         <label for="spkpKepadaYth" class="col-form-label">Kepada Yth.</label>
-                        <textarea type="text" rows="1" name="kepadaYth" class="form-control" id="spkpKepadaYth" placeholder="Kepada Yth."><?= set_value('kepadaYth');?></textarea>
+                        <textarea type="text" rows="1" name="kepadaYth" class="form-control <?php if(form_error('kepadaYth')) {echo 'is-invalid';}?>" id="spkpKepadaYth" placeholder="Kepada Yth."><?= set_value('kepadaYth');?></textarea>
                         <?= form_error('kepadaYth', '<small class="text-danger pl-3">', '</small>');?>
                       </div>
                       <!-- / Kepada Yth. Surat Di Ajukan -->
                       <!-- Kepada Yth. Surat Di Ajukan -->
-                      <div class="form-group">
+                      <div class="form-group <?php if(form_error('kepadaAlamat')) {echo 'text-danger';}?>">
                         <label for="spkpKepadaAlamat" class="col-form-label">Kepada Alamat</label>
-                        <textarea type="text" rows="1" name="kepadaAlamat" class="form-control" id="spkpKepadaAlamat" placeholder="Kepada Alamat"><?= set_value('kepadaAlamat');?></textarea>
+                        <textarea type="text" rows="1" name="kepadaAlamat" class="form-control <?php if(form_error('kepadaAlamat')) {echo 'is-invalid';}?>" id="spkpKepadaAlamat" placeholder="Kepada Alamat"><?= set_value('kepadaAlamat');?></textarea>
                         <?= form_error('kepadaAlamat', '<small class="text-danger pl-3">', '</small>');?>
                       </div>
                       <!-- / Kepada Yth. Surat Di Ajukan -->
 
                       <!-- Keperluan Surat Di Ajukan -->
-                      <div class="form-group">
+                      <div class="form-group <?php if(form_error('keperluan')) {echo 'text-danger';}?>">
                         <label for="spkpCosKeperluan" class="col-form-label">Keperluan</label>
-                        <textarea type="text" rows="1" name="keperluan" class="form-control" id="spkpCosKeperluan" placeholder="Keperluan"><?= set_value('keperluan')?></textarea>
+                        <textarea type="text" rows="1" name="keperluan" class="form-control <?php if(form_error('keperluan')) {echo 'is-invalid';}?>" id="spkpCosKeperluan" placeholder="Keperluan"><?= set_value('keperluan')?></textarea>
                         <?= form_error('keperluan', '<small class="text-danger pl-3">', '</small>');?>
                       </div>
                       <!-- / Keperluan Surat Di Ajukan -->
@@ -214,9 +198,9 @@
                     <div class="col-md-6">
 
                       <!-- NIM Mahasiswa YAng Mengajukan Surat -->
-                      <div class="form-group">
+                      <div class="form-group <?php if(form_error('cosnim')) {echo 'text-danger';}?>">
                         <label for="spkpCosNIM" class="col-form-label">NIM Mahasiswa</label>
-                        <select name="cosnim" id="spkpCosNIM" class="form-control select2" style="width: 100%;" >
+                        <select name="cosnim" id="spkpCosNIM" class="form-control select2 <?php if(form_error('cosnim')) {echo 'select2-danger';}?>" <?php if(form_error('cosnim')) {echo 'data-dropdown-css-class="select2-danger"';}?> style="width: 100%;" >
                           <option value="" selected>Tulis Nim mahasiswa / Nama Mahasiswa </option>
                           <?php
                           foreach ($mahasiswaall as $mhsa) {
@@ -229,25 +213,25 @@
                       <!-- / NIM Mahasiswa YAng Mengajukan Surat -->
 
                       <!-- Nama Mahasiswa YAng Mengajukan Surat -->
-                      <div class="form-group">
+                      <div class="form-group <?php if(form_error('cosnim')) {echo 'text-danger';}?>">
                         <label for="spkpCosNama" class="col-form-label">Nama Mahasiswa</label>
-                        <input type="text" class="form-control" id="spkpCosNama" placeholder="Nama Mahasiswa" readonly>
+                        <input type="text" class="form-control <?php if(form_error('cosnim')) {echo 'is-invalid';}?>" id="spkpCosNama" placeholder="Nama Mahasiswa" readonly>
                         <?= form_error('cosnim', '<small class="text-danger pl-3">', '</small>');?>
                       </div>
                       <!-- / Nama Mahasiswa YAng Mengajukan Surat -->
 
                       <!-- Prodi Mahasiswa YAng Mengajukan Surat -->
-                      <div class="form-group">
+                      <div class="form-group <?php if(form_error('cosnim')) {echo 'text-danger';}?>">
                         <label for="spkpCosProdi" class="col-form-label">Prodi</label>
-                        <input type="text" class="form-control" id="spkpCosProdi" placeholder="Prodi" readonly>
+                        <input type="text" class="form-control <?php if(form_error('cosnim')) {echo 'is-invalid';}?>" id="spkpCosProdi" placeholder="Prodi" readonly>
                         <?= form_error('cosnim', '<small class="text-danger pl-3">', '</small>');?>
                       </div>
                       <!-- / Prodi Mahasiswa YAng Mengajukan Surat -->
 
                       <!-- Prodi Mahasiswa YAng Mengajukan Surat -->
-                      <div class="form-group">
+                      <div class="form-group <?php if(form_error('cosnim')) {echo 'text-danger';}?>">
                         <label for="spkpCosSemester" class="col-form-label">Semester</label>
-                        <input type="text" class="form-control" id="spkpCosSemester" placeholder="Semester" readonly>
+                        <input type="text" class="form-control <?php if(form_error('cosnim')) {echo 'is-invalid';}?>" id="spkpCosSemester" placeholder="Semester" readonly>
                         <?= form_error('cosnim', '<small class="text-danger pl-3">', '</small>');?>
                       </div>
                       <!-- / Prodi Mahasiswa YAng Mengajukan Surat -->
@@ -256,53 +240,58 @@
 
                   </div>
 
-                  <div class="card card-outline collapsed-card card-info">
-                    <div class="card-header">
-                      <h4 class="card-title " text-align="center"><strong>Surat Yang Di Minta</strong></h4>
-                      <div class="card-tools">
-                        <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
-                          <i class="fas fa-plus"></i>
-                        </button>
-                        <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
-                          <i class="fas fa-times"></i>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="card-body">
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
 
-                      <!-- Hasil Surat -->
-                      <div class="form-group row">
-
-                        <label class="col-md-2 col-form-label"><?= $page ?></label>
-                        <div class="col-md-12">
-                          <textarea name="semua" class="form-control" id="suratPermohonan" readonly> 
-                            <?= $onesur->kop_surat ;?>
-                            <?= $onesur->header_surat ;?>
-                            <?= $onesur->isi_surat ;?>
-                            <?= $onesur->footer_surat ;?>
-                          </textarea>
-                        </div>
-
-                      </div>
-
-                    </div>
-                    <!-- /.card-body -->
+              <div class="card card-outline collapsed-card card-info">
+                <div class="card-header">
+                  <h4 class="card-title " text-align="center"><strong>Surat Yang Di Minta</strong></h4>
+                  <div class="card-tools">
+                    <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                    <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
+                      <i class="fas fa-times"></i>
+                    </button>
                   </div>
-                  <!-- /.card -->
+                </div>
+                <div class="card-body">
 
-                  <div class="form-group justify-content-between">
-                    <a class="btn btn-secondary btn-sm" href="<?php echo base_url('admin/sPermintaanSurat');?>">
-                      <i class="fas fa-arrow-left"></i>&ensp;Back
-                    </a>
-                    <button type="submit" class="btn btn-primary btn-sm float-right">Submit &ensp;<i class="fas fa-arrow-right"></i></button>
-                  </div>  
+                  <!-- Hasil Surat -->
+                  <div class="form-group row">
 
-                </form>
+                    <label class="col-md-2 col-form-label"><?= $page ?></label>
+                    <div class="col-md-12">
+                      <textarea name="semua" class="form-control" id="suratPermohonan" readonly> 
+                        <?= $onesur->kop_surat ;?>
+                        <?= $onesur->header_surat ;?>
+                        <?= $onesur->isi_surat ;?>
+                        <?= $onesur->footer_surat ;?>
+                      </textarea>
+                    </div>
+
+                  </div>
+
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+
+              <div class="card card-outline card-info">
+                <div class="card-footer justify-content-between">
+                  <a class="btn btn-secondary btn-sm" href="<?php echo base_url('admin/sPermintaanSurat');?>">
+                    <i class="fas fa-arrow-left"></i>&ensp;Back
+                  </a>
+                  <button type="submit" class="btn btn-primary btn-sm float-right">Submit &ensp;<i class="fas fa-arrow-right"></i></button>
+                </div>  
 
               </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
+              <!-- /.card -->
+
+            </form>
+
           </div>
           <!-- /.container-fluid -->
         </section>
@@ -398,22 +387,6 @@
             });
             /*-- / Ajax Generate No Surat, Enkripsi And Convert Costum Surat  --*/
 
-
-            /*-- Ajax Memilih Tanda Tangan Berdasarkan Dosen  --*/
-            $('#spkpCosDosen').change(function(){
-              var dosen_id = $('#spkpCosDosen').val();
-              if(dosen_id != ''){
-                $.ajax({
-                  url:baseURL+'permintaan/fetchDosenWithTTD',
-                  method:'POST',
-                  data:{dosen_id:dosen_id},
-                  success:function(data){
-                    $('#spkpCosTTD').val(data);
-                  }
-                });
-              }
-            });
-
             /*-- Ajax Memilih Nim dan Nama Mahasiswa  --*/
             $('#spkpCosNIM').change(function(){
               var nimCos = $('#spkpCosNIM').val();
@@ -471,32 +444,32 @@
                         <!-- / Nama Surat -->
 
                         <!-- Kepada Yth. Surat Di Ajukan -->
-                        <div class="form-group">
+                        <div class="form-group <?php if(form_error('kepadaYth')) {echo 'text-danger';}?>">
                           <label for="spkpKepadaYth" class="col-form-label">Kepada Yth.</label>
-                          <textarea type="text" rows="1" name="kepadaYth" class="form-control" id="spkpKepadaYth" placeholder="Kepada Yth."><?= set_value('kepadaYth');?></textarea>
+                          <textarea type="text" rows="1" name="kepadaYth" class="form-control <?php if(form_error('kepadaYth')) {echo 'is-invalid';}?>" id="spkpKepadaYth" placeholder="Kepada Yth."><?= set_value('kepadaYth');?></textarea>
                           <?= form_error('kepadaYth', '<small class="text-danger pl-3">', '</small>');?>
                         </div>
                         <!-- / Kepada Yth. Surat Di Ajukan -->
                         <!-- Kepada Yth. Surat Di Ajukan -->
-                        <div class="form-group">
+                        <div class="form-group <?php if(form_error('kepadaAlamat')) {echo 'text-danger';}?>">
                           <label for="spkpKepadaAlamat" class="col-form-label">Kepada Alamat</label>
-                          <textarea type="text" rows="1" name="kepadaAlamat" class="form-control" id="spkpKepadaAlamat" placeholder="Kepada Alamat"><?= set_value('kepadaAlamat');?></textarea>
+                          <textarea type="text" rows="1" name="kepadaAlamat" class="form-control <?php if(form_error('kepadaAlamat')) {echo 'is-invalid';}?>" id="spkpKepadaAlamat" placeholder="Kepada Alamat"><?= set_value('kepadaAlamat');?></textarea>
                           <?= form_error('kepadaAlamat', '<small class="text-danger pl-3">', '</small>');?>
                         </div>
                         <!-- / Kepada Yth. Surat Di Ajukan -->
 
                         <!-- Kepada Yth. Surat Di Ajukan -->
-                        <div class="form-group">
+                        <div class="form-group <?php if(form_error('keperluan')) {echo 'text-danger';}?>">
                           <label for="spkpKeperluan" class="col-form-label">Keperluan</label>
-                          <textarea type="text" rows="1" name="keperluan" class="form-control" id="spkpKeperluan" placeholder="Keperluan"><?= set_value('keperluan');?></textarea>
+                          <textarea type="text" rows="1" name="keperluan" class="form-control <?php if(form_error('keperluan')) {echo 'is-invalid';}?>" id="spkpKeperluan" placeholder="Keperluan"><?= set_value('keperluan');?></textarea>
                           <?= form_error('keperluan', '<small class="text-danger pl-3">', '</small>');?>
                         </div>
                         <!-- / Kepada Yth. Surat Di Ajukan -->
 
                         <!-- Dosen -->
-                        <div class="form-group">
+                        <div class="form-group <?php if(form_error('dosen')) {echo 'text-danger';}?>">
                           <label for="spkpDosen" class="col-form-label">Dosen</label>
-                          <select name="dosen" id="spkpDosen" class="form-control select2" style="width: 100%;" >
+                          <select name="dosen" id="spkpDosen" class="form-control select2 <?php if(form_error('dosen')) {echo 'select2-danger';}?>" <?php if(form_error('dosen')) {echo 'data-dropdown-css-class="select2-danger"';}?> style="width: 100%;" >
                             <option value="" selected>Pilih Dosen</option>
                             <?php
                             foreach ($dosenall as $dosen) {
@@ -596,31 +569,29 @@
             <section class="content">
               <div class="container-fluid">
                 <!-- Default box -->
-                <div class="card card-outline card-info">
-                  <div class="card-header">
-                    <h4 class="card-title " text-align="center"><strong><?= $page; ?></strong></h4>
-                  </div>
-                  <div class="card-body">
 
-                    <form action="<?= base_url('permintaan/permintaanDetail/'.$this->encrypt->encode($onesur->kd_surat).'/'.$this->encrypt->encode($onesur->id_permintaan).'/'.$this->encrypt->encode('permintaan'));?>" method="post">
+                <form action="<?= base_url('permintaan/permintaanDetail/'.$this->encrypt->encode($onesur->kd_surat).'/'.$this->encrypt->encode($onesur->id_permintaan).'/'.$this->encrypt->encode('permintaan'));?>" method="post">
 
-                      <input type="hidden" readonly name="zz" id="zz" value="<?= $onepmr->id_permintaan;?>"  class="form-control">
-                      <input type="hidden" readonly name="penyetuju_by" class="form-control" value="<?= $user->username ;?>">
+                  <div class="card card-outline card-info">
+                    <div class="card-header">
+                      <h4 class="card-title " text-align="center"><strong><?= $page; ?></strong></h4>
+                    </div>
+                    <div class="card-body">
 
                       <div class="row">
                         <div class="col-md-6">
 
                           <!-- No Surat And Button Generate -->
-                          <div class="form-group">
-                            <label for="no_surat" class="col-form-label">No Surat <text class="text-danger"><b>*</b></text></label>
+                          <div class="form-group <?php if(form_error('no_surat')) {echo 'text-danger';}?>">
+                            <label for="no_surat" class="col-form-label">No Surat</label>
                             <div class="input-group">
                               <?php if($onepmr->id_permintaan == NULL) : ?>
-                                <input id="no_surat" type="text" class="form-control" readonly>
+                                <input name="no_surat" type="text" class="form-control <?php if(form_error('no_surat')) {echo 'is-invalid';}?>" readonly>
                                 <?php else : ?>
                                   <input name="no_surat" id="no_surat" type="text" class="form-control" value="<?= $onepmr->no_surat?>" readonly>
                                 <?php endif ;?>
                                 <span class="input-group-append">
-                                  <button type="button" class="btn btn-info" id="generatePmr"><i class="fa fa-check text-white"></i>&ensp;Generate</button>
+                                  <button type="button" class="btn <?php if(form_error('no_surat')) {echo 'btn-danger';}else{echo 'btn-info';}?>" id="generatePmr"><i class="fa fa-check text-white"></i>&ensp;Generate</button>
                                 </span>
                               </div>
                               <?= form_error('no_surat', '<small class="text-danger pl-3">', '</small>');?>
@@ -628,9 +599,9 @@
                             <!-- / No Surat And Button Generate -->
 
                             <!-- Tanda Tangan -->
-                            <div class="form-group">
+                            <div class="form-group <?php if(form_error('ttd')) {echo 'text-danger';}?>">
                               <label for="spkpTTD" class="col-form-label">Tanda Tangan</label>
-                              <select name="ttd" for="spkpTTD" class="form-control select2" style="width: 100%;" >
+                              <select name="ttd" for="spkpTTD" class="form-control select2 <?php if(form_error('ttd')) {echo 'select2-danger';}?>" <?php if(form_error('ttd')) {echo 'data-dropdown-css-class="select2-danger"';}?> style="width: 100%;" >
                                 <option value="" selected>Pilih Tanda Tangan</option>
                                 <?php
                                 foreach ($dosenall as $dosen) {
@@ -655,10 +626,10 @@
                           <div  class="col-md-6">
 
                             <!-- Hasil Enkripsi -->
-                            <div class="form-group">
+                            <div class="form-group <?php if(form_error('no_surat')) {echo 'text-danger';}?>">
                               <label for="spkpHasilEnkripsi" class="col-form-label">Hasil Enkripsi</label>
                               <?php if($onepmr->no_surat == NULL) : ?>
-                                <textarea type="text" class="form-control" id="spkpHasilEnkripsi" placeholder="Hasil Enkripsi" readonly></textarea>
+                                <textarea type="text" class="form-control <?php if(form_error('no_surat')) {echo 'is-invalid';}?>" id="spkpHasilEnkripsi" placeholder="Hasil Enkripsi" readonly></textarea>
                                 <?php else : ?>
                                   <textarea type="text" class="form-control" id="spkpHasilEnkripsi" placeholder="Hasil Enkripsi" readonly><?= $onepmr->enkripsi?></textarea>
                                 <?php endif ;?>
@@ -667,11 +638,11 @@
                               <!-- / Hasil Enkripsi -->
 
                               <!-- QR COde -->
-                              <div class="form-group">
+                              <div class="form-group <?php if(form_error('no_surat')) {echo 'text-danger';}?>">
                                 <label for="qrcode" class="col-form-label">QR Code</label>
                                 <div class="input-group">
                                   <?php if($onepmr->no_surat == NULL) : ?>
-                                    <img id="qrcode" src="<?= base_url('assets/esurat/img/qrcode_sample.png')?>" alt="QRCode" width="150" />
+                                    <img id="qrcode" src="<?php if(form_error('no_surat')) {echo base_url('assets/esurat/img/qrcode_danger.png');}else{ echo base_url('assets/esurat/img/qrcode_sample.png') ;}?>" alt="QRCode" width="150" />
                                     <?php else :?>
                                       <img id="qrcode" src="<?= base_url('assets/esurat/img/QRCode/'.str_replace("/", "_",$onepmr->no_surat).'.png')?>" alt="QRCode" width="150"/>
                                     <?php endif ;?>
@@ -772,53 +743,90 @@
                             </div>
                             <!-- / Row -->
 
-                            <div class="card card-outline collapsed-card card-info">
-                              <div class="card-header">
-                                <h4 class="card-title " text-align="center"><strong>Surat Yang Di Minta</strong></h4>
-                                <div class="card-tools">
-                                  <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
-                                    <i class="fas fa-plus"></i>
-                                  </button>
-                                  <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
-                                    <i class="fas fa-times"></i>
-                                  </button>
-                                </div>
-                              </div>
-                              <div class="card-body">
-
-                                <!-- Hasil Surat -->
-                                <div class="form-group row">
-
-                                  <label class="col-md-2 col-form-label"><?= $page ?></label>
-                                  <div class="col-md-12">
-                                    <textarea  class="form-control" id="suratKonfirmasi" placeholder="Header Surat" readonly> 
-                                      <?= $this->parser->parse_string($isi, $komponen, TRUE);
-                                      ?>
-                                    </textarea>
-                                  </div>
-
-                                </div>
-                                <!-- / Hasil Surat -->
-
-                              </div>
-                              <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-
-                            <div class="form-group justify-content-between">
-                              <a class="btn btn-secondary btn-sm" href="<?php echo base_url('admin/sPermintaanSurat');?>">
-                                <i class="fas fa-arrow-left"></i>&ensp;Back
-                              </a>
-
-                              <button type="submit" class="btn btn-primary btn-sm float-right">Confirm &ensp;<i class="fas fa-arrow-right"></i></button>
-                            </div>             
-                          </form>
+                          </div>
+                          <!-- /.card-body -->
                         </div>
-                        <!-- /.card-body -->
-                      </div>
-                      <!-- /.card -->
+                        <!-- /.card -->
+
+                        <div class="card card-outline collapsed-card card-info">
+                          <div class="card-header">
+                            <h4 class="card-title " text-align="center"><strong>Surat Yang Di Minta</strong></h4>
+                            <div class="card-tools">
+                              <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+                                <i class="fas fa-plus"></i>
+                              </button>
+                              <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                              </button>
+                            </div>
+                          </div>
+                          <div class="card-body">
+
+                            <!-- Hasil Surat -->
+                            <div class="form-group row">
+
+                              <label class="col-md-2 col-form-label"><?= $page ?></label>
+                              <div class="col-md-12">
+                                <textarea  class="form-control" id="suratKonfirmasi" placeholder="Header Surat" readonly> 
+                                  <?= $this->parser->parse_string($isi, $komponen, TRUE);
+                                  ?>
+                                </textarea>
+                              </div>
+
+                            </div>
+                            <!-- / Hasil Surat -->
+
+                          </div>
+                          <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+
+                        <div class="card card-outline card-info">
+                          <div class="card-footer justify-content-between">
+                            <a class="btn btn-secondary btn-sm" href="<?php echo base_url('admin/sPermintaanSurat');?>">
+                              <i class="fas fa-arrow-left"></i>&ensp;Back
+                            </a>
+                            <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#pengajuanDeleteModal<?= $onesur->id_permintaan;?>">
+                              <i class="fas fa-trash"></i>&ensp;Tolak
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-sm float-right">Confirm &ensp;<i class="fas fa-arrow-right"></i></button>
+                          </div>
+                        </div>
+                        <!-- /.card -->
+
+                      </form>
+
                     </div>
                     <!-- /.container-fluid -->
+
+                    <div class="modal fade" id="pengajuanDeleteModal<?= $onesur->id_permintaan;?>">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header card-outline card-danger">
+                            <h5 class="modal-title">Alasan Penolakan</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <form id="alasan_form" method="POST">
+                            <div class="modal-body">
+                              <div class="form-group">
+                                <input type="hidden" class="form-control" id="idalasan"  readonly value="<?= $onesur->id_permintaan;?>">
+                                <textarea class="form-control" id="alasan" name="alasan" placeholder="Alasan Penolakan"></textarea>
+                              </div>
+
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i>&ensp;Close</button>
+                              <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i>&ensp;Tolak</button>
+                            </div>
+                          </form>
+                        </div>
+                        <!-- /.modal-content -->
+                      </div>
+                      <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
                   </section>
 
                   <script type="text/javascript">
@@ -833,7 +841,7 @@
                      } );
 
                       $( "#generatePmr" ).click(function() {
-                        var id = $('#zz').val();
+                        var id = <?= $onesur->id_permintaan?>;
                         Swal.fire({
                           title: 'Loading...',
                           html: 'Please wait Generating No Surat, Enkripsi and Convert',
@@ -899,6 +907,39 @@
                             });
                           }
                         })
+                      });
+
+                      $('#alasan_form').on('submit', function(event){
+                        event.preventDefault();
+                        var idalasan = $('#idalasan').val();
+                        var alasan = $('#alasan').val();
+                        $.ajax({
+                          type:'POST',
+                          url:baseURL+'permintaan/permintaanTolak',
+                          data: {idalasan:idalasan,alasan:alasan},
+                          dataType: 'json',
+                          success: function(data){
+                            if (data.success == true ){
+                              if (data.url == true) {
+                                window.location.href = data.toastr;
+                                window.location.href = data.redirect;
+                              }else{
+                                window.location.href = data.toastr;
+                                window.location.href = data.redirect;
+                              }
+                            }else{
+                              $.each(data.messages, function(key, value){
+                                var element = $('#' + key);
+                                element.closest('.form-control')
+                                .removeClass('is-invalid')
+                                .addClass(value.length > 0 ? 'is-invalid' : 'is-valid');
+                                element.closest('div.form-group').find('.text-danger')
+                                .remove();
+                                element.after(value);
+                              });
+                            }
+                          }  
+                        });
                       });
 
                     }

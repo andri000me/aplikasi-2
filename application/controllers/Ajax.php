@@ -124,34 +124,6 @@ class Ajax extends CI_Controller {
 
 	}
 
-	public function permintaanDelete(){
-
-		$data = array('success' => false,'messages' => array());
-		$this->form_validation->set_rules('id_permintaan','ID Permintaan','required');
-		$this->form_validation->set_rules('alasanSurat','AlasanSurat','required');
-		$this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
-		$id_permintaan = $this->input->post("id_permintaan");
-		$alasanSurat = $this->input->post("alasanSurat");
-		$query = $this->admin_model->getOneMhs($this->admin_model->getOnePmr($id_permintaan)->permintaan_by);
-		// $notif = [
-
-		// 	'comment_subject' => 'Surat Di Tolak',
-		// 	'comment_text' => 'Surat Yang Anda Ajukan Pada tanggal '.$this->admin_model->getOnePmr($id_permintaan)->permintaan_tgl.' Di Tolak',
-		// 	'comment_surat' => 'N',
-		// 	'comment_to' => $this->admin_model->getOnePmr($id_permintaan)->permintaan_by,
-		// 	'comment_date' => $this->db->escape_str(date('Y-m-d'),true),
-		// 	'comment_status' => 0
-
-		// ];
-
-		// $this->db->insert('esurat_comments',$notif);
-		$data['id_permintaan'] =  "Yang Diajuakan Oleh $query->nmmhs";
-		$this->db->delete('esurat_permintaan',['id_permintaan' => $id_permintaan]);
-
-		echo json_encode($data);
-
-	}
-
 	/*-- Server-side Data Surat Selesai --*/
 	public function get_data_sls(){
 
@@ -176,7 +148,7 @@ class Ajax extends CI_Controller {
 			$row[] = '
 			<a style="margin-right:10px" href="../Konfirmasi/konfirmasiDetail/'.$this->encrypt->encode($field->id_konfirmasi).'/'.$this->encrypt->encode($field->kd_surat).'"><i class="fas fa-info-circle text-info"></i></a>
 			<a style="margin-right:10px" href="#" id="'.$field->id_konfirmasi.'" onclick="deletesls('.$field->id_konfirmasi.')" title="Delete"><i class="fas fa-trash text-danger"></i></a>
-			<a style="margin-right:10px" href="../Konfirmasi/konfirmasiDetail/'.$this->encrypt->encode($field->id_konfirmasi).'/'.$this->encrypt->encode($field->kd_surat).'" target="_blank" title="Edit"><i class="fas fa-print text-primary"></i></a>
+			<a style="margin-right:10px" href="../Prints/printSurat/'.$this->encrypt->encode($field->id_konfirmasi).'/'.$this->encrypt->encode($field->kd_surat).'" target="_blank" title="Edit"><i class="fas fa-print text-primary"></i></a>
 			';
 
 			$data[] = $row;
@@ -206,5 +178,60 @@ class Ajax extends CI_Controller {
 		echo json_encode($data);
 		
 	}
+
+
+	public function searchEn(){
+		$kode = $this->input->post("kode");
+		$conSurat = "Auth/Surat/";
+		$website = $this->input->post("website");
+		$datap = str_replace($website,"", $kode);
+		$pecahkode = str_replace($conSurat,"", $datap);
+
+		$data = array('success' => false,'messages' => array());
+		$this->form_validation->set_rules('kode','Chipertext','trim|required');
+		$this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
+		if($this->form_validation->run()){
+
+			$enkriptext = $this->ajax_model->getSearchEn($pecahkode);
+
+			{
+
+				foreach ($_POST as $key => $value) {
+					$data['messages'][$key] = form_error($key);
+				}
+			}
+			echo json_encode($enkriptext);
+		}
+	}
+
+	public function getDekripsi(){
+
+		$kode=$this->input->post("kode");
+		$n=$this->input->post("n");
+		$d=$this->input->post("d");
+
+
+
+		$data = array('success' => false,'messages' => array());
+		$this->form_validation->set_rules('kode','Kode','trim|required');
+		$this->form_validation->set_rules('n','N','trim|required');
+		$this->form_validation->set_rules('d','D','trim|required');
+		$this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
+		if($this->form_validation->run()){
+
+			$hasil = deskripsi($kode, $d, $n);
+			$data['dekripsi'] =  $hasil;
+			$data['success'] =  true;
+
+
+		}else{
+
+			foreach ($_POST as $key => $value) {
+				$data['messages'][$key] = form_error($key);
+			}
+		}
+		echo json_encode($data);
+	}
+
 
 }

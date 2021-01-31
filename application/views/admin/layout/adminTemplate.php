@@ -94,6 +94,8 @@
   <script src="<?= base_url('assets/AdminLTE-3.1.0-rc/')?>dist/js/demo.js"></script>
   <!-- CKeditor -->
   <script src="<?= base_url('assets/ckeditor_4.15.1_full/');?>ckeditor.js"></script>
+  <!--Html5-QRCode -->
+  <script src="<?= base_url('assets/html5-qrcode-master/');?>minified/html5-qrcode.min.js"></script>
   <!-- Costum JS -->
   <?php include "adminJs.php" ; ?>
   <!-- Costum JS -->
