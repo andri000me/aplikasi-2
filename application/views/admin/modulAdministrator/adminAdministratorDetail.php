@@ -80,7 +80,7 @@
                 </div>
               </div>
             </div>
-            <div class="form-group row ml-3  mr-3">
+            <div class="form-group row">
               <label for="detaildAdministratorAddress" class="col-sm-2 col-form-label">Address</label>
               <div class="col-sm-10">
                 <textarea class="form-control" id="detaildAdministratorAddress" rows="3" placeholder="Addess" disabled><?php echo $oneadm->address; ?></textarea>

@@ -25,44 +25,29 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3><?= $mhs?></h3>
 
-                <p>New Orders</p>
+                <p>Data Mahasiswa</p>
               </div>
               <div class="icon">
-                <i class="ion ion-bag"></i>
+                <i class="ion ion-android-people"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?= base_url('admin/dMahasiswa')?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-success">
+            <div class="small-box bg-primary">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <h3><?= $surat?></h3>
 
-                <p>Bounce Rate</p>
+                <p>List Surat</p>
               </div>
               <div class="icon">
-                <i class="ion ion-stats-bars"></i>
+                <i class="ion ion-email"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3>44</h3>
-
-                <p>User Registrations</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-person-add"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?= base_url('admin/sListSurat')?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -70,14 +55,29 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>65</h3>
+                <h3><?= $permintaan?></h3>
 
-                <p>Unique Visitors</p>
+                <p>Permintaan Surat</p>
               </div>
               <div class="icon">
-                <i class="ion ion-pie-graph"></i>
+                <i class="ion ion-email-unread"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?= base_url('admin/sPermintaanSurat')?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3><?= $selesai?></h3>
+
+                <p>Surat Selesai</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-folder"></i>
+              </div>
+              <a href="<?= base_url('admin/sSuratSelesai')?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -91,8 +91,8 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
-                  <i class="fas fa-chart-pie mr-1"></i>
-                  Sales
+                  <i class="fas fa-envelope-open mr-1"></i>
+                  Data Surat yang Telah di Konfirmasi terakhir
                 </h3>
                 <!-- card tools -->
                 <div class="card-tools">
@@ -106,7 +106,29 @@
                 <!-- /.card-tools -->
               </div><!-- /.card-header -->
               <div class="card-body">
-              </div><!-- /.card-body -->
+
+                <?php foreach($kfmlimit as $row) :?>
+                  <div class="post ">
+                    <div class="user-block">
+                      <img class="img-circle img-bordered-sm" src="<?= base_url('assets/esurat/img/profile/avatar04.png')?>" alt="user image">
+                      <span class="username">
+                        <a href="#"><?= $row->nmmhs?></a>
+                      </span>
+                      <span class="description"><?= $row->nim;?> - <?= date('d F Y H:i:s', strtotime($row->permintaan_tgl));?></span>
+                    </div>
+                    <!-- /.user-block -->
+                    <p>
+                      <?= $row->nm_surat ;?>
+                    </p>
+                  </div>
+                <?php endforeach;?>
+
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer text-center">
+                <a href="<?= base_url('admin/sSuratSelesai')?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+              <!-- /.card-footer -->
             </div>
             <!-- /.card -->
 
@@ -119,8 +141,8 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
-                  <i class="fas fa-map-marker-alt mr-1"></i>
-                  Visitors
+                  <i class="fas fa-envelope mr-1"></i>
+                  Data Permintaan Surat Terakhir
                 </h3>
                 <!-- card tools -->
                 <div class="card-tools">
@@ -134,9 +156,27 @@
                 <!-- /.card-tools -->
               </div>
               <div class="card-body">
-
+                <?php foreach($pmrlimit as $pl) :?>
+                  <div class="post ">
+                    <div class="user-block">
+                      <img class="img-circle img-bordered-sm" src="<?= base_url('assets/esurat/img/profile/avatar04.png')?>" alt="user image">
+                      <span class="username">
+                        <a href="#"><?= $pl->nmmhs?></a>
+                      </span>
+                      <span class="description"><?= $pl->nim;?> - <?= date('d F Y H:i:s', strtotime($pl->permintaan_tgl));?></span>
+                    </div>
+                    <!-- /.user-block -->
+                    <p>
+                      <?= $pl->nm_surat ;?>
+                    </p>
+                  </div>
+                <?php endforeach;?>
               </div>
               <!-- /.card-body-->
+              <div class="card-footer text-center">
+                <a href="<?= base_url('admin/sPermintaanSurat')?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+
             </div>
             <!-- /.card -->
 

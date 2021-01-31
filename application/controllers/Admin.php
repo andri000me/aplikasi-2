@@ -20,12 +20,12 @@ class Admin extends CI_Controller {
 	public function index(){
 
 		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
-		// $data['mhs'] = $this->admin_model->getCountMhs();
-		// $data['surat'] = $this->admin_model->getCountlist();
-		// $data['permintaan'] = $this->admin_model->getCountPmr();
-		// $data['selesai'] = $this->admin_model->getCountSls();
-		// $data['pmrlimit'] = $this->admin_model->getPmrLimit();
-		// $data['slslimit'] = $this->admin_model->getSlsLimit();
+		$data['mhs'] = $this->admin_model->getCountMhs();
+		$data['surat'] = $this->admin_model->getCountlist();
+		$data['permintaan'] = $this->admin_model->getCountPmr();
+		$data['selesai'] = $this->admin_model->getCountKfm();
+		$data['pmrlimit'] = $this->admin_model->getPmrLimit();
+		$data['kfmlimit'] = $this->admin_model->getKfmLimit();
 
 		$data['title'] = "Admin | Dashboard";
 		$data['parent'] = "Dashboard";
@@ -985,5 +985,208 @@ class Admin extends CI_Controller {
 		$data['page'] = "Validasi Surat";
 		$this->template->load('admin/layout/adminTemplate','admin/modulValidasiSurat/adminValidasiSurat',$data);
 	}
+
+
+	public function laporan(){
+		if (count($this->uri->segment_array()) > 2) {
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin/laporan');
+		}
+
+		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
+		$data['nimlaporan'] = $this->admin_model->getMhs(); 
+		$this->form_validation->set_rules('status', 'Pilih Status Surat','required');
+		$this->form_validation->set_rules('permintaan_by', 'Pilih Status Surat','trim');
+		$this->form_validation->set_rules('awalPeriode', 'Awal Periode','required');
+		$this->form_validation->set_rules('akhirPeriode', 'Akhir Periode','required');
+
+		if($this->form_validation->run() == false){
+			$data['title'] = "Admin | Laporan Surat";
+			$data['parent'] = "Laporan Data Surat";			
+			$data['page'] = "Laporan Data Surat";
+			$this->output->set_header('HTTP/1.0 200 OK');
+			$this->output->set_header('HTTP/1.1 200 OK');
+			$this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT');
+			$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate');
+			$this->output->set_header('Cache-Control: post-check=0, pre-check=0');
+			$this->output->set_header('Pragma: no-cache');
+			$this->template->load('admin/layout/adminTemplate','admin/modulLaporan/adminLaporan',$data);
+
+		}else{
+
+			$status = $this->input->post('status');
+			$nim = $this->input->post('permintaan_by');
+			$awal = $this->input->post('awalPeriode');
+			// $awal = '2020-08-01 02:10:28';
+			// $akhir = '2020-12-01 02:10:28';
+			$akhir = $this->input->post('akhirPeriode');
+
+			if($status == 'PENDING'){
+				$tabel = 'esurat_permintaan';
+				$nametab = 'Permintaan Surat';
+				$orderby = 'id_permintaan';
+			}else{
+				$tabel = 'esurat_konfirmasi';
+				$nametab = 'Permintaan Surat';
+				$orderby = 'id_konfirmasi';
+			};
+
+			if($nim == NULL){
+				$query = "SELECT * FROM $tabel WHERE permintaan_tgl BETWEEN CAST('$awal' AS DATETIME) AND CAST('$akhir' AS DATETIME) ORDER BY $orderby DESC";
+			}else{
+				$query = "SELECT * FROM $tabel WHERE permintaan_tgl BETWEEN CAST('$awal' AS DATETIME) AND CAST('$akhir' AS DATETIME) AND permintaan_by = $nim ORDER BY $orderby DESC";
+			}
+
+			$data['hasil'] = $this->db->query($query)->result();
+			$data['title'] = "Admin | Laporan Surat";
+			$data['parent'] = "Laporan Data Surat";		
+			$data['page'] = "Laporan Data Surat";
+			$this->template->load('admin/layout/adminTemplate','admin/modulLaporan/adminLaporan',$data);
+
+		}
+	}
+
+	public function nMenu(){
+
+		if (count($this->uri->segment_array()) > 2) {
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin/nMenu');
+		}
+
+		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
+		$data['role'] = $this->db->get('esurat_role')->result();
+		$data['allmenu'] = $this->admin_model->getAllMenu();
+
+		$this->form_validation->set_rules('a','Menu Title','required');
+		$this->form_validation->set_rules('b','Menu For','required');
+		$this->form_validation->set_rules('c','Menu Url','required');
+		$this->form_validation->set_rules('d','Menu Icon','required');
+
+		if($this->form_validation->run() == false){
+
+			$data['title'] = "Admin | Menu";
+			$data['parent'] = "Navigation";
+			$data['page'] = "Menu ";
+			$this->template->load('admin/layout/adminTemplate','admin/modulMenu/adminMenu',$data);
+
+		}else{
+
+			$data = [
+				'title' => $this->input->post('a'),
+				'role_id' => $this->input->post('b'),
+				'url' => $this->input->post('c'),
+				'icon' => $this->input->post('d'),
+				'is_main_menu' => $this->input->post('e'),
+				'is_active' => $this->input->post('f')
+			];
+			$this->db->insert('esurat_menu',$data);
+			$this->toastr->success('Menu Has '.$this->input->post('a').' Added!');
+			redirect('admin/nMenu');
+		}
+	}
+
+	public function nMenuEdit(){
+
+		if (count($this->uri->segment_array()) > 2) {
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin/nMenu');
+		}
+
+		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
+		$data['role'] = $this->db->get('esurat_role')->result();
+		$data['allmenu'] = $this->admin_model->getAllMenu();
+
+		$this->form_validation->set_rules('a','Menu Title','required');
+		$this->form_validation->set_rules('b','Menu For','required');
+		$this->form_validation->set_rules('c','Menu Url','required');
+		$this->form_validation->set_rules('d','Menu Icon','required');
+
+		if($this->form_validation->run() == false){
+
+			$data['title'] = "Admin | Menu";
+			$data['parent'] = "Navigation";
+			$data['page'] = "Menu ";
+			$this->template->load('admin/layout/adminTemplate','admin/modulMenu/adminMenu',$data);
+
+		}else{
+
+			$data = [
+				'title' => $this->input->post('a'),
+				'role_id' => $this->input->post('b'),
+				'url' => $this->input->post('c'), 
+				'icon' => $this->input->post('d'),
+				'is_main_menu' => $this->input->post('e'),  
+				'is_active' => $this->input->post('f')
+			];
+			$this->db->where('id_menu', $this->input->post('g'));
+			$this->db->update('esurat_menu',$data);
+			$this->toastr->success(' Menu Has '.$this->input->post('a').' Updated!');
+			redirect('admin/nMenu');
+
+		}
+	}
+
+	public function nMenuDelete($id_menu){
+
+		$this->db->delete('esurat_menu',['id_menu' => $this->encrypt->decode($id_menu)]);
+		$this->toastr->success(' Menu Deleted!');
+		redirect('admin/nMenu');
+	}
+
+	public function nRole(){
+
+		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
+		$data['allrole'] = $this->admin_model->getAllRole();
+
+		$this->form_validation->set_rules('a','Role Name','required');
+
+		if($this->form_validation->run() == false){
+
+			$data['title'] = "Admin | Role";
+			$data['parent'] = "Navigation";
+			$data['page'] = "Role ";
+			$this->template->load('admin/layout/adminTemplate','admin/modulRole/adminRole',$data);
+
+		}else{
+
+			$this->db->insert('esurat_role',['access' => $this->input->post('a')]);
+			$this->toastr->success(' New Role '.$this->input->post('a').' Added !');
+			redirect('admin/nRole');
+		}
+	}
+
+	public function nRoleEdit(){
+
+		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
+		$data['allrole'] = $this->admin_model->getAllRole();
+
+		$this->form_validation->set_rules('a','Role Name','required');
+
+		if($this->form_validation->run() == false){
+
+			$data['title'] = "Admin | Role";
+			$data['parent'] = "Navigation";
+			$data['page'] = "Role ";
+			$this->template->load('admin/layout/adminTemplate','admin/modulRole/adminRole',$data);
+
+		}else{
+
+			$data = [
+				'access' => $this->input->post('a')
+			];
+			$this->db->where('id', $this->input->post('b'));
+			$this->db->update('esurat_role',$data);
+			$this->toastr->success(' Role '.$this->input->post('a').' Updated !');
+			redirect('admin/nRole');
+		}
+	}
+
+	public function nRoleDelete($id){
+
+		$this->db->delete('esurat_role',['id' => $id]);
+		$this->toastr->success(' Role Deleted!');
+		redirect('admin/nRole');
+	}
+
 
 }

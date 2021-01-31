@@ -1,5 +1,5 @@
       <!-- Brand Logo -->
-      <a href="index3.html" class="brand-link">
+      <a href="<?= base_url('admin')?>" class="brand-link">
         <img src="<?= base_url('assets/AdminLTE-3.1.0-rc/')?>dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">E-Surat</span>
       </a>
