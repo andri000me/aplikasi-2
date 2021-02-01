@@ -262,4 +262,25 @@ class Ajax_model extends CI_Model {
 		return $this->db->query($query)->row();
 	}
 
+	public function fetchAddMenu($role_id){
+
+		$this->db->where('role_id', $role_id);
+		$this->db->order_by('title', 'ASC');
+		$query = $this->db->get('esurat_menu');
+		$output = '<option value="0">Select SubMenu Tree</option>';
+		$output = '<option value="0">Kosong</option>';
+		foreach($query->result() as $row){
+
+			if($row->is_main_menu == 0){
+
+				$output .= '<option value="'.$row->id_menu.'">'.$row->title.'</option>';
+
+			}
+
+		}
+
+		return $output;
+
+	}
+
 }

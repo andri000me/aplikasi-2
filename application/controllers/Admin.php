@@ -780,9 +780,6 @@ class Admin extends CI_Controller {
 
 		}else{
 
-			$input = '{"kops" : "'.$this->input->post('kopSurat').'", "header" : "'.$this->input->post('headerSurat').'", "isi" : "'.$this->input->post('isiSurat').'", "footer" : "'.$this->input->post('footerSurat').'"}';
-			$json = json_encode($input);
-
 			$data = [
 
 				'kd_surat' =>  $this->db->escape_str(strtoupper($this->input->post('kodeSurat')),true),
@@ -792,7 +789,6 @@ class Admin extends CI_Controller {
 				'isi_surat' => $this->input->post('isiSurat'),
 				'footer_surat' => $this->input->post('footerSurat'),
 				'access' => $this->db->escape_str($this->input->post('access'),true),
-				'detail' => $json
 
 			];
 
@@ -883,13 +879,13 @@ class Admin extends CI_Controller {
 
 			$data = [
 
-				'kd_surat' => $this->input->post('kodeSurat'),
-				'nm_surat' => $this->input->post('namaSurat'),
+				'kd_surat' => $this->db->escape_str($this->input->post('kodeSurat'),true),
+				'nm_surat' => $this->db->escape_str($this->input->post('namaSurat'),true),
 				'kop_surat' => $this->input->post('kopSurat'),
 				'header_surat' => $this->input->post('headerSurat'),
 				'isi_surat' => $this->input->post('isiSurat'),
 				'footer_surat' => $this->input->post('footerSurat'),
-				'access' => $this->input->post('access')
+				'access' => $this->db->escape_str($this->input->post('access'),true)
 
 			];
 
@@ -1057,32 +1053,12 @@ class Admin extends CI_Controller {
 		$data['role'] = $this->db->get('esurat_role')->result();
 		$data['allmenu'] = $this->admin_model->getAllMenu();
 
-		$this->form_validation->set_rules('a','Menu Title','required');
-		$this->form_validation->set_rules('b','Menu For','required');
-		$this->form_validation->set_rules('c','Menu Url','required');
-		$this->form_validation->set_rules('d','Menu Icon','required');
+		$data['title'] = "Admin | Menu";
+		$data['parent'] = "Navigation";
+		$data['page'] = "Menu ";
+		$this->template->load('admin/layout/adminTemplate','admin/modulMenu/adminMenu',$data);
 
-		if($this->form_validation->run() == false){
 
-			$data['title'] = "Admin | Menu";
-			$data['parent'] = "Navigation";
-			$data['page'] = "Menu ";
-			$this->template->load('admin/layout/adminTemplate','admin/modulMenu/adminMenu',$data);
-
-		}else{
-
-			$data = [
-				'title' => $this->input->post('a'),
-				'role_id' => $this->input->post('b'),
-				'url' => $this->input->post('c'),
-				'icon' => $this->input->post('d'),
-				'is_main_menu' => $this->input->post('e'),
-				'is_active' => $this->input->post('f')
-			];
-			$this->db->insert('esurat_menu',$data);
-			$this->toastr->success('Menu Has '.$this->input->post('a').' Added!');
-			redirect('admin/nMenu');
-		}
 	}
 
 	public function nMenuEdit(){
@@ -1186,6 +1162,65 @@ class Admin extends CI_Controller {
 		$this->db->delete('esurat_role',['id' => $id]);
 		$this->toastr->success(' Role Deleted!');
 		redirect('admin/nRole');
+	}
+
+
+	public function nMenuAdd(){
+
+		if (!$this->input->is_ajax_request()) {
+
+			echo 'No direct script is allowed';
+			die;
+			
+		}
+
+		$title = $this->input->post('menuTitleAdd');
+		$for = $this->input->post('menuForAdd');
+		$url = $this->input->post('menuUrlAdd');
+		$icon = $this->input->post('menuIconAdd');
+		$tree = $this->input->post('menuTreeAdd');
+		$active = $this->input->post('menuActiveAdd');
+
+		$data = array('success' => false,'messages' => array());
+		$this->form_validation->set_rules('menuTitleAdd','Title Menu','required');
+		$this->form_validation->set_rules('menuForAdd','Menu di Tujukan','required');
+		$this->form_validation->set_rules('menuUrlAdd','Url Menu','required');
+		$this->form_validation->set_rules('menuIconAdd','Icon Menu','required');
+		$this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
+
+		if($this->form_validation->run()){
+
+			$menu = [
+
+				'title' => $this->db->escape_str($title,true),
+				'role_id' => $this->db->escape_str($for,true),
+				'url' => $this->db->escape_str($url,true),
+				'icon' => $this->db->escape_str($icon,true),
+				'is_main_menu' => $this->db->escape_str($tree,true),
+				'is_active' => $this->db->escape_str($active,true)
+
+			];
+
+			$this->db->insert('esurat_menu',$menu);
+
+			$data['title'] = 'Success';
+			$data['nama'] = 'Menu  Berhasil '.$title.' Ditambahkan';
+			$data['type'] = 'success';
+			$data['redirect'] = base_url('admin/nMenu');
+			$data['url'] = true;
+			$data['success'] = true;
+		}else{
+
+			foreach ($_POST as $key => $value) {
+
+				$data['messages'][$key] = form_error($key);
+
+			}
+
+		}
+
+		echo json_encode($data);
+
 	}
 
 

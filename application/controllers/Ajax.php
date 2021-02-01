@@ -233,5 +233,11 @@ class Ajax extends CI_Controller {
 		echo json_encode($data);
 	}
 
+	public function fetchAddMenu(){
+		if($this->input->post('role_id')){
+			echo $this->ajax_model->fetchAddMenu($this->input->post('role_id'));
+		}
+
+	}
 
 }

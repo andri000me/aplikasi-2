@@ -65,6 +65,7 @@ $(function () {
   $('#seachExample').keyup(function(){
     table.search($(this).val()).draw() ;
   });
+
 })
 
 /*-- Costum Sweetalert2 --*/

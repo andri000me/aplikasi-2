@@ -92,42 +92,42 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form action="<?= base_url('admin/nMenu'); ?>" method="post">
+          <form id="menu_add" method="POST">
             <div class="modal-body">
               <div class="form-group">
-                <label for="addMenuTitle">Menu Title</label>
-                <input type="text" name="a" class="form-control" id="addMenuTitle" placeholder="Menu title">
-                <?php echo form_error('a', '<small class="text-danger pl-3">', '</small>');?>
+                <label for="menuTitleAdd">Menu Title</label>
+                <input type="text" name="menuTitleAdd" class="form-control" id="menuTitleAdd" placeholder="Menu title">
+                <?php echo form_error('menuTitleAdd', '<small class="text-danger pl-3">', '</small>');?>
               </div>
               <div class="form-group">
-                <label for="addMenuFor">Menu For</label>
-                <select name="b" id="addMenuFor" class="form-control">
+                <label for="menuForAdd">Menu For</label>
+                <select name="menuForAdd" id="menuForAdd" class="form-control" style="width: 100%">
                   <option value="">Select Menu For</option>
                   <option value="1">Admin</option>
                   <option value="2">Mahasiswa</option>
                 </select>
-                <?php echo form_error('b', '<small class="text-danger pl-3">', '</small>');?>
+                <?php echo form_error('menuForAdd', '<small class="text-danger pl-3">', '</small>');?>
               </div>
               <div class="form-group">
-                <label for="addMenuUrl">Menu Url</label>
-                <input type="text" name="c" class="form-control" id="addMenuUrl" placeholder="Menu url">
-                <?php echo form_error('c', '<small class="text-danger pl-3">', '</small>');?>
+                <label for="menuUrlAdd">Menu Url</label>
+                <input type="text" name="menuUrlAdd" class="form-control" id="menuUrlAdd" placeholder="Menu url">
+                <?php echo form_error('menuUrlAdd', '<small class="text-danger pl-3">', '</small>');?>
               </div>
               <div class="form-group">
-                <label for="addMenuIcon">Menu Icon</label>
-                <input type="text" name="d" class="form-control" id="addMenuIcon" placeholder="Menu icon">
-                <?php echo form_error('d', '<small class="text-danger pl-3">', '</small>');?>
+                <label for="menuIconAdd">Menu Icon</label>
+                <input type="text" name="menuIconAdd" class="form-control" id="menuIconAdd" placeholder="Menu icon">
+                <?php echo form_error('menuIconAdd', '<small class="text-danger pl-3">', '</small>');?>
               </div>
               <div class="form-group">
-                <label for="addMenuTree">Menu Tree / <text style="color: red">Bisa dikosongkan</text></label>
-                <select name="e" id="addMenuTree" class="form-control">
-                  <option value="0">Select Menu Tree</option>
+                <label for="menuTreeAdd">Menu Tree / <text style="color: red">Bisa dikosongkan</text></label>
+                <select name="menuTreeAdd" id="menuTreeAdd" class="form-control select2" style="width: 100%">
+                  <option value="0">Select Menu For First</option>
                 </select>
               </div>
               <div class="form-group">
                 <div class="form-check">
-                  <input class="form-check-input" value="1" name="f" type="checkbox" value="1" id="addMenuActive" checked>
-                  <label class="form-check-label" for="addMenuActive">
+                  <input class="form-check-input" value="1" name="menuActiveAdd" type="checkbox" value="1" id="menuActiveAdd" checked>
+                  <label class="form-check-label" for="menuActiveAdd">
                     Active?
                   </label>
                 </div>
@@ -225,18 +225,19 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="<?= base_url('admin/nMenuedit'); ?>" method="post">
+        <form id="menu_edit" method="post">
           <div class="modal-body">
 
-            <input type="hidden" readonly value="<?= $alme->id_menu ;?>" name="g" class="form-control" >
+            <input type="hidden" readonly value="<?= $alme->id_menu ;?>" id="menuEdit" class="form-control" >
 
             <div class="form-group">
-              <label id="editMenuTitle">Menu Title</label>
-              <input type="text" name="a" class="form-control" for="editMenuTitle" placeholder="Menu Title" value="<?= $alme->title;?>">
+              <label for="menuTitleEdit">Menu Title</label>
+              <input type="text" name="menuTitleEdit" class="form-control" id="menuTitleEdit" placeholder="Menu Title" value="<?= $alme->title;?>">
+              <?php echo form_error('menuTitleEdit', '<small class="text-danger pl-3">', '</small>');?>
             </div>
             <div class="form-group">
-              <label id="editMenuFor">Menu For</label>
-              <select name="b" for="editMenuFor" class="form-control">
+              <label for="menuForEdit">Menu For</label>
+              <select name="menuForEdit" id="menuForEdit" class="form-control">
                 <?php
                 foreach ($role as $rol) {
                   if($alme->role_id == $rol->id){
@@ -247,41 +248,36 @@
                 }
                 ;?>
               </select>
+              <?php echo form_error('menuForEdit', '<small class="text-danger pl-3">', '</small>');?>
             </div>
             <div class="form-group">
-              <label id="editMenuUrl">Menu Url</label>
-              <input type="text" name="c" class="form-control" for="editMenuUrl" placeholder="Menu url" value="<?= $alme->url;?>">
+              <label for="editMenuUrl">Menu Url</label>
+              <input type="text" name="editMenuUrl" class="form-control" id="editMenuUrl" placeholder="Menu url" value="<?= $alme->url;?>">
+              <?php echo form_error('editMenuUrl', '<small class="text-danger pl-3">', '</small>');?>
             </div>
             <div class="form-group">
-              <label id="editMenuIcon">Menu Icon</label>
-              <input type="text" name="d" class="form-control" for="editMenuIcon" placeholder="Menu icon" value="<?= $alme->icon;?>">
+              <label for="menuIconEdit">Menu Icon</label>
+              <input type="text" name="menuIconEdit" class="form-control" id="menuIconEdit" placeholder="Menu icon" value="<?= $alme->icon;?>">
+              <?php echo form_error('menuIconEdit', '<small class="text-danger pl-3">', '</small>');?>
             </div>
             <div class="form-group">
-              <label id="editMenuTree">Menu Tree</label>
-              <select name="e" for="editMenuTree" class="form-control">
+              <label for="menuTreeEdit">Menu Tree</label>
+              <select name="menuTreeEdit" id="menuTreeEdit" class="form-control select2" style="width: 100%">
                 <option value="0">Select Menu Tree</option>
                 <option  value="0" selected>Kosong</option>
-                <?php
-                foreach ($allmenu as $allme) {
-                  if($alme->is_main_menu == $allme->id_menu && $allme->is_main_menu == 0){
-                    echo '<option value="'. $allme->id_menu.'" selected>'.$allme->title.'</option>';
-                  }elseif($allme->is_main_menu == 0){
-                    echo '<option value="'. $allme->id_menu.'">'.$allme->title.'</option>';
-                  }
-                }
-                ;?>
               </select>
+              <?php echo form_error('menuTreeEdit', '<small class="text-danger pl-3">', '</small>');?>
             </div>
             <div class="form-group">
               <div class="form-check">
                 <?php 
                 if($alme->is_active == 1){
-                  echo '<input class="form-check-input" value="1" name="f" type="checkbox" for="editSubMenuActive" checked>';
+                  echo '<input class="form-check-input" value="1" name="menuActiveEdit" type="checkbox" id="menuActiveEdit" checked>';
                 }else{
-                  echo '<input class="form-check-input" value="1" name="f" type="checkbox" for="editSubMenuActive">';
+                  echo '<input class="form-check-input" value="0" name="menuActiveEdit" type="checkbox" id="menuActiveEdit">';
                 }
                 ;?>
-                <label class="form-check-label" id="editSubMenuActive">Active?</label>
+                <label class="form-check-label" for="menuActiveEdit">Active?</label>
               </div>
             </div>
           </div>
@@ -325,4 +321,155 @@
 <!-- /.modal -->
 
 </section>
-    <!-- /.content -->
+<!-- /.content -->
+
+<script type="text/javascript">
+
+  window.onload = function () {
+
+    $('#menuForAdd').change(function(){
+      var role_id = $('#menuForAdd').val();
+      if(role_id == ''){
+        document.getElementById("menuTreeAdd").innerHTML = '<option value="0">Select Menu For First</option>';
+      }else{
+        $.ajax({
+          url:baseURL+'ajax/fetchAddMenu',
+          method:"POST",
+          data:{role_id:role_id},
+          success:function(data){
+            $('#menuTreeAdd').html(data);
+          }
+        })
+      }
+    });
+
+    $('#menuForEdit').change(function(){
+      var role_id = $('#menuForEdit').val();
+      if(role_id == ''){
+        document.getElementById("menuTreeEdit").innerHTML = '<option value="0">Select Menu For First</option>';
+      }else{
+        $.ajax({
+          url:baseURL+'ajax/fetchAddMenu',
+          method:"POST",
+          data:{role_id:role_id},
+          success:function(data){
+            $('#menuTreeEdit').html(data);
+          }
+        })
+      }
+    });
+
+    $('#menu_add').on('submit', function(event){
+      event.preventDefault();
+      var menuTitleAdd = $('#menuTitleAdd').val();
+      var menuForAdd = $('#menuForAdd').val();
+      var menuUrlAdd = $('#menuUrlAdd').val();
+      var menuIconAdd = $('#menuIconAdd').val();
+      var menuTreeAdd = $('#menuTreeAdd').val();
+      var menuActiveAdd = $('#menuActiveAdd').val();
+      $.ajax({
+        type:'POST',
+        url:baseURL+'admin/nMenuAdd',
+        data: {
+          menuTitleAdd:menuTitleAdd,
+          menuForAdd:menuForAdd,
+          menuUrlAdd:menuUrlAdd,
+          menuIconAdd:menuIconAdd,
+          menuTreeAdd:menuTreeAdd,
+          menuActiveAdd:menuActiveAdd
+        },
+        dataType: 'json',
+        success: function(data){
+          if (data.success == true ){
+            if (data.url == true) {
+              Swal.fire({
+                icon: data.type,
+                title: data.title,
+                text:data.nama,
+                showConfirmButton: false,
+                timer: 2000
+              }).then((result) => {
+                window.location.href = data.redirect;
+              });
+            }else{
+              Swal.fire({
+                icon: data.type,
+                title: data.title,
+                text:data.nama,
+                showConfirmButton: false,
+                timer: 2000
+              });
+            };
+          }else{
+            $.each(data.messages, function(key, value){
+              var element = $('#' + key);
+              element.closest('.form-control')
+              .removeClass('is-invalid')
+              .addClass(value.length > 0 ? 'is-invalid' : 'is-valid');
+              element.closest('div.form-group').find('.text-danger')
+              .remove();
+              element.after(value);
+            });
+          }
+        }  
+      });
+    })
+
+    $('#menu_edit').on('submit', function(event){
+      event.preventDefault();
+      var menuTitleEdit = $('#menuTitleEdit').val();
+      var menuForEdit = $('#menuForEdit').val();
+      var menuUrlEdit = $('#menuUrlEdit').val();
+      var menuIconEdit = $('#menuIconEdit').val();
+      var menuTreeEdit = $('#menuTreeEdit').val();
+      var menuActiveEdit = $('#menuActiveEdit').val();
+      $.ajax({
+        type:'POST',
+        url:baseURL+'admin/nMenuEdit',
+        data: {
+          menuTitleEdit:menuTitleEdit,
+          menuForEdit:menuForEdit,
+          menuUrlEdit:menuUrlEdit,
+          menuIconEdit:menuIconEdit,
+          menuTreeEdit:menuTreeEdit,
+          menuActiveEdit:menuActiveEdit
+        },
+        dataType: 'json',
+        success: function(data){
+          if (data.success == true ){
+            if (data.url == true) {
+              Swal.fire({
+                icon: data.type,
+                title: data.title,
+                text:data.nama,
+                showConfirmButton: false,
+                timer: 2000
+              }).then((result) => {
+                window.location.href = data.redirect;
+              });
+            }else{
+              Swal.fire({
+                icon: data.type,
+                title: data.title,
+                text:data.nama,
+                showConfirmButton: false,
+                timer: 2000
+              });
+            };
+          }else{
+            $.each(data.messages, function(key, value){
+              var element = $('#' + key);
+              element.closest('.form-control')
+              .removeClass('is-invalid')
+              .addClass(value.length > 0 ? 'is-invalid' : 'is-valid');
+              element.closest('div.form-group').find('.text-danger')
+              .remove();
+              element.after(value);
+            });
+          }
+        }  
+      });
+    })
+
+  }
+</script>
