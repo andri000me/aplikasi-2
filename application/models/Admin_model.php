@@ -95,15 +95,24 @@ class Admin_model extends CI_Model {
 		return $this->db->query($query)->row();
 	}
 
-
 	public function getAllMenu(){
 		$query = "SELECT * FROM esurat_menu";
 		return $this->db->query($query)->result();
 	}
 
+	public function getOneMenu($id_menu){
+		$query = "SELECT * FROM esurat_menu WHERE id_menu LIKE '$id_menu' ";
+		return $this->db->query($query)->row();
+	}
+
 	public function getAllRole(){
 		$query = "SELECT * FROM esurat_role";
 		return $this->db->query($query)->result();
+	}
+
+	public function getOneRole($id){
+		$query = "SELECT * FROM esurat_role WHERE id LIKE '$id' ";
+		return $this->db->query($query)->row();
 	}
 
 }

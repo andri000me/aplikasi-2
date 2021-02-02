@@ -1050,7 +1050,7 @@ class Admin extends CI_Controller {
 		}
 
 		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
-		$data['role'] = $this->db->get('esurat_role')->result();
+		$data['allrole'] = $this->admin_model->getAllRole();
 		$data['allmenu'] = $this->admin_model->getAllMenu();
 
 		$data['title'] = "Admin | Menu";
@@ -1061,44 +1061,138 @@ class Admin extends CI_Controller {
 
 	}
 
-	public function nMenuEdit(){
-
-		if (count($this->uri->segment_array()) > 2) {
-			$this->toastr->error('Url Yang Anda Masukkan Salah');
-			redirect('admin/nMenu');
-		}
+	public function nMenuAdd(){
 
 		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
-		$data['role'] = $this->db->get('esurat_role')->result();
-		$data['allmenu'] = $this->admin_model->getAllMenu();
+		$data['allrole'] = $this->admin_model->getAllRole();
 
-		$this->form_validation->set_rules('a','Menu Title','required');
-		$this->form_validation->set_rules('b','Menu For','required');
-		$this->form_validation->set_rules('c','Menu Url','required');
-		$this->form_validation->set_rules('d','Menu Icon','required');
+		$this->form_validation->set_rules('menuTitleAdd','Nama Menu','required');
+		$this->form_validation->set_rules('menuForAdd','Menu Untuk','required');
+		$this->form_validation->set_rules('menuUrlAdd','Url Menu','required');
+		$this->form_validation->set_rules('menuIconAdd','Icon Menu','required');
 
 		if($this->form_validation->run() == false){
 
 			$data['title'] = "Admin | Menu";
-			$data['parent'] = "Navigation";
-			$data['page'] = "Menu ";
-			$this->template->load('admin/layout/adminTemplate','admin/modulMenu/adminMenu',$data);
+			$data['parent'] = "Menu";
+			$data['page'] = "Menu Add";
+			$this->template->load('admin/layout/adminTemplate','admin/modulMenu/adminMenuAdd',$data);
 
 		}else{
 
 			$data = [
-				'title' => $this->input->post('a'),
-				'role_id' => $this->input->post('b'),
-				'url' => $this->input->post('c'), 
-				'icon' => $this->input->post('d'),
-				'is_main_menu' => $this->input->post('e'),  
-				'is_active' => $this->input->post('f')
+
+				'role_id' => $this->db->escape_str($this->input->post('menuForAdd'),true),
+				'title' => $this->db->escape_str($this->input->post('menuTitleAdd'),true),
+				'url' => $this->db->escape_str($this->input->post('menuUrlAdd'),true),
+				'icon' => $this->db->escape_str($this->input->post('menuIconAdd'),true),
+				'is_main_menu' => $this->db->escape_str($this->input->post('menuTreeAdd'),true),
+				'is_active' => $this->db->escape_str($this->input->post('menuActiveAdd'),true)
+
 			];
-			$this->db->where('id_menu', $this->input->post('g'));
-			$this->db->update('esurat_menu',$data);
-			$this->toastr->success(' Menu Has '.$this->input->post('a').' Updated!');
+
+			$this->db->insert('esurat_menu',$data);
+			$this->toastr->success('Menu '.$this->input->post('menuTitleAdd').' Telah Ditambahkan!');
 			redirect('admin/nMenu');
 
+		}
+
+	}
+
+
+	public function nMenuDetail($id_menu = null){
+
+		/*-- Encrypt URL Id_Surat --*/
+		if (count($this->uri->segment_array()) > 3) {
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin/nMenu');
+		}
+		if (!isset($id_menu)) {
+			$this->toastr->error('Data yang Anda Inginkan Tidak Mempunyai ID');
+			redirect('admin/nMenu');
+		}
+		if (is_numeric($id_menu)) {
+			$this->toastr->error('Url Hanya Bisa Diakses Setelah Dienkripsi');
+			redirect('admin/nMenu');
+		}
+		$oneMenu = $this->db->get_where('esurat_menu',['id_menu' => $this->encrypt->decode($id_menu)]);
+		if($oneMenu->num_rows() == null){
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin/nMenu');
+		}
+		/*-- /. Encrypt URL Id_Surat --*/
+
+		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
+
+		$data['onemenu'] = $this->admin_model->getOneMenu($this->encrypt->decode($id_menu));
+		$data['allrole'] = $this->admin_model->getAllRole();
+		$data['allmenu'] = $this->admin_model->getAllMenu();
+
+		$data['title'] = "Admin | Menu";
+		$data['parent'] = "Menu";
+		$data['page'] = "Menu Detail";
+		$this->template->load('admin/layout/adminTemplate','admin/modulMenu/adminMenuDetail',$data);
+
+	}
+
+	public function nMenuEdit($id_menu = null){
+
+		/*-- Encrypt URL Id_Surat --*/
+		if (count($this->uri->segment_array()) > 3) {
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin/nMenu');
+		}
+		if (!isset($id_menu)) {
+			$this->toastr->error('Data yang Anda Inginkan Tidak Mempunyai ID');
+			redirect('admin/nMenu');
+		}
+		if (is_numeric($id_menu)) {
+			$this->toastr->error('Url Hanya Bisa Diakses Setelah Dienkripsi');
+			redirect('admin/nMenu');
+		}
+		$oneMenu = $this->db->get_where('esurat_menu',['id_menu' => $this->encrypt->decode($id_menu)]);
+		if($oneMenu->num_rows() == null){
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin/nMenu');
+		}
+		/*-- /. Encrypt URL Id_Surat --*/
+
+		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
+
+		/*-- Load One Data Surat --*/
+		$data['onemenu'] = $this->admin_model->getOneMenu($this->encrypt->decode($id_menu));
+		$data['allrole'] = $this->admin_model->getAllRole();
+		$data['allmenu'] = $this->admin_model->getAllMenu();
+
+		$this->form_validation->set_rules('menuTitleEdit','Nama Menu','required');
+		$this->form_validation->set_rules('menuForEdit','Menu Untuk','required');
+		$this->form_validation->set_rules('menuUrlEdit','Url Menu','required');
+		$this->form_validation->set_rules('menuIconEdit','Icon Menu','required');
+
+		if($this->form_validation->run() == false){
+
+			$data['title'] = "Admin | Menu";
+			$data['parent'] = "Menu";
+			$data['page'] = "Menu Edit";
+			$this->template->load('admin/layout/adminTemplate','admin/modulMenu/adminMenuEdit',$data);
+
+		}else{
+
+			$data = [
+
+				'role_id' => $this->db->escape_str($this->input->post('menuForEdit'),true),
+				'title' => $this->db->escape_str($this->input->post('menuTitleEdit'),true),
+				'url' => $this->db->escape_str($this->input->post('menuUrlEdit'),true),
+				'icon' => $this->db->escape_str($this->input->post('menuIconEdit'),true),
+				'is_main_menu' => $this->db->escape_str($this->input->post('menuTreeEdit'),true),
+				'is_active' => $this->db->escape_str($this->input->post('menuActiveEdit'),true)
+
+			];
+
+			$this->db->where('id_menu', $oneMenu->row()->id_menu);
+			$this->db->update('esurat_menu',$data);
+			$this->toastr->success('Menu '.$this->input->post('menuTitleAdd').' Berhasil Diudate!');
+			redirect('admin/nMenu');
 		}
 	}
 
@@ -1109,119 +1203,19 @@ class Admin extends CI_Controller {
 		redirect('admin/nMenu');
 	}
 
+
 	public function nRole(){
 
 		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
 		$data['allrole'] = $this->admin_model->getAllRole();
 
-		$this->form_validation->set_rules('a','Role Name','required');
 
-		if($this->form_validation->run() == false){
+		$data['title'] = "Admin | Role";
+		$data['parent'] = "Navigation";
+		$data['page'] = "Role ";
+		$this->template->load('admin/layout/adminTemplate','admin/modulRole/adminRole',$data);
 
-			$data['title'] = "Admin | Role";
-			$data['parent'] = "Navigation";
-			$data['page'] = "Role ";
-			$this->template->load('admin/layout/adminTemplate','admin/modulRole/adminRole',$data);
-
-		}else{
-
-			$this->db->insert('esurat_role',['access' => $this->input->post('a')]);
-			$this->toastr->success(' New Role '.$this->input->post('a').' Added !');
-			redirect('admin/nRole');
-		}
-	}
-
-	public function nRoleEdit(){
-
-		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
-		$data['allrole'] = $this->admin_model->getAllRole();
-
-		$this->form_validation->set_rules('a','Role Name','required');
-
-		if($this->form_validation->run() == false){
-
-			$data['title'] = "Admin | Role";
-			$data['parent'] = "Navigation";
-			$data['page'] = "Role ";
-			$this->template->load('admin/layout/adminTemplate','admin/modulRole/adminRole',$data);
-
-		}else{
-
-			$data = [
-				'access' => $this->input->post('a')
-			];
-			$this->db->where('id', $this->input->post('b'));
-			$this->db->update('esurat_role',$data);
-			$this->toastr->success(' Role '.$this->input->post('a').' Updated !');
-			redirect('admin/nRole');
-		}
-	}
-
-	public function nRoleDelete($id){
-
-		$this->db->delete('esurat_role',['id' => $id]);
-		$this->toastr->success(' Role Deleted!');
-		redirect('admin/nRole');
-	}
-
-
-	public function nMenuAdd(){
-
-		if (!$this->input->is_ajax_request()) {
-
-			echo 'No direct script is allowed';
-			die;
-			
-		}
-
-		$title = $this->input->post('menuTitleAdd');
-		$for = $this->input->post('menuForAdd');
-		$url = $this->input->post('menuUrlAdd');
-		$icon = $this->input->post('menuIconAdd');
-		$tree = $this->input->post('menuTreeAdd');
-		$active = $this->input->post('menuActiveAdd');
-
-		$data = array('success' => false,'messages' => array());
-		$this->form_validation->set_rules('menuTitleAdd','Title Menu','required');
-		$this->form_validation->set_rules('menuForAdd','Menu di Tujukan','required');
-		$this->form_validation->set_rules('menuUrlAdd','Url Menu','required');
-		$this->form_validation->set_rules('menuIconAdd','Icon Menu','required');
-		$this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
-
-		if($this->form_validation->run()){
-
-			$menu = [
-
-				'title' => $this->db->escape_str($title,true),
-				'role_id' => $this->db->escape_str($for,true),
-				'url' => $this->db->escape_str($url,true),
-				'icon' => $this->db->escape_str($icon,true),
-				'is_main_menu' => $this->db->escape_str($tree,true),
-				'is_active' => $this->db->escape_str($active,true)
-
-			];
-
-			$this->db->insert('esurat_menu',$menu);
-
-			$data['title'] = 'Success';
-			$data['nama'] = 'Menu  Berhasil '.$title.' Ditambahkan';
-			$data['type'] = 'success';
-			$data['redirect'] = base_url('admin/nMenu');
-			$data['url'] = true;
-			$data['success'] = true;
-		}else{
-
-			foreach ($_POST as $key => $value) {
-
-				$data['messages'][$key] = form_error($key);
-
-			}
-
-		}
-
-		echo json_encode($data);
 
 	}
-
 
 }
