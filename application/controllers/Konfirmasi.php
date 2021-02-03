@@ -5,7 +5,9 @@ class Konfirmasi extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-
+		/*-- Check Session  --*/
+		is_admin();
+		
 		//untuk mengatasi error confirm form resubmission
 		header('Cache-Control: no-cache, must-revalidate, max-age=0');
 		header('Cache-Control: post-check=0, pre-check=0',false);

@@ -20,6 +20,20 @@
     <section class="content">
       <div class="container-fluid">
 
+        <?php if($hasil == NULL) {
+          echo '
+          <div class="row">
+          <div class="col-12">
+          <div class="callout callout-danger">
+          <h5><i class="fas fa-info"></i> Note:</h5>
+          Silahkan Melengkapi Form Untuk Menampilkan Data yang di inginkan
+          </div>
+          </div>
+          <!--/. Col -->
+          </div>
+          ';
+        }?>
+
         <!-- Row Form Select Tabel -->
         <div class="row">
           <div class="col-md-8">
@@ -43,8 +57,8 @@
                   </div>
                   <div class="form-group">
                     <label for="exampleInputEmail1">NIM</label>
-                    <select name="permintaan_by" class="form-control select2<?php if(form_error('status')) {echo 'select2-danger';}?>" <?php if(form_error('status')) {echo 'data-dropdown-css-class="select2-danger"';}?> style="width: 100%;">
-                      <option>Ketik Nama / NIM</option>
+                    <select name="permintaan_by" class="form-control select2" style="width: 100%;">
+                      <option value="">Ketik Nama / NIM</option>
                       <?php
                       foreach ($nimlaporan as $row) {
                         echo '<option value="'.$row->nim.'">'.$row->nim. '/' .$row->nmmhs.'</option>';
@@ -272,16 +286,7 @@
 
           default:
           $out = '
-          <div class="row">
-          <div class="col-12">
-          <div class="callout callout-danger">
-          <h5><i class="fas fa-info"></i> Note:</h5>
-          Silahkan Melengkapi Form Untuk Menampilkan Data yang di inginkan
-          </div>
-          </div>
-          <!--/. Col -->
-          </div>
-          <!--/. Row -->
+
           ';
           break;
 

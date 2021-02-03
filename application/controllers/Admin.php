@@ -19,6 +19,11 @@ class Admin extends CI_Controller {
 
 	public function index(){
 
+		if (count($this->uri->segment_array()) > 1) {
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('admin');
+		}
+
 		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
 		$data['mhs'] = $this->admin_model->getCountMhs();
 		$data['surat'] = $this->admin_model->getCountlist();
@@ -989,6 +994,8 @@ class Admin extends CI_Controller {
 			redirect('admin/laporan');
 		}
 
+		$data['hasil'] = NULL;
+
 		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
 		$data['nimlaporan'] = $this->admin_model->getMhs(); 
 		$this->form_validation->set_rules('status', 'Pilih Status Surat','required');
@@ -1202,7 +1209,6 @@ class Admin extends CI_Controller {
 		$this->toastr->success(' Menu Deleted!');
 		redirect('admin/nMenu');
 	}
-
 
 	public function nRole(){
 

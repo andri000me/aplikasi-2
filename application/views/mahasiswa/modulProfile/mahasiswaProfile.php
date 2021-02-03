@@ -3,15 +3,15 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark"><?= $page ;?></h1>
+            <h1 class="m-0"><?= $page?></h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="<?= base_url('mahasiswa')?>"><small>Mahasiswa</small></a></li>
-              <li class="breadcrumb-item active"><small><?= $page ;?></small></li>
+              <li class="breadcrumb-item">Esurat</li>
+              <li class="breadcrumb-item active"><a href="<?= base_url('mahasiswa/profile')?>"><?= $page?></a></li>
             </ol>
           </div><!-- /.col -->
-        </div><!-- /.row -->      
+        </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
@@ -26,8 +26,6 @@
           </div>
           <form class="form-horizontal" action="<?= base_url('mahasiswa/profileEdit/'). $this->encrypt->encode($user->nim).'';?>" method="post">
             <div class="card-body">
-
-              <input type="hidden" name="zz" value="<?= $user->nim ;?>">
 
               <div class="form-group row ml-3 mr-3">
                 <label for="editMhsNim" class="col-sm-2 col-form-label">NIM</label>

@@ -42,6 +42,11 @@ class Permintaan extends CI_Controller {
 				$this->toastr->error('Kode Surat Not Found!');
 				redirect('admin/sPermintaanSurat');
 			}
+			if(!is_numeric($this->encrypt->decode($id))){
+				$this->toastr->error('Url Yang Anda Masukkan Tidak Memmpunyai ID');
+				redirect('admin/sPermintaanSurat');
+			}
+
 			if(!in_array($this->encrypt->decode($name), ['permohonan','permintaan','pengajuan'], true ) ) {
 				$this->toastr->error('Url Yang Anda Masukkan Salah');
 				redirect('admin/sPermintaanSurat');
@@ -67,8 +72,13 @@ class Permintaan extends CI_Controller {
 			}
 			if($searchKode->num_rows() == NULL){
 				$this->toastr->error('Kode Surat Not Found!');
-				redirect('admin/sPermintaanSurat');
-			}			
+				redirect('mahasiswa/pengajuanSurat');
+			}
+			if(!is_numeric($this->encrypt->decode($id))){
+				$this->toastr->error('Url Yang Anda Masukkan Tidak Memmpunyai ID');
+				redirect('mahasiswa/pengajuanSurat');
+			}
+			
 			if(!in_array($this->encrypt->decode($name), ['permohonan','permintaan','pengajuan'], true ) ) {
 				$this->toastr->error('Url Yang Anda Masukkan Salah');
 				redirect('mahasiswa/pengajuanSurat');

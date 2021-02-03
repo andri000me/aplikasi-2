@@ -28,4 +28,14 @@ class Mahasiswa_model extends CI_Model {
 		$query = "SELECT * FROM esurat_surat WHERE id_surat = '$id_surat' AND access = 2 ";
 		return $this->db->query($query)->row();
 	}
+
+	public function getStatusSurat($nim){
+		$query = "
+		SELECT * FROM esurat_mhs JOIN esurat_konfirmasi ON esurat_mhs.nim = esurat_konfirmasi.permintaan_by WHERE esurat_mhs.nim = '$nim'
+		UNION SELECT * FROM esurat_mhs JOIN esurat_permintaan ON esurat_mhs.nim = esurat_permintaan.permintaan_by WHERE esurat_mhs.nim = '$nim'
+		ORDER BY permintaan_tgl DESC
+		";
+		return $this->db->query($query)->result();
+	}
+
 }
