@@ -41,7 +41,7 @@
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-      <?php include "adminSidebar.php"?>
+      <?php include "adminSideBar.php"?>
     </aside>
 
     <!-- Content Wrapper. Contains page content -->
