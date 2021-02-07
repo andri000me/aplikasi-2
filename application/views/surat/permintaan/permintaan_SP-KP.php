@@ -81,6 +81,7 @@
 
                     <div class="col-md-6">
 
+
                       <!-- No Surat And Button Generate -->
                       <div class="form-group <?php if(form_error('no_surat')) {echo 'text-danger';}?>">
                         <label for="spkpCosNo_surat" class="col-form-label">No Surat</label>
@@ -140,7 +141,7 @@
                       <div class="form-group <?php if(form_error('no_surat')) {echo 'text-danger';}?>">
                         <label for="qrcode" class="col-form-label">QR Code</label>
                         <div class="input-group">
-                          <img id="qrcodeCos" src="<?php if(form_error('no_surat')) {echo base_url('assets/esurat/img/qrcode_danger.png');}else{ echo base_url('assets/esurat/img/qrcode_sample.png') ;}?>" alt="QRCode" width="150" />
+                          <img id="qrcodeCos" src="<?= base_url('assets/esurat/img/qrcode_sample.png')?>" alt="QRCode" width="150" />
                         </div>
                         <?= form_error('no_surat', '<small class="text-danger pl-3">', '</small>');?>
                       </div>

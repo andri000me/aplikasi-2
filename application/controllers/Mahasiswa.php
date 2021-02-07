@@ -160,4 +160,47 @@ class Mahasiswa extends CI_Controller {
 	}
 
 
+	public function notif(){
+
+		if (count($this->uri->segment_array()) > 2) {
+			$this->toastr->error('Url Yang Anda Masukkan Salah');
+			redirect('mahasiswa/notif');
+		}
+
+		$data['user'] = $this->db->get_where('esurat_mhs',['nim' => $this->session->userdata('nim')])->row();
+		$data['allnotif'] = $this->mahasiswa_model->getAllNotif($this->session->userdata('nim'));
+		$data['title'] = "Mahasiswa | Notification";
+		$data['page'] = "Notification";
+		$this->template->load('mahasiswa/layout/mahasiswaTemplate','mahasiswa/modulNotif/mahasiswaNotif',$data);
+
+
+	}
+
+	public function getNotif(){
+		
+		$view = $this->input->post('view');
+		$nim = $this->db->get_where('esurat_mhs',['nim' => $this->session->userdata('nim')])->row();
+		$data = $this->mahasiswa_model->getNotif($nim->nim);
+
+		echo json_encode($data);
+
+
+	}
+
+
+	public function updateNotif(){
+
+		$nim = $this->input->post('nim');
+
+		$updateComments = [ 
+
+			'comment_status' => 1
+		];
+
+		$this->db->where('comment_to', $nim);
+		$data = $this->db->update('esurat_comments',$updateComments);
+		echo json_encode($data);
+	}
+
+
 }

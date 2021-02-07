@@ -304,22 +304,27 @@ class Permintaan extends CI_Controller {
 					case 'SP-KP':
 
 					/*-- Load One Data Permintaan Pada Input --*/
-					$data['onepmr'] = $this->db->query("SELECT *, data_permintaan->>'$.kepadaYth' as kepadaYth, data_permintaan->>'$.kepadaAlamat' as kepadaAlamat, enkripsi->>'$.enkripsi' as enkripsi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row();
+					$data['onepmr'] = $this->db->query("SELECT *, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaYth')) as kepadaYth, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaAlamat')) as kepadaAlamat, JSON_UNQUOTE(JSON_EXTRACT(enkripsi, '$.enkripsi')) as enkripsi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row();
 					/*-- Load One Data Dosen Pada Input --*/
-					$data['onedos'] = $this->admin_model->getOneDosen($this->db->query("SELECT data_permintaan->>'$.dosen' as dosen FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->dosen);
+					$data['onedos'] = $this->admin_model->getOneDosen($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.dosen')) as dosen FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->dosen);
 					/*-- Load One Data Mahasiswa Pada Input --*/
 					$data['onemhs'] = $this->admin_model->getOneMhs($this->admin_model->getOnePmr($id)->permintaan_by);
 					/*-- Load One Data Prodi Pada Input --*/
-					$data['onepro'] = $this->admin_model->getOneProdi($this->db->query("SELECT data_permintaan->>'$.permintaan_prodi' as permintaan_prodi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->permintaan_prodi);
+					$data['onepro'] = $this->admin_model->getOneProdi($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.permintaan_prodi')) as permintaan_prodi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->permintaan_prodi);
+
+					// var_dump($data['onepro']);
+					// // var_dump($data['onemhs']);
+					// var_dump($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.permintaan_prodi')) as permintaan_prodi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->permintaan_prodi);
+					// die();
 
 					/*-- Load One Data Permintaan Pada Hasil Surat --*/
-					$permintaan = $this->db->query("SELECT *, data_permintaan->>'$.kepadaYth' as kepadaYth, data_permintaan->>'$.kepadaAlamat' as kepadaAlamat, enkripsi->>'$.enkripsi' as enkripsi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row();
+					$permintaan = $this->db->query("SELECT *, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaYth')) as kepadaYth, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaAlamat')) as kepadaAlamat, JSON_UNQUOTE(JSON_EXTRACT(enkripsi, '$.enkripsi')) as enkripsi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row();
 					/*-- Load One Data Mahasiswa Pada Hasil Surat --*/
 					$mahasiswa = $this->admin_model->getOneMhs($this->admin_model->getOnePmr($id)->permintaan_by);
 					/*-- Load One Data Dosen Pada Hasil Surat --*/
-					$dosen = $this->admin_model->getOneDosen($this->db->query("SELECT data_permintaan->>'$.dosen' as dosen FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->dosen);
+					$dosen = $this->admin_model->getOneDosen($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.dosen')) as dosen FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->dosen);
 					/*-- Load One Data Prodi Pada Hasil Surat --*/
-					$prodi = $this->admin_model->getOneProdi($this->db->query("SELECT data_permintaan->>'$.permintaan_prodi' as permintaan_prodi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->permintaan_prodi);
+					$prodi = $this->admin_model->getOneProdi($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.permintaan_prodi')) as permintaan_prodi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->permintaan_prodi);
 
 					/*-- Load Semua Data Dosen Pada Input --*/
 					$data['dosenall'] = $this->admin_model->getDosen();
@@ -609,7 +614,8 @@ class Permintaan extends CI_Controller {
     	$no_surat = $this->input->post('no_surat');
     	$penggabungan = $domain.$nameController.$enkripsi;
     	$filename = str_replace("/", "_", $no_surat);
-
+// var_dump($filename);
+// die();
     	$params = [
 
     		'data' => $penggabungan,

@@ -37,5 +37,11 @@ class Mahasiswa_model extends CI_Model {
 		";
 		return $this->db->query($query)->result();
 	}
+	
+	public function getAllNotif($nim){
 
+		$query = "SELECT * FROM esurat_comments WHERE comment_to = '$nim' ORDER BY comment_id DESC";
+		return $this->db->query($query)->result();
+
+	}
 }
