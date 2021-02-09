@@ -120,9 +120,9 @@
                     title: 'Success',
                     text: 'Chipertext Found!'
                   })
-                  $('#kode').val(data.enkripsikode);
-                  $('#n').val(data.enkripsikodeN);
-                  $('#d').val(data.enkripsikodeD);
+                  $('#kode').val(data.enkripsiKode);
+                  $('#n').val(data.enkripsiKodeN);
+                  $('#d').val(data.enkripsiKodeD);
                 },
                 error:function(data){
                   Swal.fire({

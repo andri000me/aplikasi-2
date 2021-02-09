@@ -257,8 +257,10 @@ class Ajax_model extends CI_Model {
 	}
 
 	public function getSearchEn($pecahkode){
-		$query = "SELECT *, enkripsi->>'$.enkripsi' as enkripsikode, enkripsi->>'$.n' as enkripsikodeN, enkripsi->>'$.d' as enkripsikodeD FROM esurat_konfirmasi WHERE enkripsi->>'$.enkripsi' like '$pecahkode'";
+		// $query = "SELECT *, enkripsi->>'$.enkripsi' as enkripsikode, enkripsi->>'$.n' as enkripsikodeN, enkripsi->>'$.d' as enkripsikodeD FROM esurat_konfirmasi WHERE enkripsi->>'$.enkripsi' like '$pecahkode'";
 		// $query = "SELECT * FROM esurat_selesai WHERE enkripsi LIKE '$pecahkode' ";
+
+		$query = "SELECT *, JSON_UNQUOTE(JSON_EXTRACT(enkripsi, '$.enkripsi')) as enkripsiKode, JSON_UNQUOTE(JSON_EXTRACT(enkripsi, '$.n')) as enkripsiKodeN, JSON_UNQUOTE(JSON_EXTRACT(enkripsi, '$.d')) as enkripsiKodeD FROM esurat_konfirmasi WHERE JSON_SEARCH(enkripsi,'one','$pecahkode', NULL, '$') IS NOT NULL";
 		return $this->db->query($query)->row();
 	}
 

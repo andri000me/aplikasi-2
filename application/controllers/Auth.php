@@ -187,8 +187,8 @@ class Auth extends CI_Controller {
 		$this->session->unset_userdata('username');
 		$this->session->unset_userdata('nim');
 		$this->session->unset_userdata('role');
-		$this->session->set_flashdata('message','You have been logged out!');
-		// $this->toastr->success('You have been logged out!');
+		// $this->session->set_flashdata('message','You have been logged out!');
+		$this->toastr->success('You have been logged out!');
 		redirect('auth');	
 
 	}
