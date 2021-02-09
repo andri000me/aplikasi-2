@@ -17,9 +17,10 @@
     </div>
     <!-- /.content-header -->
 
-    <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
+
+    <!-- Main content -->
         <!-- Default box -->
         <div class="card card-outline card-info">
           <div class="card-header">

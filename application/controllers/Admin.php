@@ -21,7 +21,7 @@ class Admin extends CI_Controller {
 
 		if (count($this->uri->segment_array()) > 1) {
 			$this->toastr->error('Url Yang Anda Masukkan Salah');
-			redirect('admin');
+			redirect('404');
 		}
 
 		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
@@ -1223,5 +1223,67 @@ class Admin extends CI_Controller {
 
 
 	}
+
+	public function nRoleAdd(){
+		$name = $this->input->post("name");
+		$data = array('success' => false,'messages' => array());
+		$this->form_validation->set_rules('name','Role Name','required');
+		$this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
+
+		if($this->form_validation->run()){
+
+
+			$this->db->insert('esurat_role',['access' => $name]);
+			$data['toastr'] = $this->toastr->success('New Role '.$name.' Has Been Added!!');
+			$data['redirect'] = base_url('admin/nRole');
+			$data['url'] = true;
+
+			$data['success'] = true;
+
+		}else{
+
+			foreach ($_POST as $key => $value) {
+				$data['messages'][$key] = form_error($key);
+			}
+		}
+		echo json_encode($data);
+
+	}
+
+
+	public function nRoleEdit(){
+
+		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
+		$data['allrole'] = $this->admin_model->getAllRole();
+
+		$this->form_validation->set_rules('a','Role Name','required');
+
+		if($this->form_validation->run() == false){
+
+			$data['title'] = "Admin | Role";
+			$data['parent'] = "Navigation";
+			$data['page'] = "Role ";
+			$this->template->load('admin/layout/admin_template','admin/modul_role/admin_role',$data);
+
+		}else{
+
+			$data = [
+				'access' => $this->input->post('a')
+			];
+			$this->db->where('id', $this->input->post('b'));
+			$this->db->update('esurat_role',$data);
+			$this->toastr->success(' Role '.$this->input->post('a').' Updated !');
+			redirect('admin/nRole');
+		}
+	}
+
+	public function nRoleDelete($id){
+
+		$this->db->delete('esurat_role',['id' => $id]);
+		$this->toastr->success(' Role Deleted!');
+		redirect('admin/nRole');
+	}
+
+
 
 }

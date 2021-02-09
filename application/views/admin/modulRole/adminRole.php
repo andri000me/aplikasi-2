@@ -38,28 +38,28 @@
               </div>
             </div>
 
-              <table id="example" class="table table-bordered table-striped nowrap" style="width:100%">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Access</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php $i=0; foreach ($allrole as $alro) :  $i++;?>
-                  <tr>
-                    <th scope="row"><?= $i ;?></th>
-                    <td><?= $alro->access; ?></td>
-                    <td>
-                      <a style="margin-right:10px" href="#" data-toggle="modal" data-target="#roleDetail<?= $alro->id?>" title="Detail"><i class="fas fa-info-circle text-info"></i></a>
-                      <a style="margin-right:10px" href="#" data-toggle="modal" data-target="#roleEdit<?= $alro->id?>"  title="Edit"><i class="fas fa-edit text-warning"></i></a>
-                      <a href="#" data-toggle="modal" data-target="#roleDelete<?= $alro->id?>" title="Delete"><i class="fas fa-trash text-danger"></i></a>
-                    </td>
-                  </tr>
-                <?php endforeach; ?>
-              </tbody>
-            </table>
+            <table id="example" class="table table-bordered table-striped nowrap" style="width:100%">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Access</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php $i=0; foreach ($allrole as $alro) :  $i++;?>
+                <tr>
+                  <th scope="row"><?= $i ;?></th>
+                  <td><?= $alro->access; ?></td>
+                  <td>
+                    <a style="margin-right:10px" href="#" data-toggle="modal" data-target="#roleDetail<?= $alro->id?>" title="Detail"><i class="fas fa-info-circle text-info"></i></a>
+                    <a style="margin-right:10px" href="#" data-toggle="modal" data-target="#roleEdit<?= $alro->id?>"  title="Edit"><i class="fas fa-edit text-warning"></i></a>
+                    <a href="#" data-toggle="modal" data-target="#roleDelete<?= $alro->id?>" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
           <!-- /.row -->
         </div>
         <!-- /.card-body -->
@@ -72,18 +72,17 @@
     <div class="modal fade" id="roleAdd">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header bg-primary">
+          <div class="modal-header card-outline card-primary">
             <h5 class="modal-title">Add New Role</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form action="<?= base_url('admin/nRole'); ?>" method="post">
+          <form id="formRoleAdd" method="post">
             <div class="modal-body">
               <div class="form-group">
                 <label for="addRoleName">Role Name</label>
-                <input type="text" name="a" class="form-control" id="addRoleName" placeholder="Role Name">
-                <?php echo form_error('a', '<small class="text-danger pl-3">', '</small>');?>
+                <input type="text" name="name" id="name" class="form-control" id="addRoleName" placeholder="Role Name">
               </div>
             </div>
             <div class="modal-footer justify-content-between">
@@ -103,7 +102,7 @@
     <div class="modal fade" id="roleDetail<?= $alro->id?>">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header bg-info">
+          <div class="modal-header card-outline card-info">
             <h5 class="modal-title">Detail Role "<?= $alro->access;?>"</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -133,7 +132,7 @@
   <div class="modal fade" id="roleEdit<?= $alro->id?>">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header btn-warning">
+        <div class="modal-header card-outline card-warning">
           <h5 class="modal-title">Edit Role "<?= $alro->access;?>"</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -146,7 +145,7 @@
 
             <div class="form-group">
               <label id="editRoleName">Role Name</label>
-              <input type="text" name="a" class="form-control" for="editRoleName" placeholder="Role Name" value="<?= $alro->access;?>">
+              <input type="text" name="a" class="form-control" for="editRoleName" placeholder="Role Name" value="<?= $alro->access;?>" required>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
@@ -167,7 +166,7 @@
 <div class="modal fade" id="roleDelete<?= $alro->id ;?>">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header bg-danger">
+      <div class="modal-header card-outline card-danger">
         <h5 class="modal-title">Delete Role <?= $alro->access ;?> </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -189,4 +188,42 @@
 <!-- /.modal -->
 
 </section>
-    <!-- /.content -->
+<!-- /.content -->
+
+<script type="text/javascript">
+  window.onload = function () {
+
+    $('#formRoleAdd').on('submit', function(event){
+      event.preventDefault();
+      var name = $('#name').val();
+      $.ajax({
+        type:'POST',
+        url:baseURL+'admin/nRoleAdd',
+        data: {name:name},
+        dataType: 'json',
+        success: function(data){
+          if (data.success == true ){
+            if (data.url == true) {
+              window.location.href = data.toastr;
+              window.location.href = data.redirect;
+            }else{
+              window.location.href = data.toastr;
+              window.location.href = data.redirect;
+            }
+          }else{
+            $.each(data.messages, function(key, value){
+              var element = $('#' + key);
+              element.closest('.form-control')
+              .removeClass('is-invalid')
+              .addClass(value.length > 0 ? 'is-invalid' : 'is-valid');
+              element.closest('div.form-group').find('.text-danger')
+              .remove();
+              element.after(value);
+            });
+          }
+        }  
+      });
+    });
+
+  }
+</script>

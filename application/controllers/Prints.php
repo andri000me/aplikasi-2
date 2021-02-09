@@ -87,14 +87,14 @@ class Prints extends CI_Controller {
 		if($print->id_konfirmasi == $id_konfirmasi && $print->kd_surat == $kd_surat){
 
 			/*-- Load One Data Permintaan Pada Hasil Surat --*/
-			$printData = $this->db->query("SELECT *, data_permintaan->>'$.kepadaYth' as kepadaYth, data_permintaan->>'$.kepadaAlamat' as kepadaAlamat, enkripsi->>'$.enkripsi' as enkripsi FROM esurat_konfirmasi WHERE id_konfirmasi = '$id_konfirmasi'")->row();
+			$printData = $this->db->query("SELECT *, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaYth')) as kepadaYth, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaAlamat')) as kepadaAlamat, JSON_UNQUOTE(JSON_EXTRACT(enkripsi, '$.enkripsi')) as enkripsi FROM esurat_konfirmasi WHERE id_konfirmasi = '$id_konfirmasi'")->row();
 
 			/*-- Load One Data Mahasiswa Pada Hasil Surat --*/
 			$mahasiswa = $this->admin_model->getOneMhs($this->admin_model->getOneKfm($id_konfirmasi)->permintaan_by);
 			/*-- Load One Data Dosen Pada Hasil Surat --*/
-			$dosen = $this->admin_model->getOneDosen($this->db->query("SELECT data_permintaan->>'$.dosen' as dosen FROM esurat_konfirmasi WHERE id_konfirmasi = '$id_konfirmasi'")->row()->dosen);
+			$dosen = $this->admin_model->getOneDosen($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.dosen')) as dosen FROM esurat_konfirmasi WHERE id_konfirmasi = '$id_konfirmasi'")->row()->dosen);
 			/*-- Load One Data Prodi Pada Hasil Surat --*/
-			$prodi = $this->admin_model->getOneProdi($this->db->query("SELECT data_permintaan->>'$.permintaan_prodi' as permintaan_prodi FROM esurat_konfirmasi WHERE id_konfirmasi = '$id_konfirmasi'")->row()->permintaan_prodi);
+			$prodi = $this->admin_model->getOneProdi($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.permintaan_prodi')) as permintaan_prodi FROM esurat_konfirmasi WHERE id_konfirmasi = '$id_konfirmasi'")->row()->permintaan_prodi);
 
 			switch ($print->kd_surat) {
 				case 'SP-KP':

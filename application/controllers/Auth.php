@@ -270,4 +270,12 @@ class Auth extends CI_Controller {
 
 	}
 
+	public function auth404(){
+
+		$this->output->set_status_header('404'); 
+		$this->load->view('auth/modul404/auth404');
+
+	}
+
+
 }
