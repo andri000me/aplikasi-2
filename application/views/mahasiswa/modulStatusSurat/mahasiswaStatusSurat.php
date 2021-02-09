@@ -7,8 +7,8 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item">Esurat</li>
-              <li class="breadcrumb-item active"><a href="<?= base_url('mahasiswa/statusSurat')?>"><?= $page?></a></li>
+              <li class="breadcrumb-item"><small>Esurat</small></li>
+              <li class="breadcrumb-item"><a href="<?= base_url('mahasiswa/statusSurat')?>"><small><?= $page ;?></small></a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->

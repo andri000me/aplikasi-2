@@ -9,7 +9,7 @@
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><small>Esurat</small></li>
               <li class="breadcrumb-item"><a href="<?= base_url('admin/dDosen')?>"><small><?= $parent ;?></small></a></li>
-              <li class="breadcrumb-item"><a href="<?= base_url('admin/dDosenAdd')?>"><small><?= $page ?></small></a></li>
+              <li class="breadcrumb-item"><a href="<?= base_url('admin/dDosenEdit/'.$this->encrypt->encode($onedos->id))?>"><small><?= $page ?></small></a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->            

@@ -26,6 +26,8 @@ class Mahasiswa extends CI_Controller {
 		}
 
 		$data['user'] = $this->db->get_where('esurat_mhs',['nim' => $this->session->userdata('nim')])->row();
+		$data['listsuratlimit'] = $this->mahasiswa_model->getListSuratHome(); //Load List Surat
+		$data['statussuratlimit'] = $this->mahasiswa_model->getStatusSuratHome($this->db->get_where('esurat_mhs',['nim' => $this->session->userdata('nim')])->row()->nim); //Load Status Surat by nim
 
 		$data['title'] = "Mahasiswa | Home";
 		$data['parent'] = "Home";
@@ -200,6 +202,14 @@ class Mahasiswa extends CI_Controller {
 		$this->db->where('comment_to', $nim);
 		$data = $this->db->update('esurat_comments',$updateComments);
 		echo json_encode($data);
+	}
+
+	public function deleteNotif($comment_id){
+
+		$this->db->delete('esurat_comments',['comment_id' => $this->encrypt->decode($comment_id)]);
+		$this->toastr->success('Notification Telah Di Hapus!');
+		redirect('mahasiswa/notif');
+
 	}
 
 

@@ -1,6 +1,7 @@
 <script type="text/javascript">
 
  var baseURL= "<?= base_url();?>";
+   var nim = "<?= $user->nim?>" ;
 
  /*-- Toastr  --*/
  toastr.options = {
@@ -75,5 +76,43 @@ const swalWithBootstrapButtons = Swal.mixin({
   }
 })
 /*-- /. Costum Sweetalert2 --*/
+
+$(document).ready(function(){
+
+  function load_unseen_notification(view = ''){
+    $.ajax({
+     url:baseURL+'mahasiswa/getNotif',
+     method:"POST",
+     data:{view:view},
+     dataType:"json",
+     success:function(data){
+      $('.dropdown-menu').html(data.notification);
+      if(data.unseen_notification > 0){
+       $('.count').html(data.unseen_notification);
+     }
+   }
+ });
+  }
+
+  load_unseen_notification();
+
+  $(document).on('click', '#notif', function(){
+      // var nimNo = nim;
+      $.ajax({
+        url:baseURL+'mahasiswa/updateNotif',
+        method:"POST",
+        data:{nim:nim},
+        dataType:"json",
+        success:function(data){
+          $('.count').html('');
+        }
+      })
+    });
+
+  setInterval(function(){ 
+    load_unseen_notification();; 
+  }, 5000);
+
+});
 
 </script>
