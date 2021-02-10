@@ -20,6 +20,10 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
+        <div class="callout callout-danger">
+          <h5><i class="fas fa-info"></i> Note:</h5>
+          <p class="text-justify">Nama Dosen Harus Sama Dengan Nama File ttd yang pada pada /assests/esurat/img/ttd/ .</p>
+        </div>
         <div class="card card-outline card-primary">
           <div class="card-header">
             <h3 class="card-title"><?php echo $page; ?>&ensp;</h3>

@@ -8,8 +8,8 @@ class Mahasiswa_model extends CI_Model {
 		$this->load->database();
 	}
 
-	public function getListSuratHome(){
-		$query = "SELECT * FROM esurat_surat  WHERE access = 2 LIMIT 3";
+	public function getListSuratHome($kdpro){
+		$query = "SELECT * FROM esurat_surat  WHERE access = 2 AND prodi_surat = '$kdpro' LIMIT 5";
 		return $this->db->query($query)->result();
 	}
 	public function getStatusSuratHome($nim){
@@ -31,14 +31,14 @@ class Mahasiswa_model extends CI_Model {
 		return $this->db->query($query)->row();
 	}
 
-	public function getListSurat(){
-		$query = "SELECT * FROM esurat_surat WHERE access = 2 ";
+	public function getListSurat($kdpro){
+		$query = "SELECT * FROM esurat_surat WHERE access = 2 AND prodi_surat = '$kdpro' ";
 		return $this->db->query($query)->result();
 	}
 
 
 	public function getOneListSurat($id_surat){
-		$query = "SELECT * FROM esurat_surat WHERE id_surat = '$id_surat' AND access = 2 ";
+		$query = "SELECT * FROM esurat_surat WHERE id_surat = '$id_surat' AND access = 2";
 		return $this->db->query($query)->row();
 	}
 

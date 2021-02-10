@@ -19,6 +19,17 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
+        <div class="alert alert-info alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <h5><i class="icon fas fa-info"></i> Alert!</h5>
+          Disarankan ketika ingin membuat surat baru silahkan hubungi Pak Fuad
+        </div>
+        <div class="callout callout-danger">
+          <h5><i class="fas fa-info"></i> Note:</h5>
+          <p class="text-justify">Kode Surat di disabled karena ada file-file pada backend yang menggunkan nama sama dengan kode surat tersebut.</p>
+        </div>
+
+
         <!-- Default box -->
         <div class="card card-outline card-info">
           <div class="card-header">
@@ -42,8 +53,9 @@
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">kode Surat</th>
+                  <th scope="col">Kode Surat</th>
                   <th scope="col">Nama Surat</th>
+                  <th scope="col">Prodi Surat</th>
                   <th scope="col">Access Surat</th>
                   <th scope="col">Action</th>
                 </tr>
@@ -54,6 +66,11 @@
                   <td><?= $i ;?></td>
                   <td><?php echo $sur->kd_surat; ?></td>
                   <td><?php echo $sur->nm_surat; ?></td>
+                  <?php foreach($prodi as $pro) : ?>
+                    <?php if($pro->kdpro == $sur->prodi_surat) :?>
+                      <td><?php echo $pro->prodi; ?></td>
+                    <?php endif;?>
+                  <?php endforeach;?>
                   <?php if($sur->access == 1) {
                     echo '<td>Administrator Only</td>';
                   }elseif($sur->access == 2){

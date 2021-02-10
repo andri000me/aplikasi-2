@@ -22,11 +22,9 @@ $mpdf->SetWatermarkImage(
 	'F'
 );
 $mpdf->showWatermarkImage = true;
-// $mpdf->WriteHTML($teks, true, false,true,false);
-// $mpdf->Image(FCPATH.'assets/esurat/img/logo.png',  0, 0, 210, 297, 'jpg', '', true, false);
-$mpdf->SetHTMLHeader(
-	'<img style="margin-bottom: 10px; width: 100%; height: 100px;" src="'.base_url('assets/esurat/img/kop.png').'">'
-);
+
+
+$mpdf->WriteHTML($kop, \Mpdf\HTMLParserMode::DEFAULT_MODE, true, false);
 $mpdf->WriteHTML($header, \Mpdf\HTMLParserMode::DEFAULT_MODE, true, false);
 $mpdf->WriteHTML($isi, \Mpdf\HTMLParserMode::DEFAULT_MODE, true, false);
 $mpdf->WriteHTML($footer, \Mpdf\HTMLParserMode::DEFAULT_MODE, true, false);

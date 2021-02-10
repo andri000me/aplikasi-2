@@ -88,6 +88,10 @@ class Permintaan extends CI_Controller {
 
 			$data['user'] = $this->db->get_where('esurat_mhs',['nim' => $this->session->userdata('nim')])->row();
 
+
+
+			/*----------------------- / ROLE UNTUK MENGAJUKAN SURAT  -----------------------*/
+
 			$pengajuan = "SELECT COUNT(permintaan_by) as permintaan FROM esurat_permintaan WHERE permintaan_by = '".$this->session->userdata('nim')."'";
 			$status = "SELECT * FROM esurat_mhs WHERE nim = '".$this->session->userdata('nim')."' ";
 			$resultp = $this->db->query($pengajuan)->row()->permintaan;
@@ -104,6 +108,13 @@ class Permintaan extends CI_Controller {
 				$this->toastr->error('Anda Telah Masih memiliki 2 surat yang masih menunggu persetujuan silahkan hubungi admin terlebih untuk dikonfirmasi');
 				redirect('mahasiswa/pengajuanSurat');
 			}
+
+			/*------ Jika Mahasiswa Sudah Melebihi 14 Semester ------*/
+			if(semester($results->thaka) > '16'){
+				$this->toastr->error('Semester Anda Telah Melebihi 14 Silahkan Menghubungi Admin Untuk Melakukan Readmisi');
+				redirect('mahasiswa/pengajuanSurat');
+			}
+			/*----------------------- /. ROLE UNTUK MENGAJUKAN SURAT  -----------------------*/
 
 		}
 
@@ -145,7 +156,7 @@ class Permintaan extends CI_Controller {
 
 				switch ($searchKode->row()->kd_surat) {
 
-					case 'SP-KP':
+					case 'SP-I-KP':
 
 					/*-- Load Semua Data Dosen Pada Input --*/
 					$data['dosenall'] = $this->admin_model->getDosen();
@@ -154,7 +165,7 @@ class Permintaan extends CI_Controller {
 
 					$this->form_validation->set_rules('no_surat', 'No Surat','trim|required|is_unique[esurat_konfirmasi.no_surat]',[
 						'is_unique' => 'Nomer Surat Tersebut Telah Dipakai Silahkan Tekan Tombol Generate lagi Untuk Meregerate No Surat Baru']);
-					$this->form_validation->set_rules('dosen', 'Dosen Pengampu','required');
+					$this->form_validation->set_rules('penanggungJawab', 'Penanggung Jawab','required');
 					$this->form_validation->set_rules('ttd', 'Tanda Tangan','required');
 					$this->form_validation->set_rules('cosnim', 'Data Mahasiswa','required');
 					$this->form_validation->set_rules('kepadaYth', 'Kepada Surat di Tujukan','required');
@@ -166,11 +177,11 @@ class Permintaan extends CI_Controller {
 						$data['title'] = " Admin | Data Surat";
 						$data['parent'] = "Permohonan Surat";
 						$data['page'] = $searchKode->row()->nm_surat;
-						$this->template->load('admin/layout/adminTemplate','surat/permintaan/permintaan_SP-KP',$data);
+						$this->template->load('admin/layout/adminTemplate','surat/permintaan/permintaan_SP-I-KP',$data);
 
 					}else{
 
-						$jsonSPKP = '{"permintaan_by":"'.$this->db->escape_str($this->input->post('cosnim'),true).'","kepadaYth":"'.$this->db->escape_str($this->input->post('kepadaYth'),true).'","kepadaAlamat":"'.$this->db->escape_str($this->input->post('kepadaAlamat'),true).'","permintaan_prodi":"'.$this->db->escape_str($this->admin_model->getOneMhs($this->input->post('cosnim'))->kdpro,true).'","dosen":"'.$this->db->escape_str($this->input->post('dosen'),true).'"}';
+						$jsonSPKP = '{"permintaan_by":"'.$this->db->escape_str($this->input->post('cosnim'),true).'","kepadaYth":"'.$this->db->escape_str($this->input->post('kepadaYth'),true).'","kepadaAlamat":"'.$this->db->escape_str($this->input->post('kepadaAlamat'),true).'","permintaan_prodi":"'.$this->db->escape_str($this->admin_model->getOneMhs($this->input->post('cosnim'))->kdpro,true).'","penanggungJawab":"'.$this->db->escape_str($this->input->post('penanggungJawab'),true).'"}';
 
 						$jsonSPKPEnkripsi = '{"p":"'.$this->db->escape_str($this->input->post('p'),true).'","q":"'.$this->db->escape_str($this->input->post('q'),true).'","n":"'.$this->db->escape_str($this->input->post('n'),true).'","e":"'.$this->db->escape_str($this->input->post('e'),true).'","d":"'.$this->db->escape_str($this->input->post('d'),true).'","enkripsi":"'.$this->db->escape_str($this->input->post('enkripsi'),true).'"}';
 
@@ -198,9 +209,21 @@ class Permintaan extends CI_Controller {
 					}
 
 					break;
+
+					case 'SP-D-TA':
+
+					$data['name'] = $name;
+					$data['title'] = " Admin | Data Surat";
+					$data['parent'] = "Permohonan Surat";
+					$data['page'] = $searchKode->row()->nm_surat;
+					$this->template->load('admin/layout/adminTemplate','surat/permintaan/permintaan_SP-D-TA',$data);
+
+					break;
+
 					
 					default:
-						# code...
+					$this->toastr->error('Surat Yang Anda Pilih Belum Tersedia');
+					redirect('admin/sPermintaanSurat');
 					break;
 				}
 
@@ -229,7 +252,7 @@ class Permintaan extends CI_Controller {
 
 				switch ($searchKode->row()->kd_surat) {
 
-					case 'SP-KP':
+					case 'SP-I-KP':
 
 					/*-- Load Semua Data Dosen Pada Input --*/
 					$mhs =  $this->db->get_where('esurat_mhs',['nim' => $this->session->userdata('nim')])->row();
@@ -239,7 +262,7 @@ class Permintaan extends CI_Controller {
 					$this->form_validation->set_rules('kepadaYth', 'Kepada Surat Ini Ditujukan','required');
 					$this->form_validation->set_rules('kepadaAlamat', 'Alamat Surat Ini Ditujukan','required');
 					$this->form_validation->set_rules('keperluan', 'Keperluan Surat Ini Dibuat','required');
-					$this->form_validation->set_rules('dosen', 'Dosen Pengampu','required');
+					$this->form_validation->set_rules('penanggungJawab', 'Dosen Pengampu','required');
 
 					if($this->form_validation->run() == false){
 
@@ -247,11 +270,11 @@ class Permintaan extends CI_Controller {
 						$data['title'] =  "Mahasiswa| Pengajuan Surat";
 						$data['parent'] = "Pengajuan Surat";
 						$data['page'] = $searchKode->row()->nm_surat;
-						$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/permintaan/permintaan_SP-KP',$data);
+						$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/permintaan/permintaan_SP-I-KP',$data);
 
 					}else{
 
-						$jsonSPKP = '{"permintaan_by":"'.$this->db->escape_str($this->input->post('cosnim'),true).'","kepadaYth":"'.$this->db->escape_str($this->input->post('kepadaYth'),true).'","kepadaAlamat":"'.$this->db->escape_str($this->input->post('kepadaAlamat'),true).'","permintaan_prodi":"'.$this->db->escape_str($this->input->post('kdpro'),true).'","dosen":"'.$this->db->escape_str($this->input->post('dosen'),true).'"}';
+						$jsonSPKP = '{"permintaan_by":"'.$this->db->escape_str($this->input->post('cosnim'),true).'","kepadaYth":"'.$this->db->escape_str($this->input->post('kepadaYth'),true).'","kepadaAlamat":"'.$this->db->escape_str($this->input->post('kepadaAlamat'),true).'","permintaan_prodi":"'.$this->db->escape_str($this->input->post('kdpro'),true).'","penanggungJawab":"'.$this->db->escape_str($this->input->post('penanggungJawab'),true).'"}';
 
 						$data = [
 
@@ -274,7 +297,8 @@ class Permintaan extends CI_Controller {
 					break;
 
 					default:
-						# code...
+					$this->toastr->error('Surat Yang Anda Pilih Belum Tersedia');
+					redirect('mahasiswa/pengajuanSurat');
 					break;
 				}
 
@@ -301,12 +325,12 @@ class Permintaan extends CI_Controller {
 
 				switch ($searchKode->row()->kd_surat) {
 
-					case 'SP-KP':
+					case 'SP-I-KP':
 
 					/*-- Load One Data Permintaan Pada Input --*/
 					$data['onepmr'] = $this->db->query("SELECT *, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaYth')) as kepadaYth, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaAlamat')) as kepadaAlamat, JSON_UNQUOTE(JSON_EXTRACT(enkripsi, '$.enkripsi')) as enkripsi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row();
 					/*-- Load One Data Dosen Pada Input --*/
-					$data['onedos'] = $this->admin_model->getOneDosen($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.dosen')) as dosen FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->dosen);
+					$data['onedos'] = $this->admin_model->getOneDosen($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.penanggungJawab')) as penanggungJawab FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->penanggungJawab);
 					/*-- Load One Data Mahasiswa Pada Input --*/
 					$data['onemhs'] = $this->admin_model->getOneMhs($this->admin_model->getOnePmr($id)->permintaan_by);
 					/*-- Load One Data Prodi Pada Input --*/
@@ -322,7 +346,7 @@ class Permintaan extends CI_Controller {
 					/*-- Load One Data Mahasiswa Pada Hasil Surat --*/
 					$mahasiswa = $this->admin_model->getOneMhs($this->admin_model->getOnePmr($id)->permintaan_by);
 					/*-- Load One Data Dosen Pada Hasil Surat --*/
-					$dosen = $this->admin_model->getOneDosen($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.dosen')) as dosen FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->dosen);
+					$dosen = $this->admin_model->getOneDosen($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.penanggungJawab')) as penanggungJawab FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->penanggungJawab);
 					/*-- Load One Data Prodi Pada Hasil Surat --*/
 					$prodi = $this->admin_model->getOneProdi($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.permintaan_prodi')) as permintaan_prodi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->permintaan_prodi);
 
@@ -341,12 +365,13 @@ class Permintaan extends CI_Controller {
 							'tahun' => date('Y'),
 							'kepadaYth' => $permintaan->kepadaYth,
 							'kepadaAlamat' => $permintaan->kepadaAlamat,
-							'nama_mhs' => $mahasiswa->nmmhs,
-							'nim_mhs' => $mahasiswa->nim,
-							'angkatan_mhs' => semester($mahasiswa->thaka),
-							'prodi_mhs' => $prodi->prodi,
-							'dosen' => $dosen->nama,
-							'dosen_jabatan' => $dosen->jabatan
+							'penanggungJawab' => $dosen->nama,
+							'penanggungJawab_jabatan' => $dosen->jabatan,
+							'nama' => $mahasiswa->nmmhs,
+							'nim' => $mahasiswa->nim,
+							'prodi' => $prodi->prodi,
+							'semester' => semesterromawi(semester($mahasiswa->thaka)),
+							'prodi' => $prodi->prodi,
 
 						];
 
@@ -357,7 +382,7 @@ class Permintaan extends CI_Controller {
 						$data['title'] = " Admin | Data Surat";
 						$data['parent'] = "Permintaan Surat";
 						$data['page'] = $searchKode->row()->kd_surat;
-						$this->template->load('admin/layout/adminTemplate','surat/permintaan/permintaan_SP-KP',$data);
+						$this->template->load('admin/layout/adminTemplate','surat/permintaan/permintaan_SP-I-KP',$data);
 
 					}else{
 
@@ -432,7 +457,8 @@ class Permintaan extends CI_Controller {
 					break;
 
 					default:
-					# code...
+					$this->toastr->error('Surat Yang Anda Pilih Belum Tersedia');
+					redirect('admin/sPermintaanSurat');
 					break;
 				}
 
@@ -452,7 +478,7 @@ class Permintaan extends CI_Controller {
 		}else{
 
 			if($this->session->userdata('username') == TRUE){
-				$this->toastr->error('Url Yang Anda Masukkan SalahBBBB');
+				$this->toastr->error('Url Yang Anda Masukkan Salah');
 				redirect('admin/sPermintaanSurat');
 
 			}else{

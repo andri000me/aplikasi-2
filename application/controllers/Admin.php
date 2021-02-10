@@ -751,6 +751,7 @@ class Admin extends CI_Controller {
 		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
 
 		$data['surat'] = $this->admin_model->getListSurat(); /*-- Load Semua Data List Surat --*/
+		$data['prodi'] = $this->admin_model->getProdi(); /*-- Load Semua Data Prodi --*/
 
 		$data['title'] = "Admin | List Surat";
 		$data['parent'] = "List Surat";
@@ -766,6 +767,7 @@ class Admin extends CI_Controller {
 		}
 
 		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
+		$data['prodi'] = $this->admin_model->getProdi(); /*-- Load Semua Data Prodi --*/
 
 		$this->form_validation->set_rules('kodeSurat','Kode Surat','required|is_unique[esurat_surat.kd_surat]',[
 			'is_unique' => 'Kode Surat yang Anda Masukkan Sudah di Gunakan'
@@ -775,6 +777,7 @@ class Admin extends CI_Controller {
 		$this->form_validation->set_rules('headerSurat','Header Surat','required');
 		$this->form_validation->set_rules('isiSurat','Isi Surat','required');
 		$this->form_validation->set_rules('footerSurat','Footer Surat','required');
+		$this->form_validation->set_rules('prodiSurat','Prodi Surat','required');
 
 		if($this->form_validation->run() == false){
 
@@ -793,11 +796,12 @@ class Admin extends CI_Controller {
 				'header_surat' => $this->input->post('headerSurat'),
 				'isi_surat' => $this->input->post('isiSurat'),
 				'footer_surat' => $this->input->post('footerSurat'),
-				'access' => $this->db->escape_str($this->input->post('access'),true),
+				'prodi_surat' => $this->db->escape_str($this->input->post('prodiSurat'),true),
+				'access' => $this->db->escape_str($this->input->post('access'),true)
 
 			];
 
-			$this->db->insert('esurat_Surat',$data);
+			$this->db->insert('esurat_surat',$data);
 			$this->toastr->success('List Surat '.$this->input->post('namaSurat').' Telah Ditambahkan!');
 			$id_surat = $this->db->insert_id();
 			redirect('admin/sListSuratDetail/'.$this->encrypt->encode($id_surat).'');
@@ -827,6 +831,7 @@ class Admin extends CI_Controller {
 		/*-- /. Encrypt URL Id_Surat --*/
 
 		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
+		$data['prodi'] = $this->admin_model->getProdi(); /*-- Load Semua Data Prodi --*/
 
 		/*-- Load One Data Surat --*/
 		$data['onesur'] = $this->admin_model->getOneListSurat($this->encrypt->decode($id_surat)); 
@@ -864,7 +869,7 @@ class Admin extends CI_Controller {
 
 		/*-- Load One Data Surat --*/
 		$data['onesur'] = $this->admin_model->getOneListSurat($this->encrypt->decode($id_surat)); 
-
+		$data['prodi'] = $this->admin_model->getProdi(); /*-- Load Semua Data Prodi --*/
 
 		$this->form_validation->set_rules('kodeSurat','Kode Surat','required');
 		$this->form_validation->set_rules('namaSurat','Nama Surat','required');
@@ -872,6 +877,8 @@ class Admin extends CI_Controller {
 		$this->form_validation->set_rules('headerSurat','Header Surat','required');
 		$this->form_validation->set_rules('isiSurat','Isi Surat','required');
 		$this->form_validation->set_rules('footerSurat','Footer Surat','required');
+		$this->form_validation->set_rules('prodiSurat','Prodi Surat','required');
+
 
 		if($this->form_validation->run() == false){
 
@@ -890,6 +897,7 @@ class Admin extends CI_Controller {
 				'header_surat' => $this->input->post('headerSurat'),
 				'isi_surat' => $this->input->post('isiSurat'),
 				'footer_surat' => $this->input->post('footerSurat'),
+				'prodi_surat' => $this->db->escape_str($this->input->post('prodiSurat'),true),
 				'access' => $this->db->escape_str($this->input->post('access'),true)
 
 			];
@@ -945,6 +953,7 @@ class Admin extends CI_Controller {
 		}
 
 		$data['user'] = $this->db->get_where('esurat_admin',['username' => $this->session->userdata('username')])->row();
+		$data['prodi'] = $this->admin_model->getProdi(); /*-- Load Semua Data Prodi --*/
 
 		$data['surat'] = $this->admin_model->getListSurat(); /*-- Load Semua Data List Surat --*/
 

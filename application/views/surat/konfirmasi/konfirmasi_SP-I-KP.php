@@ -133,8 +133,8 @@
 
                     <!-- Dosen -->
                     <div class="form-group">
-                      <label for="spkpDosen" class="col-form-label">Dosen</label>
-                      <input type="text" name="dosen" class="form-control" id="spkpDosen" placeholder="Dosen" value="<?= $onedos->nama ;?>" readonly>
+                      <label for="spkpDosen" class="col-form-label">Penaggung Jawab</label>
+                      <input type="text" name="dosen" class="form-control" id="spkpDosen" placeholder="Penaggung Jawab" value="<?= $onedos->nama ;?>" readonly>
                       <?= form_error('dosen', '<small class="text-danger pl-3">', '</small>');?>
                     </div>
                     <!-- / Dosen -->

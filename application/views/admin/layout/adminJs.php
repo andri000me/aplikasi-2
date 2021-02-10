@@ -48,7 +48,7 @@ $(function () {
   $('.select2').select2()
 
   /*-- Timeout Alert Error form_validation 5sec --*/
-  var timeout = 5000; 
+  var timeout = 15000; 
   $('.alert').delay(timeout).fadeOut(500);
 
   /*-- Plugin for edit data mahasiswa --*/

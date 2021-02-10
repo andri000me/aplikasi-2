@@ -26,7 +26,7 @@ class Mahasiswa extends CI_Controller {
 		}
 
 		$data['user'] = $this->db->get_where('esurat_mhs',['nim' => $this->session->userdata('nim')])->row();
-		$data['listsuratlimit'] = $this->mahasiswa_model->getListSuratHome(); //Load List Surat
+		$data['listsuratlimit'] = $this->mahasiswa_model->getListSuratHome($this->db->get_where('esurat_mhs',['nim' => $this->session->userdata('nim')])->row()->kdpro); //Load List Surat
 		$data['statussuratlimit'] = $this->mahasiswa_model->getStatusSuratHome($this->db->get_where('esurat_mhs',['nim' => $this->session->userdata('nim')])->row()->nim); //Load Status Surat by nim
 
 		$data['title'] = "Mahasiswa | Home";
@@ -135,7 +135,7 @@ class Mahasiswa extends CI_Controller {
 		}
 
 		$data['user'] = $this->db->get_where('esurat_mhs',['nim' => $this->session->userdata('nim')])->row();
-		$data['surat'] = $this->mahasiswa_model->getListSurat(); //Load List Surat
+		$data['surat'] = $this->mahasiswa_model->getListSurat($this->db->get_where('esurat_mhs',['nim' => $this->session->userdata('nim')])->row()->kdpro); //Load List Surat
 
 		$data['title'] = "Mahasiswa | Pengajuan";
 		$data['parent'] = "Pengajuan Surat";

@@ -161,6 +161,20 @@
     		</div>
     		<!-- /.card-header -->
     		<div class="card-body">
+    			<div class="form-group <?php if(form_error('prodiSurat')) {echo 'text-danger';}?>">
+    				<label for="addSuratKdSurat" class="col-sm-2 col-form-label <?php if(form_error('prodiSurat') == false) {echo 'text-dark';}?>">Prodi Surat</label>
+    				<div class="col-sm-12">
+    					<select name="prodiSurat" id="spkpCosDosen" class="form-control select2 <?php if(form_error('prodiSurat')) {echo 'select2-danger';}?>" <?php if(form_error('prodiSurat')) {echo 'data-dropdown-css-class="select2-danger"';}?>  style="width: 100%;" >
+    						<option value="" selected>Pilih Prodi Surat</option>
+    						<?php
+    						foreach ($prodi as $row) {
+    							echo '<option value="'.$row->kdpro.'">'.$row->kdpro.' / '.$row->prodi.'</option>';
+    						}
+    						;?>
+    					</select>
+    					<?= form_error('prodiSurat', '<small class="text-danger pl-3">', '</small>');?>
+    				</div>
+    			</div>
     			<div class="form-group">
     				<div class="col-sm-12">
     					<div class="form-group clearfix">
@@ -190,8 +204,8 @@
 
     </form>
     <!-- form End -->
-  </div>
-  <!-- /.container-fluid -->
+</div>
+<!-- /.container-fluid -->
 </section>
 <!-- /.content -->
 

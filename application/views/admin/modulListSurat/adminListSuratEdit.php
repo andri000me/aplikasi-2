@@ -42,7 +42,7 @@
               <div class="form-group">
                 <label for="editSuratKdSurat" class="col-sm-2 col-form-label <?php if(form_error('kodeSurat') == false) {echo 'text-dark';}?>">Kode Surat</label>
                 <div class="col-sm-12">
-                  <input type="text" name="kodeSurat" class="form-control <?php if(form_error('kodeSurat')) {echo 'is-invalid';}?>" id="editSuratKdSurat" placeholder="Kode Surat" value="<?= $onesur->kd_surat ;?>">
+                  <input type="text" name="kodeSurat" class="form-control <?php if(form_error('kodeSurat')) {echo 'is-invalid';}?>" id="editSuratKdSurat" placeholder="Kode Surat" value="<?= $onesur->kd_surat ;?>" readonly>
                   <?= form_error('kodeSurat', '<small class="text-danger pl-3">', '</small>');?>
                 </div>
               </div>
@@ -166,6 +166,23 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
+              <div class="form-group <?php if(form_error('prodiSurat')) {echo 'text-danger';}?>">
+                <label for="addSuratKdSurat" class="col-sm-2 col-form-label <?php if(form_error('prodiSurat') == false) {echo 'text-dark';}?>">Prodi Surat</label>
+                <div class="col-sm-12">
+                  <select name="prodiSurat" id="spkpCosDosen" class="form-control select2 <?php if(form_error('prodiSurat')) {echo 'select2-danger';}?>" <?php if(form_error('prodiSurat')) {echo 'data-dropdown-css-class="select2-danger"';}?>  style="width: 100%;" >
+                    <?php
+                    foreach ($prodi as $row) {
+                      if($row->kdpro == $onesur->prodi_surat){
+                        echo '<option value="'.$row->kdpro.'" selected>'.$row->kdpro.' / '.$row->prodi.'</option>';
+                      }else{
+                        echo '<option value="'.$row->kdpro.'">'.$row->kdpro.' / '.$row->prodi.'</option>';
+                      }
+                    }
+                    ;?>
+                  </select>
+                  <?= form_error('prodiSurat', '<small class="text-danger pl-3">', '</small>');?>
+                </div>
+              </div>
               <?php if($onesur->access == 1 ) : ?>
                 <div class="form-group">
                   <div class="col-sm-12">

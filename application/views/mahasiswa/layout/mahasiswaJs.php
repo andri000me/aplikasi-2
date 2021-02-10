@@ -66,6 +66,18 @@ $(function () {
   $('#seachExample').keyup(function(){
     table.search($(this).val()).draw() ;
   });
+
+    var table1 = $('#example1').DataTable( {
+    "sDom": 'lrtip',
+    "lengthChange": false,
+    "rowReorder": {
+      "selector": 'td:nth-child(0)'
+    },
+    "responsive": true,
+  });
+  $('#seachExample1').keyup(function(){
+    table1.search($(this).val()).draw() ;
+  });
 })
 
 /*-- Costum Sweetalert2 --*/

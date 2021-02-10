@@ -20,7 +20,6 @@
     <section class="content">
       <div class="container-fluid">
 
-
         <div class="card card-outline card-info collapsed-card">
           <div class="card-header">
             <h4 class="card-title " text-align="center"><strong>Add Permintaan Surat</strong></h4>
@@ -50,6 +49,7 @@
                   <th scope="col">#</th>
                   <th scope="col">kode Surat</th>
                   <th scope="col">Nama Surat</th>
+                  <th scope="col">Prodi Surat</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -59,6 +59,11 @@
                   <td><?= $i ;?></td>
                   <td><?php echo $cos->kd_surat; ?></td>
                   <td><?php echo $cos->nm_surat; ?></td>
+                  <?php foreach($prodi as $pro) : ?>
+                    <?php if($pro->kdpro == $cos->prodi_surat) :?>
+                      <td><?php echo $pro->prodi; ?></td>
+                    <?php endif;?>
+                  <?php endforeach;?>
                   <td>
                     <a class="btn btn-primary btn-sm" type="button" href="<?= base_url('permintaan/permintaanDetail/').$this->encrypt->encode($cos->kd_surat).'/'.$this->encrypt->encode($cos->id_surat).'/'.$this->encrypt->encode('permohonan');?>">Pilih Surat</a>
                   </td>

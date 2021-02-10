@@ -9,10 +9,11 @@ $mpdf = new \Mpdf\Mpdf([
 ]);
 
 
-$mpdf->SetTitle($jenis.' | '.$komponen['nama_mhs']);
+$mpdf->SetTitle($jenis.' | '.$komponen['nama']);
 $mpdf->SetDisplayMode('real', 'default');
 
-$teks = $this->parser->parse_string($isi, $komponen, TRUE);
+
+$teks = $this->parser->parse_string($isi, $komponen,  TRUE);
 $mpdf->SetWatermarkImage(
 	FCPATH.'assets/esurat/img/logo.png',
 	0.2,
@@ -21,15 +22,13 @@ $mpdf->SetWatermarkImage(
 );
 $mpdf->showWatermarkImage = true;
 
-$mpdf->WriteHTML($teks, \Mpdf\HTMLParserMode::DEFAULT_MODE, true, false);
-$mpdf->Image(FCPATH.'assets/esurat/img/QRCode/'.str_replace("/", "_", $no_surat).'.png', 30, 210, 25, 25, 'jpg', '', true, false);
-// $mpdf->SetHTMLFooter(
-// 	'<img style="margin-bottom: 10px; width: 100%; height: 100px;" src="'.base_url('assets/esurat/img/kop.png').'">'
-// );
 
-$namafile = strtolower($jenis.'_'.$komponen['nim_mhs'].'_'.$komponen['nama_mhs']);
+$mpdf->WriteHTML($teks, \Mpdf\HTMLParserMode::DEFAULT_MODE, true, false);
+
+
+$namafile = strtolower($jenis.'_'.$komponen['nim'].'_'.$komponen['nama']);
 $namafile = str_replace(" ", "_", $namafile);
-// $mpdf->Output($namafile.'.pdf','I');
+
 ;?>
 
 <!DOCTYPE html>

@@ -92,38 +92,41 @@ class Prints extends CI_Controller {
 			/*-- Load One Data Mahasiswa Pada Hasil Surat --*/
 			$mahasiswa = $this->admin_model->getOneMhs($this->admin_model->getOneKfm($id_konfirmasi)->permintaan_by);
 			/*-- Load One Data Dosen Pada Hasil Surat --*/
-			$dosen = $this->admin_model->getOneDosen($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.dosen')) as dosen FROM esurat_konfirmasi WHERE id_konfirmasi = '$id_konfirmasi'")->row()->dosen);
+			$dosen = $this->admin_model->getOneDosen($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.penanggungJawab')) as penanggungJawab FROM esurat_konfirmasi WHERE id_konfirmasi = '$id_konfirmasi'")->row()->penanggungJawab);
 			/*-- Load One Data Prodi Pada Hasil Surat --*/
 			$prodi = $this->admin_model->getOneProdi($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.permintaan_prodi')) as permintaan_prodi FROM esurat_konfirmasi WHERE id_konfirmasi = '$id_konfirmasi'")->row()->permintaan_prodi);
 
 			switch ($print->kd_surat) {
-				case 'SP-KP':
+				case 'SP-I-KP':
 
 				$komponenSurat = [
-
+					'no_surat' => $printData->no_surat,
 					'bulan' => bulan_romawi(date('Y-m-d')),
 					'tahun' => date('Y'),
 					'kepadaYth' => $printData->kepadaYth,
 					'kepadaAlamat' => $printData->kepadaAlamat,
-					'nama_mhs' => $mahasiswa->nmmhs,
-					'nim_mhs' => $mahasiswa->nim,
-					'angkatan_mhs' => semester($mahasiswa->thaka),
-					'prodi_mhs' => $prodi->prodi,
-					'dosen' => $dosen->nama,
-					'dosen_jabatan' => $dosen->jabatan,
-					'no_surat' => $printData->no_surat,
-					'disetujui_tgl' => date_indo($printData->disetujui_tgl),
-					'jabatan' => $this->admin_model->getOneDosen($printData->ttd)->jabatan,
-					'ttd' => $this->admin_model->getOneDosen($printData->ttd)->nama,
-					'nip' => $this->admin_model->getOneDosen($printData->ttd)->nip
+					'penanggungJawab' => $dosen->nama,
+					'penanggungJawab_jabatan' => $dosen->jabatan,
+					'nama' => $mahasiswa->nmmhs,
+					'nim' => $mahasiswa->nim,
+					'semester' => semesterromawi(semester($mahasiswa->thaka)),
+					'prodi' => $prodi->prodi,
+					'tgl_disetujui' => date_indo($printData->disetujui_tgl),
+					'ttd_jabatan' => $this->admin_model->getOneDosen($printData->ttd)->jabatan,
+					'ttd_nama' => $this->admin_model->getOneDosen($printData->ttd)->nama,
+					'ttd_nip' => $this->admin_model->getOneDosen($printData->ttd)->nip,
+					'qrcode' => '<img src="'. base_url('assets/esurat/img/QRCode/'.str_replace("/", "_", $printData->no_surat)).'.png" style=" width: 125px; height: 125px;">',
+					'ttd_img' => '<img src="'. base_url('assets/esurat/img/ttd/'.str_replace("/", "_", $dosen->nama)).'.png" style=" width: 125px; height: 125px;">'
+
 
 				];
 
 				$data['isi'] = $this->admin_model->getOneKfm($id_konfirmasi)->isi_surat;
+				$data['ttd'] = $this->admin_model->getOneDosen($printData->ttd)->nama;
 				$data['komponen'] = $komponenSurat;
 				$data['jenis'] = $print->nm_surat;
 				$data['no_surat'] = $print->no_surat;
-				$this->load->view('surat/prints/prints_SP-KP', $data);
+				$this->load->view('surat/prints/prints_SP-I-KP', $data);
 
 				break;
 
