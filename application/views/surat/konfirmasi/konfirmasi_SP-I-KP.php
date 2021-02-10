@@ -126,7 +126,7 @@
                     <!-- Keperluan Surat Di Ajukan -->
                     <div class="form-group">
                       <label for="spkpKeperluan" class="col-form-label">Keperluan</label>
-                      <textarea type="text" rows="1" name="keperluan" class="form-control" id="spkpKeperluan" placeholder="Keperluan" readonly><?= $onesls->keperluan ;?></textarea>
+                      <textarea type="text" rows="5" name="keperluan" class="form-control" id="spkpKeperluan" placeholder="Keperluan" readonly><?= $onesls->keperluan ;?></textarea>
                       <?= form_error('keperluan', '<small class="text-danger pl-3">', '</small>');?>
                     </div>
                     <!-- / Keperluan Surat Di Ajukan -->

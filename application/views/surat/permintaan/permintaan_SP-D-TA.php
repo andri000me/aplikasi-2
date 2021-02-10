@@ -96,17 +96,17 @@
                       <!-- / No Surat And Button Generate -->
 
                       <!-- Dosen -->
-                      <div class="form-group <?php if(form_error('dosen')) {echo 'text-danger';}?>">
-                        <label for="spkpCosDosen" class="col-form-label">Dosen</label>
-                        <select name="dosen" id="spkpCosDosen" class="form-control select2 <?php if(form_error('dosen')) {echo 'select2-danger';}?>" <?php if(form_error('dosen')) {echo 'data-dropdown-css-class="select2-danger"';}?>  style="width: 100%;" >
-                          <option value="" selected>Pilih Dosen</option>
+                      <div class="form-group <?php if(form_error('penanggungJawab')) {echo 'text-danger';}?>">
+                        <label for="spkpCosDosen" class="col-form-label">Penanggung Jawab</label>
+                        <select name="penanggungJawab" id="spkpCosDosen" class="form-control select2 <?php if(form_error('penanggungJawab')) {echo 'select2-danger';}?>" <?php if(form_error('penanggungJawab')) {echo 'data-dropdown-css-class="select2-danger"';}?>  style="width: 100%;" >
+                          <option value="" selected>Pilih Penanggung Jawab</option>
                           <?php
                           foreach ($dosenall as $dosen) {
                             echo '<option value="'.$dosen->id.'">'.$dosen->nama.'</option>';
                           }
                           ;?>
                         </select>
-                        <?= form_error('dosen', '<small class="text-danger pl-3">', '</small>');?>
+                        <?= form_error('penanggungJawab', '<small class="text-danger pl-3">', '</small>');?>
                       </div>
                       <!-- / Dosen -->
 
@@ -173,7 +173,7 @@
                       <!-- Keperluan Surat Di Ajukan -->
                       <div class="form-group <?php if(form_error('keperluan')) {echo 'text-danger';}?>">
                         <label for="spkpCosKeperluan" class="col-form-label">Keperluan</label>
-                        <textarea type="text" rows="1" name="keperluan" class="form-control <?php if(form_error('keperluan')) {echo 'is-invalid';}?>" id="spkpCosKeperluan" placeholder="Keperluan"><?= set_value('keperluan')?></textarea>
+                        <textarea type="text" rows="5" name="keperluan" class="form-control <?php if(form_error('keperluan')) {echo 'is-invalid';}?>" id="spkpCosKeperluan" placeholder="Agar diperkenankan mengadakan penelitian dan meminta data mengenai data sondir" ><?= set_value('keperluan')?></textarea>
                         <?= form_error('keperluan', '<small class="text-danger pl-3">', '</small>');?>
                       </div>
                       <!-- / Keperluan Surat Di Ajukan -->
@@ -462,23 +462,23 @@
                         <!-- Kepada Yth. Surat Di Ajukan -->
                         <div class="form-group <?php if(form_error('keperluan')) {echo 'text-danger';}?>">
                           <label for="spkpKeperluan" class="col-form-label">Keperluan</label>
-                          <textarea type="text" rows="1" name="keperluan" class="form-control <?php if(form_error('keperluan')) {echo 'is-invalid';}?>" id="spkpKeperluan" placeholder="Keperluan"><?= set_value('keperluan');?></textarea>
+                          <textarea type="text" rows="5" name="keperluan" class="form-control <?php if(form_error('keperluan')) {echo 'is-invalid';}?>" id="spkpKeperluan" placeholder="terkait kegiatan-kegiatan yg dilakukan oleh DPUPR."><?= set_value('keperluan');?></textarea>
                           <?= form_error('keperluan', '<small class="text-danger pl-3">', '</small>');?>
                         </div>
                         <!-- / Kepada Yth. Surat Di Ajukan -->
 
                         <!-- Dosen -->
-                        <div class="form-group <?php if(form_error('dosen')) {echo 'text-danger';}?>">
-                          <label for="spkpDosen" class="col-form-label">Dosen</label>
-                          <select name="dosen" id="spkpDosen" class="form-control select2 <?php if(form_error('dosen')) {echo 'select2-danger';}?>" <?php if(form_error('dosen')) {echo 'data-dropdown-css-class="select2-danger"';}?> style="width: 100%;" >
-                            <option value="" selected>Pilih Dosen</option>
+                        <div class="form-group <?php if(form_error('penanggungJawab')) {echo 'text-danger';}?>">
+                          <label for="spkpDosen" class="col-form-label">Penanggung Jawab</label>
+                          <select name="penanggungJawab" id="spkpDosen" class="form-control select2 <?php if(form_error('penanggungJawab')) {echo 'select2-danger';}?>" <?php if(form_error('penanggungJawab')) {echo 'data-dropdown-css-class="select2-danger"';}?> style="width: 100%;" >
+                            <option value="" selected>Pilih Penanggung Jawab</option>
                             <?php
                             foreach ($dosenall as $dosen) {
                               echo '<option value="'.$dosen->id.'">'.$dosen->nama.'</option>';
                             }
                             ;?>
                           </select>
-                          <?= form_error('dosen', '<small class="text-danger pl-3">', '</small>');?>
+                          <?= form_error('penanggungJawab', '<small class="text-danger pl-3">', '</small>');?>
                         </div>
                         <!-- / Dosen -->
 
@@ -687,16 +687,17 @@
                                 <!-- Keperluan Surat Di Ajukan -->
                                 <div class="form-group">
                                   <label for="spkpKeperluan" class="col-form-label">Keperluan</label>
-                                  <textarea type="text" rows="1" name="keperluan" class="form-control" id="spkpKeperluan" placeholder="Keperluan" readonly><?= $onepmr->keperluan ;?></textarea>
+                                  <textarea type="text" rows="5" name="keperluan" class="form-control" id="spkpKeperluan" placeholder="Agar diperkenankan mengadakan penelitian dan meminta data mengenai data sondir
+                                  terkait kegiatan-kegiatan yg dilakukan oleh DPUPR." readonly><?= $onepmr->keperluan ;?></textarea>
                                   <?= form_error('keperluan', '<small class="text-danger pl-3">', '</small>');?>
                                 </div>
                                 <!-- / Keperluan Surat Di Ajukan -->
 
                                 <!-- Dosen -->
                                 <div class="form-group">
-                                  <label for="spkpDosen" class="col-form-label">Dosen</label>
-                                  <input type="text" name="dosen" class="form-control" id="spkpDosen" placeholder="Dosen" value="<?= $onedos->nama ;?>" readonly>
-                                  <?= form_error('dosen', '<small class="text-danger pl-3">', '</small>');?>
+                                  <label for="spkpDosen" class="col-form-label">Penanggung Jawab</label>
+                                  <input type="text" name="penanggungJawab" class="form-control" id="spkpDosen" placeholder="Penanggung Jawab" value="<?= $onedos->nama ;?>" readonly>
+                                  <?= form_error('penanggungJawab', '<small class="text-danger pl-3">', '</small>');?>
                                 </div>
                                 <!-- / Dosen -->
 

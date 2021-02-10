@@ -91,17 +91,27 @@ class Status extends CI_Controller {
 			if($id == $result->id_permintaan && $kd_surat == $result->kd_surat){
 
 				switch ($searchKode->row()->kd_surat) {
-					case 'SP-KP':
+					case 'SP-I-KP':
 
 					$data['status'] = $status;
 					$data['title'] = " mahasiswa | Status Surat";
 					$data['parent'] = "Status Surat";
 					$data['page'] = $searchKode->row()->kd_surat;
-					$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/status/status_SP-KP',$data);
+					$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/status/status_SP-I-KP',$data);
+					break;
+
+					case 'SP-D-TA':
+
+					$data['status'] = $status;
+					$data['title'] = " mahasiswa | Status Surat";
+					$data['parent'] = "Status Surat";
+					$data['page'] = $searchKode->row()->kd_surat;
+					$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/status/status_SP-D-TA',$data);
 					break;
 
 					default:
-		# code...
+					$this->toastr->error('Url Yang Anda Inginkan Tidak Ada');
+					redirect('mahasiswa/statusSurat');
 					break;
 				}
 
@@ -117,17 +127,27 @@ class Status extends CI_Controller {
 			if($id == $result->id_konfirmasi && $kd_surat == $result->kd_surat){
 
 				switch ($searchKode->row()->kd_surat) {
-					case 'SP-KP':
+					case 'SP-I-KP':
 
 					$data['status'] = $status;
 					$data['title'] = " mahasiswa | Status Surat";
 					$data['parent'] = "Status Surat";
 					$data['page'] = $searchKode->row()->kd_surat;
-					$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/status/status_SP-KP',$data);
+					$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/status/status_SP-I-KP',$data);
+					break;
+
+					case 'SP-D-TA':
+
+					$data['status'] = $status;
+					$data['title'] = " mahasiswa | Status Surat";
+					$data['parent'] = "Status Surat";
+					$data['page'] = $searchKode->row()->kd_surat;
+					$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/status/status_SP-D-KP',$data);
 					break;
 
 					default:
-		# code...
+					$this->toastr->error('Url Yang Anda Inginkan Tidak Ada');
+					redirect('mahasiswa/statusSurat');
 					break;
 				}
 

@@ -212,11 +212,55 @@ class Permintaan extends CI_Controller {
 
 					case 'SP-D-TA':
 
-					$data['name'] = $name;
-					$data['title'] = " Admin | Data Surat";
-					$data['parent'] = "Permohonan Surat";
-					$data['page'] = $searchKode->row()->nm_surat;
-					$this->template->load('admin/layout/adminTemplate','surat/permintaan/permintaan_SP-D-TA',$data);
+					/*-- Load Semua Data Dosen Pada Input --*/
+					$data['dosenall'] = $this->admin_model->getDosen();
+					$data['mahasiswaall'] = $this->db->query("SELECT * FROM esurat_mhs")->result();
+					/*-- Load Semua Data Dosen Pada Input --*/
+
+					$this->form_validation->set_rules('no_surat', 'No Surat','trim|required|is_unique[esurat_konfirmasi.no_surat]',[
+						'is_unique' => 'Nomer Surat Tersebut Telah Dipakai Silahkan Tekan Tombol Generate lagi Untuk Meregerate No Surat Baru']);
+					$this->form_validation->set_rules('penanggungJawab', 'Penanggung Jawab','required');
+					$this->form_validation->set_rules('ttd', 'Tanda Tangan','required');
+					$this->form_validation->set_rules('cosnim', 'Data Mahasiswa','required');
+					$this->form_validation->set_rules('kepadaYth', 'Kepada Surat di Tujukan','required');
+					$this->form_validation->set_rules('keperluan', 'Keperluan Surat ini di Ajukan','required');
+
+					if($this->form_validation->run() == false){
+
+						$data['name'] = $name;
+						$data['title'] = " Admin | Data Surat";
+						$data['parent'] = "Permohonan Surat";
+						$data['page'] = $searchKode->row()->nm_surat;
+						$this->template->load('admin/layout/adminTemplate','surat/permintaan/permintaan_SP-D-TA',$data);
+
+					}else{
+
+						$jsonSPKP = '{"permintaan_by":"'.$this->db->escape_str($this->input->post('cosnim'),true).'","kepadaYth":"'.$this->db->escape_str($this->input->post('kepadaYth'),true).'","kepadaAlamat":"'.$this->db->escape_str($this->input->post('kepadaAlamat'),true).'","permintaan_prodi":"'.$this->db->escape_str($this->admin_model->getOneMhs($this->input->post('cosnim'))->kdpro,true).'","penanggungJawab":"'.$this->db->escape_str($this->input->post('penanggungJawab'),true).'"}';
+
+						$jsonSPKPEnkripsi = '{"p":"'.$this->db->escape_str($this->input->post('p'),true).'","q":"'.$this->db->escape_str($this->input->post('q'),true).'","n":"'.$this->db->escape_str($this->input->post('n'),true).'","e":"'.$this->db->escape_str($this->input->post('e'),true).'","d":"'.$this->db->escape_str($this->input->post('d'),true).'","enkripsi":"'.$this->db->escape_str($this->input->post('enkripsi'),true).'"}';
+
+						$data = [
+
+							'no_surat' => $this->db->escape_str($this->input->post('no_surat'),true),
+							'kd_surat' => $this->db->escape_str($this->input->post('kodeSurat'),true),
+							'nm_surat' => $this->db->escape_str($this->input->post('namaSurat'),true),
+							'isi_surat' => $this->input->post('semua'),
+							'permintaan_by' => $this->db->escape_str($this->input->post('cosnim'),true),
+							'data_permintaan' => $jsonSPKP,
+							'permintaan_tgl' => $this->db->escape_str(date('Y-m-d H:i:s'),true),
+							'status_surat' => $this->db->escape_str('CONFIRM',true),
+							'keperluan' => $this->db->escape_str($this->input->post('keperluan'),true),
+							'penyetuju_by' => $this->db->escape_str($this->session->userdata('username'),true),
+							'ttd' => $this->db->escape_str($this->input->post('ttd'),true),
+							'disetujui_tgl' => $this->db->escape_str(date('Y-m-d'),true),
+							'enkripsi' => $jsonSPKPEnkripsi
+
+						];
+
+						$this->db->insert('esurat_konfirmasi',$data);
+						$this->toastr->success('Surat '.$searchKode->row()->nm_surat.' Berhasil diajukan');
+						redirect('admin/sPermintaanSurat');
+					}
 
 					break;
 
@@ -296,6 +340,51 @@ class Permintaan extends CI_Controller {
 					}
 					break;
 
+					case 'SP-D-TA':
+
+					/*-- Load Semua Data Dosen Pada Input --*/
+					$mhs =  $this->db->get_where('esurat_mhs',['nim' => $this->session->userdata('nim')])->row();
+					$data['onepro'] = $this->admin_model->getOneProdi($mhs->kdpro);
+					$data['dosenall'] = $this->admin_model->getDosen();
+
+					$this->form_validation->set_rules('kepadaYth', 'Kepada Surat Ini Ditujukan','required');
+					$this->form_validation->set_rules('kepadaAlamat', 'Alamat Surat Ini Ditujukan','required');
+					$this->form_validation->set_rules('keperluan', 'Keperluan Surat Ini Dibuat','required');
+					$this->form_validation->set_rules('penanggungJawab', 'Dosen Pengampu','required');
+
+					if($this->form_validation->run() == false){
+
+						$data['name'] = $name;
+						$data['title'] =  "Mahasiswa| Pengajuan Surat";
+						$data['parent'] = "Pengajuan Surat";
+						$data['page'] = $searchKode->row()->nm_surat;
+						$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/permintaan/permintaan_SP-D-TA',$data);
+
+					}else{
+
+						$jsonSPKP = '{"permintaan_by":"'.$this->db->escape_str($this->input->post('cosnim'),true).'","kepadaYth":"'.$this->db->escape_str($this->input->post('kepadaYth'),true).'","kepadaAlamat":"'.$this->db->escape_str($this->input->post('kepadaAlamat'),true).'","permintaan_prodi":"'.$this->db->escape_str($this->input->post('kdpro'),true).'","penanggungJawab":"'.$this->db->escape_str($this->input->post('penanggungJawab'),true).'"}';
+
+						$data = [
+
+							'kd_surat' => $this->db->escape_str($this->input->post('kodeSurat'),true),
+							'nm_surat' => $this->db->escape_str($this->input->post('namaSurat'),true),
+							'isi_surat' => $this->input->post('semua'),
+							'permintaan_by' => $this->db->escape_str($this->input->post('nim'),true),
+							'data_permintaan' => $jsonSPKP,
+							'permintaan_tgl' => $this->db->escape_str(date('Y-m-d H:i:s'),true),
+							'status_surat' => $this->db->escape_str('PENDING',true),
+							'keperluan' => $this->input->post('keperluan')
+
+						];
+
+						$this->db->insert('esurat_permintaan',$data);
+						$this->toastr->success('Surat '.$searchKode->row()->nm_surat.' Berhasil diajukan');
+						redirect('mahasiswa/pengajuanSurat');
+
+					}
+
+					break;
+
 					default:
 					$this->toastr->error('Surat Yang Anda Pilih Belum Tersedia');
 					redirect('mahasiswa/pengajuanSurat');
@@ -336,10 +425,131 @@ class Permintaan extends CI_Controller {
 					/*-- Load One Data Prodi Pada Input --*/
 					$data['onepro'] = $this->admin_model->getOneProdi($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.permintaan_prodi')) as permintaan_prodi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->permintaan_prodi);
 
-					// var_dump($data['onepro']);
-					// // var_dump($data['onemhs']);
-					// var_dump($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.permintaan_prodi')) as permintaan_prodi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->permintaan_prodi);
-					// die();
+					/*-- Load One Data Permintaan Pada Hasil Surat --*/
+					$permintaan = $this->db->query("SELECT *, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaYth')) as kepadaYth, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaAlamat')) as kepadaAlamat, JSON_UNQUOTE(JSON_EXTRACT(enkripsi, '$.enkripsi')) as enkripsi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row();
+					/*-- Load One Data Mahasiswa Pada Hasil Surat --*/
+					$mahasiswa = $this->admin_model->getOneMhs($this->admin_model->getOnePmr($id)->permintaan_by);
+					/*-- Load One Data Dosen Pada Hasil Surat --*/
+					$dosen = $this->admin_model->getOneDosen($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.penanggungJawab')) as penanggungJawab FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->penanggungJawab);
+					/*-- Load One Data Prodi Pada Hasil Surat --*/
+					$prodi = $this->admin_model->getOneProdi($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.permintaan_prodi')) as permintaan_prodi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->permintaan_prodi);
+
+					/*-- Load Semua Data Dosen Pada Input --*/
+					$data['dosenall'] = $this->admin_model->getDosen();
+
+					$this->form_validation->set_rules('no_surat', 'No Surat','trim|required|is_unique[esurat_konfirmasi.no_surat]',[
+						'is_unique' =>'Nomer Surat Tersebut Telah Dipakai Silahkan Tekan Tombol Generate lagi Untuk Meregerate No Surat Baru']);
+					$this->form_validation->set_rules('ttd', 'Tanda Tangan','required');
+
+					if($this->form_validation->run() == false){
+
+						$komponenSurat = [
+
+							'bulan' => bulan_romawi(date('Y-m-d')),
+							'tahun' => date('Y'),
+							'kepadaYth' => $permintaan->kepadaYth,
+							'kepadaAlamat' => $permintaan->kepadaAlamat,
+							'penanggungJawab' => $dosen->nama,
+							'penanggungJawab_jabatan' => $dosen->jabatan,
+							'nama' => $mahasiswa->nmmhs,
+							'nim' => $mahasiswa->nim,
+							'prodi' => $prodi->prodi,
+							'semester' => semesterromawi(semester($mahasiswa->thaka)),
+							'prodi' => $prodi->prodi,
+
+						];
+
+						$data['isi'] = $this->admin_model->getOnePmr($id)->isi_surat;
+						$data['komponen'] = $komponenSurat;
+
+						$data['name'] = $name;
+						$data['title'] = " Admin | Data Surat";
+						$data['parent'] = "Permintaan Surat";
+						$data['page'] = $searchKode->row()->kd_surat;
+						$this->template->load('admin/layout/adminTemplate','surat/permintaan/permintaan_SP-I-KP',$data);
+
+					}else{
+
+						$data = [
+
+							'penyetuju_by' => $this->db->escape_str($this->session->userdata('username'),true),
+							'no_surat' => $this->db->escape_str($this->input->post('no_surat'),true),
+							'status_surat' => $this->db->escape_str('CONFIRM',true),
+							'ttd' => $this->db->escape_str($this->input->post('ttd'),true),
+							'disetujui_tgl' => $this->db->escape_str(date('Y-m-d'),true)
+
+						];
+
+						$this->db->where('id_permintaan', $result->id_permintaan);
+						$this->db->update('esurat_permintaan',$data);
+
+						$nomor = $this->input->post('no_surat');
+
+						$this->db->query("
+
+							INSERT INTO esurat_konfirmasi (
+							no_surat, 
+							kd_surat, 
+							nm_surat, 
+							isi_surat,
+							permintaan_tgl, 
+							keperluan, 
+							permintaan_by,
+							data_permintaan,
+							status_surat,
+							penyetuju_by,
+							ttd,
+							disetujui_tgl,
+							enkripsi)  
+							SELECT 						
+							no_surat, 
+							kd_surat, 
+							nm_surat, 
+							isi_surat,
+							permintaan_tgl, 
+							keperluan, 
+							permintaan_by,
+							data_permintaan,
+							status_surat,
+							penyetuju_by,
+							ttd,
+							disetujui_tgl,
+							enkripsi from esurat_permintaan where no_surat = '$nomor'
+
+							");
+
+						$this->db->query("DELETE FROM esurat_permintaan where no_surat = '$nomor'");
+
+						$notif = [
+
+							'comment_subject' => 'Surat Di Konfirmasi',
+							'comment_text' => 'Surat Yang Anda Ajukan Pada tanggal '.$result->permintaan_tgl.' Telah Disetujui',
+							'comment_surat' => 'Y',
+							'comment_to' => $result->permintaan_by,
+							'comment_date' => $this->db->escape_str(date('Y-m-d'),true),
+							'comment_status' => 0
+
+						];
+
+						$this->db->insert('esurat_comments',$notif);
+
+						$this->toastr->success(' Surat Yang diajukan oleh '.$mahasiswa->nmmhs.' Telah di Konfirmasi!');
+						redirect('admin/sPermintaanSurat');
+
+					}
+
+					break;
+
+					case 'SP-D-TA':
+
+					/*-- Load One Data Permintaan Pada Input --*/
+					$data['onepmr'] = $this->db->query("SELECT *, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaYth')) as kepadaYth, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaAlamat')) as kepadaAlamat, JSON_UNQUOTE(JSON_EXTRACT(enkripsi, '$.enkripsi')) as enkripsi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row();
+					/*-- Load One Data Dosen Pada Input --*/
+					$data['onedos'] = $this->admin_model->getOneDosen($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.penanggungJawab')) as penanggungJawab FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->penanggungJawab);
+					/*-- Load One Data Mahasiswa Pada Input --*/
+					$data['onemhs'] = $this->admin_model->getOneMhs($this->admin_model->getOnePmr($id)->permintaan_by);
+					/*-- Load One Data Prodi Pada Input --*/
+					$data['onepro'] = $this->admin_model->getOneProdi($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.permintaan_prodi')) as permintaan_prodi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->permintaan_prodi);
 
 					/*-- Load One Data Permintaan Pada Hasil Surat --*/
 					$permintaan = $this->db->query("SELECT *, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaYth')) as kepadaYth, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaAlamat')) as kepadaAlamat, JSON_UNQUOTE(JSON_EXTRACT(enkripsi, '$.enkripsi')) as enkripsi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row();
@@ -372,6 +582,7 @@ class Permintaan extends CI_Controller {
 							'prodi' => $prodi->prodi,
 							'semester' => semesterromawi(semester($mahasiswa->thaka)),
 							'prodi' => $prodi->prodi,
+							'agar' => $permintaan->keperluan
 
 						];
 

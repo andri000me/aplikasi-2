@@ -687,7 +687,7 @@
                                 <!-- Keperluan Surat Di Ajukan -->
                                 <div class="form-group">
                                   <label for="spkpKeperluan" class="col-form-label">Keperluan</label>
-                                  <textarea type="text" rows="5" name="keperluan" class="form-control" id="spkpKeperluan" placeholder="Keperluan" readonly><?= $onepmr->keperluan ;?></textarea>
+                                  <textarea type="text" rows="5" name="keperluan" class="form-control" id="spkpKeperluan" placeholder="Agar diperkenankan kegiatan Kerja Praktek/Magang Kurang Lebih Selama 2 Minggu (14 Hari) dan diberikannya Bimbingan serta meminta data mengenai Profil desa, data kependudukan, dan data opsional yang memungkinkan dalam pelaksanaan Kerja Praktek. " readonly><?= $onepmr->keperluan ;?></textarea>
                                   <?= form_error('keperluan', '<small class="text-danger pl-3">', '</small>');?>
                                 </div>
                                 <!-- / Keperluan Surat Di Ajukan -->

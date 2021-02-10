@@ -130,6 +130,40 @@ class Prints extends CI_Controller {
 
 				break;
 
+				case 'SP-D-TA':
+
+				$komponenSurat = [
+					'no_surat' => $printData->no_surat,
+					'bulan' => bulan_romawi(date('Y-m-d')),
+					'tahun' => date('Y'),
+					'kepadaYth' => $printData->kepadaYth,
+					'kepadaAlamat' => $printData->kepadaAlamat,
+					'penanggungJawab' => $dosen->nama,
+					'penanggungJawab_jabatan' => $dosen->jabatan,
+					'nama' => $mahasiswa->nmmhs,
+					'nim' => $mahasiswa->nim,
+					'semester' => semesterromawi(semester($mahasiswa->thaka)),
+					'prodi' => $prodi->prodi,
+					'agar' => $printData->keperluan,
+					'tgl_disetujui' => date_indo($printData->disetujui_tgl),
+					'ttd_jabatan' => $this->admin_model->getOneDosen($printData->ttd)->jabatan,
+					'ttd_nama' => $this->admin_model->getOneDosen($printData->ttd)->nama,
+					'ttd_nip' => $this->admin_model->getOneDosen($printData->ttd)->nip,
+					'qrcode' => '<img src="'. base_url('assets/esurat/img/QRCode/'.str_replace("/", "_", $printData->no_surat)).'.png" style=" width: 125px; height: 125px;">',
+					'ttd_img' => '<img src="'. base_url('assets/esurat/img/ttd/'.str_replace("/", "_", $dosen->nama)).'.png" style=" width: 125px; height: 125px;">'
+
+
+				];
+
+				$data['isi'] = $this->admin_model->getOneKfm($id_konfirmasi)->isi_surat;
+				$data['ttd'] = $this->admin_model->getOneDosen($printData->ttd)->nama;
+				$data['komponen'] = $komponenSurat;
+				$data['jenis'] = $print->nm_surat;
+				$data['no_surat'] = $print->no_surat;
+				$this->load->view('surat/prints/prints_SP-I-KP', $data);
+
+				break;
+
 				default:
 
     				# code...

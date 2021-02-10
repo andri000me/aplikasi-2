@@ -9,7 +9,7 @@
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><small>Esurat</small></li>
               <li class="breadcrumb-item"><a href="<?= base_url('admin/sListSurat')?>"><small><?= $parent ;?></small></a></li>
-              <li class="breadcrumb-item"><a href="<?= base_url('admin/sListSuratEdit/'.$this->encrypt->encode($onesur->id_surat))?>"><small><?= $page ?></small></a></li>
+              <li class="breadcrumb-item"><a href="<?= base_url('admin/sListSuratEdit/'.$this->encrypt->encode($onesur->id_surat))?>"><small><?= $onesur->nm_surat;?></small></a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->          
@@ -26,7 +26,7 @@
           <div class="card card-outline <?php if(form_error('kodeSurat') || form_error('namaSurat')) {echo 'card-danger text-danger';}else{echo 'card-info';}?>">
             <div class="card-header">
               <h3 class="card-title">
-                Detail Surat
+                <?= $onesur->nm_surat;?>
               </h3>
               <div class="card-tools">
                 <button type="button" class="btn btn-sm <?php if(form_error('kodeSurat') || form_error('namaSurat')) {echo 'btn-danger';}else{echo 'btn-info';}?>" data-card-widget="collapse">
