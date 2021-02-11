@@ -212,36 +212,44 @@
 <script type="text/javascript">
 	window.onload = function () {
 		CKEDITOR.replace( 'suratKop', {
-			filebrowserBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html',
-			filebrowserImageBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html?type=Images',
-			filebrowserUploadUrl : baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-			filebrowserImageUploadUrl:baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
-			contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
-			height: '300'  
-		} );
+         filebrowserBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=files',
+         filebrowserImageBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=images',
+         filebrowserFlashBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=flash',
+         filebrowserUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=files',
+         filebrowserImageUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=images',
+         filebrowserFlashUploadUrl:  baseURL+'assets/kcfinder-2.51/upload.php?type=flash',
+         contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
+         height: '300'  
+     } );
 		CKEDITOR.replace( 'suratHeader', {
-			filebrowserBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html',
-			filebrowserImageBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html?type=Images',
-			filebrowserUploadUrl : baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-			filebrowserImageUploadUrl:baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
-			contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
-			height: '300'  
-		} );
+         filebrowserBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=files',
+         filebrowserImageBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=images',
+         filebrowserFlashBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=flash',
+         filebrowserUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=files',
+         filebrowserImageUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=images',
+         filebrowserFlashUploadUrl:  baseURL+'assets/kcfinder-2.51/upload.php?type=flash',
+         contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
+         height: '300'  
+     } );
 		CKEDITOR.replace( 'suratIsi', {
-			filebrowserBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html',
-			filebrowserImageBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html?type=Images',
-			filebrowserUploadUrl : baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-			filebrowserImageUploadUrl:baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
-			contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
-			height: '600'  
-		} );
+         filebrowserBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=files',
+         filebrowserImageBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=images',
+         filebrowserFlashBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=flash',
+         filebrowserUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=files',
+         filebrowserImageUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=images',
+         filebrowserFlashUploadUrl:  baseURL+'assets/kcfinder-2.51/upload.php?type=flash',
+         contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
+         height: '600'  
+     } );
 		CKEDITOR.replace( 'suratFooter', {
-			filebrowserBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html',
-			filebrowserImageBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html?type=Images',
-			filebrowserUploadUrl : baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-			filebrowserImageUploadUrl:baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
-			contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
-			height: '300'  
-		} );
+         filebrowserBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=files',
+         filebrowserImageBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=images',
+         filebrowserFlashBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=flash',
+         filebrowserUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=files',
+         filebrowserImageUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=images',
+         filebrowserFlashUploadUrl:  baseURL+'assets/kcfinder-2.51/upload.php?type=flash',
+         contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
+         height: '300'  
+     } );
 	};
 </script>

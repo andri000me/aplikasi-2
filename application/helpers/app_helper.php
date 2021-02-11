@@ -1,18 +1,41 @@
 <?php if (!defined("BASEPATH")) exit("No direct script access allowed");
 
-function is_admin(){
-	$ci = get_instance();
-	if (!$ci->session->userdata('username')){
-		redirect('auth');
+// function is_admin(){
+// 	$ci = get_instance();
+// 	if (!$ci->session->userdata('username')){
+// 		redirect('auth');
 
-	}
-}
-function is_mhs(){
-	$ci = get_instance();
-	if (!$ci->session->userdata('nim')){
-		redirect('auth');
+// 	}
+// }
+// function is_mhs(){
+// 	$ci = get_instance();
+// 	if (!$ci->session->userdata('nim')){
+// 		redirect('auth');
 
-	}
+// 	}
+// }
+
+function is_login(){
+
+    $ci = get_instance();
+    if(!$ci->session->userdata('role')){
+        redirect('auth');
+
+    }else{
+
+        $role = $ci->session->userdata('role');
+        $url = $ci->uri->segment(1);
+
+        if($url == 'admin' || $url == 'Admin'){
+            $url = 'Administrator';
+        }
+
+        $queryRole = $ci->db->get_where('esurat_role',['id' => $role])->row();
+
+        if($queryRole->access !== ucfirst($url)){
+            redirect('auth/auth403');
+        }
+    }
 }
 
 date_default_timezone_set('Asia/Jakarta');    

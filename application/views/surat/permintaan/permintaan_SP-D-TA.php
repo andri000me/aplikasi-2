@@ -173,7 +173,7 @@
                       <!-- Keperluan Surat Di Ajukan -->
                       <div class="form-group <?php if(form_error('keperluan')) {echo 'text-danger';}?>">
                         <label for="spkpCosKeperluan" class="col-form-label">Keperluan</label>
-                        <textarea type="text" rows="5" name="keperluan" class="form-control <?php if(form_error('keperluan')) {echo 'is-invalid';}?>" id="spkpCosKeperluan" placeholder="Agar diperkenankan mengadakan penelitian dan meminta data mengenai data sondir" ><?= set_value('keperluan')?></textarea>
+                        <textarea type="text" rows="5" name="keperluan" class="form-control <?php if(form_error('keperluan')) {echo 'is-invalid';}?>" id="spkpCosKeperluan" placeholder=" Agar diperkenankan mengadakan penelitian dan meminta data mengenai data sondir terkait kegiatan-kegiatan yg dilakukan oleh DPUPR KOTA MAGELANG." ><?= set_value('keperluan')?></textarea>
                         <?= form_error('keperluan', '<small class="text-danger pl-3">', '</small>');?>
                       </div>
                       <!-- / Keperluan Surat Di Ajukan -->
@@ -303,10 +303,11 @@
           window.onload = function () {
 
             CKEDITOR.replace( 'suratPermohonan', {
-             filebrowserBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html',
-             filebrowserImageBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html?type=Images',
-             filebrowserUploadUrl : baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-             filebrowserImageUploadUrl:baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+             filebrowserImageBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=images',
+             filebrowserFlashBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=flash',
+             filebrowserUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=files',
+             filebrowserImageUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=images',
+             filebrowserFlashUploadUrl:  baseURL+'assets/kcfinder-2.51/upload.php?type=flash',
              contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
              height: '800'  
            } );
@@ -462,7 +463,7 @@
                         <!-- Kepada Yth. Surat Di Ajukan -->
                         <div class="form-group <?php if(form_error('keperluan')) {echo 'text-danger';}?>">
                           <label for="spkpKeperluan" class="col-form-label">Keperluan</label>
-                          <textarea type="text" rows="5" name="keperluan" class="form-control <?php if(form_error('keperluan')) {echo 'is-invalid';}?>" id="spkpKeperluan" placeholder="terkait kegiatan-kegiatan yg dilakukan oleh DPUPR."><?= set_value('keperluan');?></textarea>
+                          <textarea type="text" rows="5" name="keperluan" class="form-control <?php if(form_error('keperluan')) {echo 'is-invalid';}?>" id="spkpKeperluan" placeholder="  Agar diperkenankan mengadakan penelitian dan meminta data mengenai data sondir terkait kegiatan-kegiatan yg dilakukan oleh DPUPR KOTA MAGELANG."><?= set_value('keperluan');?></textarea>
                           <?= form_error('keperluan', '<small class="text-danger pl-3">', '</small>');?>
                         </div>
                         <!-- / Kepada Yth. Surat Di Ajukan -->
@@ -687,8 +688,7 @@
                                 <!-- Keperluan Surat Di Ajukan -->
                                 <div class="form-group">
                                   <label for="spkpKeperluan" class="col-form-label">Keperluan</label>
-                                  <textarea type="text" rows="5" name="keperluan" class="form-control" id="spkpKeperluan" placeholder="Agar diperkenankan mengadakan penelitian dan meminta data mengenai data sondir
-                                  terkait kegiatan-kegiatan yg dilakukan oleh DPUPR." readonly><?= $onepmr->keperluan ;?></textarea>
+                                  <textarea type="text" rows="5" name="keperluan" class="form-control" id="spkpKeperluan" placeholder=" Agar diperkenankan mengadakan penelitian dan meminta data mengenai data sondir terkait kegiatan-kegiatan yg dilakukan oleh DPUPR KOTA MAGELANG." readonly><?= $onepmr->keperluan ;?></textarea>
                                   <?= form_error('keperluan', '<small class="text-danger pl-3">', '</small>');?>
                                 </div>
                                 <!-- / Keperluan Surat Di Ajukan -->
@@ -834,10 +834,11 @@
                   <script type="text/javascript">
                     window.onload = function () {
                       CKEDITOR.replace( 'suratKonfirmasi', {
-                       filebrowserBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html',
-                       filebrowserImageBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html?type=Images',
-                       filebrowserUploadUrl : baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-                       filebrowserImageUploadUrl:baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+                       filebrowserImageBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=images',
+                       filebrowserFlashBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=flash',
+                       filebrowserUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=files',
+                       filebrowserImageUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=images',
+                       filebrowserFlashUploadUrl:  baseURL+'assets/kcfinder-2.51/upload.php?type=flash',
                        contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
                        height: '800'  
                      } );

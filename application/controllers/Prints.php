@@ -5,7 +5,7 @@ class Prints extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-
+		
 		//untuk mengatasi error confirm form resubmission
 		header('Cache-Control: no-cache, must-revalidate, max-age=0');
 		header('Cache-Control: post-check=0, pre-check=0',false);
@@ -160,13 +160,82 @@ class Prints extends CI_Controller {
 				$data['komponen'] = $komponenSurat;
 				$data['jenis'] = $print->nm_surat;
 				$data['no_surat'] = $print->no_surat;
-				$this->load->view('surat/prints/prints_SP-I-KP', $data);
+				$this->load->view('surat/prints/prints_SP-D-TA', $data);
+
+				break;
+
+				case 'SP-KP':
+
+				$komponenSurat = [
+					'no_surat' => $printData->no_surat,
+					'bulan' => bulan_romawi(date('Y-m-d')),
+					'tahun' => date('Y'),
+					'kepadaYth' => $printData->kepadaYth,
+					'kepadaAlamat' => $printData->kepadaAlamat,
+					'penanggungJawab' => $dosen->nama,
+					'penanggungJawab_jabatan' => $dosen->jabatan,
+					'nama' => $mahasiswa->nmmhs,
+					'nim' => $mahasiswa->nim,
+					'semester' => semesterromawi(semester($mahasiswa->thaka)),
+					'prodi' => $prodi->prodi,
+					'agar' => $printData->keperluan,
+					'tgl_disetujui' => date_indo($printData->disetujui_tgl),
+					'ttd_jabatan' => $this->admin_model->getOneDosen($printData->ttd)->jabatan,
+					'ttd_nama' => $this->admin_model->getOneDosen($printData->ttd)->nama,
+					'ttd_nip' => $this->admin_model->getOneDosen($printData->ttd)->nip,
+					'qrcode' => '<img src="'. base_url('assets/esurat/img/QRCode/'.str_replace("/", "_", $printData->no_surat)).'.png" style=" width: 125px; height: 125px;">',
+					'ttd_img' => '<img src="'. base_url('assets/esurat/img/ttd/'.str_replace("/", "_", $dosen->nama)).'.png" style=" width: 125px; height: 125px;">'
+
+
+				];
+
+				$data['isi'] = $this->admin_model->getOneKfm($id_konfirmasi)->isi_surat;
+				$data['ttd'] = $this->admin_model->getOneDosen($printData->ttd)->nama;
+				$data['komponen'] = $komponenSurat;
+				$data['jenis'] = $print->nm_surat;
+				$data['no_surat'] = $print->no_surat;
+				$this->load->view('surat/prints/prints_SP-KP', $data);
+
+				break;
+
+				case 'SP-P-TA':
+
+				$komponenSurat = [
+					'no_surat' => $printData->no_surat,
+					'bulan' => bulan_romawi(date('Y-m-d')),
+					'tahun' => date('Y'),
+					'kepadaYth' => $printData->kepadaYth,
+					'kepadaAlamat' => $printData->kepadaAlamat,
+					'penanggungJawab' => $dosen->nama,
+					'penanggungJawab_jabatan' => $dosen->jabatan,
+					'nama' => $mahasiswa->nmmhs,
+					'nim' => $mahasiswa->nim,
+					'semester' => semesterromawi(semester($mahasiswa->thaka)),
+					'prodi' => $prodi->prodi,
+					'agar' => $printData->keperluan,
+					'tgl_disetujui' => date_indo($printData->disetujui_tgl),
+					'ttd_jabatan' => $this->admin_model->getOneDosen($printData->ttd)->jabatan,
+					'ttd_nama' => $this->admin_model->getOneDosen($printData->ttd)->nama,
+					'ttd_nip' => $this->admin_model->getOneDosen($printData->ttd)->nip,
+					'qrcode' => '<img src="'. base_url('assets/esurat/img/QRCode/'.str_replace("/", "_", $printData->no_surat)).'.png" style=" width: 125px; height: 125px;">',
+					'ttd_img' => '<img src="'. base_url('assets/esurat/img/ttd/'.str_replace("/", "_", $dosen->nama)).'.png" style=" width: 125px; height: 125px;">'
+
+
+				];
+
+				$data['isi'] = $this->admin_model->getOneKfm($id_konfirmasi)->isi_surat;
+				$data['ttd'] = $this->admin_model->getOneDosen($printData->ttd)->nama;
+				$data['komponen'] = $komponenSurat;
+				$data['jenis'] = $print->nm_surat;
+				$data['no_surat'] = $print->no_surat;
+				$this->load->view('surat/prints/prints_SP-P-TA', $data);
 
 				break;
 
 				default:
 
-    				# code...
+				$this->toastr->error('Url Yang Anda Masukkan Salah');
+				redirect('admin/sSuratSelesai');
 
 				break;
 			}

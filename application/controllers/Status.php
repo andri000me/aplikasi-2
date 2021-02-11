@@ -6,8 +6,6 @@ class Status extends CI_Controller {
 	public function __construct(){
 
 		parent::__construct();
-		/*-- Check Session  --*/
-		is_mhs();
 
 		/*-- untuk mengatasi error confirm form resubmission  --*/
 		header('Cache-Control: no-cache, must-revalidate, max-age=0');
@@ -63,19 +61,19 @@ class Status extends CI_Controller {
 
 
 		if($status == 'PENDING'){
-			$query = "SELECT *, data_permintaan->>'$.kepadaYth' as kepadaYth, data_permintaan->>'$.kepadaAlamat' as kepadaAlamat FROM esurat_permintaan WHERE id_permintaan = '$id'";
+			$query = "SELECT *, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaYth')) as kepadaYth, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaAlamat')) as kepadaAlamat FROM esurat_permintaan WHERE id_permintaan = '$id'";
 
-			$data['onedosen'] = $this->admin_model->getOneDosen($this->db->query("SELECT data_permintaan->>'$.dosen' as dosen FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->dosen);
-			$data['onepro'] = $this->admin_model->getOneProdi($this->db->query("SELECT data_permintaan->>'$.permintaan_prodi' as permintaan_prodi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->permintaan_prodi);
+			$data['onedosen'] = $this->admin_model->getOneDosen($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.penanggungJawab')) as penanggungJawab FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->penanggungJawab);
+			$data['onepro'] = $this->admin_model->getOneProdi($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.permintaan_prodi')) as permintaan_prodi FROM esurat_permintaan WHERE id_permintaan = '$id'")->row()->permintaan_prodi);
 			$data['onemhs'] = $this->admin_model->getOneMhs($this->admin_model->getOnePmr($id)->permintaan_by);;
 
 
 		}elseif($status == 'CONFIRM'){
 
-			$query = "SELECT *, data_permintaan->>'$.kepadaYth' as kepadaYth, data_permintaan->>'$.kepadaAlamat' as kepadaAlamat FROM esurat_konfirmasi WHERE id_konfirmasi = '$id'";
+			$query = "SELECT *, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaYth')) as kepadaYth, JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.kepadaAlamat')) as kepadaAlamat FROM esurat_konfirmasi WHERE id_konfirmasi = '$id'";
 
-			$data['onedosen'] = $this->admin_model->getOneDosen($this->db->query("SELECT data_permintaan->>'$.dosen' as dosen FROM esurat_konfirmasi WHERE id_konfirmasi = '$id'")->row()->dosen);
-			$data['onepro'] = $this->admin_model->getOneProdi($this->db->query("SELECT data_permintaan->>'$.permintaan_prodi' as permintaan_prodi FROM esurat_konfirmasi WHERE id_konfirmasi = '$id'")->row()->permintaan_prodi);
+			$data['onedosen'] = $this->admin_model->getOneDosen($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.penanggungJawab')) as penanggungJawab FROM esurat_konfirmasi WHERE id_konfirmasi = '$id'")->row()->penanggungJawab);
+			$data['onepro'] = $this->admin_model->getOneProdi($this->db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(data_permintaan, '$.permintaan_prodi')) as permintaan_prodi FROM esurat_konfirmasi WHERE id_konfirmasi = '$id'")->row()->permintaan_prodi);
 			$data['onemhs'] = $this->admin_model->getOneMhs($this->admin_model->getOneKfm($id)->permintaan_by);
 
 		}
@@ -107,6 +105,24 @@ class Status extends CI_Controller {
 					$data['parent'] = "Status Surat";
 					$data['page'] = $searchKode->row()->kd_surat;
 					$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/status/status_SP-D-TA',$data);
+					break;
+
+					case 'SP-KP':
+
+					$data['status'] = $status;
+					$data['title'] = " mahasiswa | Status Surat";
+					$data['parent'] = "Status Surat";
+					$data['page'] = $searchKode->row()->kd_surat;
+					$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/status/status_SP-KP',$data);
+					break;
+
+					case 'SP-P-TA':
+
+					$data['status'] = $status;
+					$data['title'] = " mahasiswa | Status Surat";
+					$data['parent'] = "Status Surat";
+					$data['page'] = $searchKode->row()->kd_surat;
+					$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/status/status_SP-P-TA',$data);
 					break;
 
 					default:
@@ -142,7 +158,25 @@ class Status extends CI_Controller {
 					$data['title'] = " mahasiswa | Status Surat";
 					$data['parent'] = "Status Surat";
 					$data['page'] = $searchKode->row()->kd_surat;
-					$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/status/status_SP-D-KP',$data);
+					$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/status/status_SP-D-TA',$data);
+					break;
+
+					case 'SP-KP':
+
+					$data['status'] = $status;
+					$data['title'] = " mahasiswa | Status Surat";
+					$data['parent'] = "Status Surat";
+					$data['page'] = $searchKode->row()->kd_surat;
+					$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/status/status_SP-KP',$data);
+					break;
+
+					case 'SP-P-TA':
+
+					$data['status'] = $status;
+					$data['title'] = " mahasiswa | Status Surat";
+					$data['parent'] = "Status Surat";
+					$data['page'] = $searchKode->row()->kd_surat;
+					$this->template->load('mahasiswa/layout/mahasiswaTemplate','surat/status/status_SP-P-TA',$data);
 					break;
 
 					default:

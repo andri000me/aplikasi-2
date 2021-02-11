@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-  <title>Page 404</title>
+  <title><?= $title?></title>
 
   <!-- Google font -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:500" rel="stylesheet">
@@ -37,7 +37,7 @@
         <h2>Oops! This Page Could Not Be Found</h2>
         <p>Sorry but the page you are looking for does not exist, have been removed. name changed or is temporarily unavailable</p>
 
-        <a type="button" onclick="goBack();">Go Back</a>
+        <a href="#" type="button" onclick="goBack();">Go Back</a>
         <a style="background: red;" href="<?= base_url()?>">Go To Homepage</a> 
       </div>
     </div>

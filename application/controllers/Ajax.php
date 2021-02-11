@@ -6,7 +6,8 @@ class Ajax extends CI_Controller {
 	public function __construct(){
 
 		parent::__construct();
-
+		/*-- Check Session  --*/
+		// is_login();
 
 		/*-- untuk mengatasi error confirm form resubmission  --*/
 		header('Cache-Control: no-cache, must-revalidate, max-age=0');

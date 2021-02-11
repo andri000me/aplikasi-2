@@ -19,15 +19,15 @@ class Auth extends CI_Controller {
 
 	public function index(){
 
-		// if($this->session->userdata('username')){
+		if($this->session->userdata('role') == '1'){
 
-		// 	redirect('admin');
+			redirect('admin');
 
-		// }elseif($this->session->userdata('nim')){
+		}elseif($this->session->userdata('role') == '2'){
 
-		// 	redirect('mahasiswa');
+			redirect('mahasiswa');
 
-		// }
+		}
 
 		$data['title'] = "E-Surat | Fastikom";
 		$data['parent'] = "E-Surat";
@@ -271,9 +271,13 @@ class Auth extends CI_Controller {
 	}
 
 	public function auth404(){
+		$data['title'] = 'Page Not Found';
+		$this->load->view('auth/modul404/auth404', $data);
 
-		$this->output->set_status_header('404'); 
-		$this->load->view('auth/modul404/auth404');
+	}
+	public function auth403(){
+		$data['title'] = 'Page Forbidden';
+		$this->load->view('auth/modul403/auth403', $data);
 
 	}
 

@@ -7,7 +7,7 @@ class Mahasiswa extends CI_Controller {
 
 		parent::__construct();
 		/*-- Check Session  --*/
-		is_mhs();
+		is_login();
 
 		/*-- untuk mengatasi error confirm form resubmission  --*/
 		header('Cache-Control: no-cache, must-revalidate, max-age=0');

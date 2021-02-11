@@ -126,7 +126,7 @@
                     <!-- Keperluan Surat Di Ajukan -->
                     <div class="form-group">
                       <label for="spkpKeperluan" class="col-form-label">Keperluan</label>
-                      <textarea type="text" rows="5" name="keperluan" class="form-control" id="spkpKeperluan" placeholder="Keperluan" readonly><?= $onesls->keperluan ;?></textarea>
+                      <textarea type="text" rows="5" name="keperluan" class="form-control" id="spkpKeperluan" placeholder=" Agar diperkenankan mengadakan penelitian dan meminta data mengenai data sondir terkait kegiatan-kegiatan yg dilakukan oleh DPUPR KOTA MAGELANG." readonly><?= $onesls->keperluan ;?></textarea>
                       <?= form_error('keperluan', '<small class="text-danger pl-3">', '</small>');?>
                     </div>
                     <!-- / Keperluan Surat Di Ajukan -->
@@ -241,10 +241,11 @@
       <script type="text/javascript">
         window.onload = function () {
           CKEDITOR.replace( 'spdTAHasilSurat', {
-           filebrowserBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html',
-           filebrowserImageBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html?type=Images',
-           filebrowserUploadUrl : baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-           filebrowserImageUploadUrl:baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+           filebrowserImageBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=images',
+           filebrowserFlashBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=flash',
+           filebrowserUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=files',
+           filebrowserImageUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=images',
+           filebrowserFlashUploadUrl:  baseURL+'assets/kcfinder-2.51/upload.php?type=flash',
            contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
            height: '800'  
          } );

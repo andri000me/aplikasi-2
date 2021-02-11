@@ -81,28 +81,28 @@
     						</textarea>
     					</div>
     				</div>
-                    <div class="form-group">
-                        <label for="detailSuratNmSurat" class="col-sm-2 col-form-label">Prodi Surat</label>
-                        <div class="col-sm-12">
-                            <?php foreach($prodi as $row) : ?>
-                                <?php if($row->kdpro == $onesur->prodi_surat) : ?>
-                                    <input type="text" name="namaSurat" class="form-control" id="detailSuratNmSurat" placeholder="Nama Surat" value="<?= $row->prodi;?>" disabled>
-                                <?php endif;?>
-                            <?php endforeach;?>
+            <div class="form-group">
+              <label for="detailSuratNmSurat" class="col-sm-2 col-form-label">Prodi Surat</label>
+              <div class="col-sm-12">
+                <?php foreach($prodi as $row) : ?>
+                  <?php if($row->kdpro == $onesur->prodi_surat) : ?>
+                    <input type="text" name="namaSurat" class="form-control" id="detailSuratNmSurat" placeholder="Nama Surat" value="<?= $row->prodi;?>" disabled>
+                  <?php endif;?>
+                <?php endforeach;?>
 
-                        </div>
-                    </div>
+              </div>
+            </div>
 
-                    <?php if($onesur->access == 1) : ?>
-                     <div class="form-group">
-                      <div class="col-sm-12">
-                       <div class="form-group clearfix">
-                        <div class="icheck-primary d-inline">
-                         <input type="radio" value="1" id="detailSuratRadioAdministrator" checked>
-                         <label for="detailSuratRadioAdministrator">Administrator Only</label>
-                     </div>
-                 </div>
+            <?php if($onesur->access == 1) : ?>
+             <div class="form-group">
+              <div class="col-sm-12">
+               <div class="form-group clearfix">
+                <div class="icheck-primary d-inline">
+                 <input type="radio" value="1" id="detailSuratRadioAdministrator" checked>
+                 <label for="detailSuratRadioAdministrator">Administrator Only</label>
+               </div>
              </div>
+           </div>
          </div>
          <?php elseif ($onesur->access == 2) : ?>
           <div class="form-group">
@@ -111,20 +111,20 @@
              <div class="icheck-success d-inline ml-2">
               <input type="radio" value="2" id="detailSuratRadioAdminMahasiswa" checked>
               <label for="detailSuratRadioAdminMahasiswa">Admin And Mahasiswa Only</label>
+            </div>
           </div>
+        </div>
       </div>
-  </div>
-</div>
-<?php endif ;?>
+    <?php endif ;?>
 
-<div class="form-group justify-content-between">
-  <a class="btn btn-secondary btn-sm" href="<?php echo base_url('admin/sListSurat');?>">
-   <i class="fas fa-arrow-left"></i>&ensp;Back
-</a>
-<a class="btn btn-warning btn-sm float-right" href="<?= base_url('admin/sListSuratEdit/'.$this->encrypt->encode($onesur->id_surat).'')?>"><i class="fas fa-user-edit"></i>&ensp;Edit</a>
-</div>
-<!-- /.card-body -->
-</form>
+    <div class="form-group justify-content-between">
+      <a class="btn btn-secondary btn-sm" href="<?php echo base_url('admin/sListSurat');?>">
+       <i class="fas fa-arrow-left"></i>&ensp;Back
+     </a>
+     <a class="btn btn-warning btn-sm float-right" href="<?= base_url('admin/sListSuratEdit/'.$this->encrypt->encode($onesur->id_surat).'')?>"><i class="fas fa-user-edit"></i>&ensp;Edit</a>
+   </div>
+   <!-- /.card-body -->
+ </form>
 </div>
 </div>
 <!-- /.card -->
@@ -141,29 +141,29 @@
     <h3 class="card-title">
      <i class="fas fa-th mr-1"></i>
      Hasil Surat
- </h3>
+   </h3>
 
- <div class="card-tools">
+   <div class="card-tools">
      <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
       <i class="fas fa-minus"></i>
-  </button>
-  <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
+    </button>
+    <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
       <i class="fas fa-times"></i>
-  </button>
-</div>
+    </button>
+  </div>
 </div>
 <div class="card-body">
-    <textarea name="footerSurat" class="form-control" id="HasilSurat"  placeholder="Footer Surat" disabled>
-     <?= $onesur->kop_surat ;?>
-     <?= $onesur->header_surat ;?>
-     <?= $onesur->isi_surat ;?>
-     <?= $onesur->footer_surat ;?>
+  <textarea name="footerSurat" class="form-control" id="HasilSurat"  placeholder="Footer Surat" disabled>
+   <?= $onesur->kop_surat ;?>
+   <?= $onesur->header_surat ;?>
+   <?= $onesur->isi_surat ;?>
+   <?= $onesur->footer_surat ;?>
  </textarea>
 </div>
 <!-- /.card-body -->
 <div class="card-footer justify-content-between">
-    <a class="btn btn-secondary btn-sm" href="<?php echo base_url('admin/sListSurat');?>">
-     <i class="fas fa-arrow-left"></i>&ensp;Back
+  <a class="btn btn-secondary btn-sm" href="<?php echo base_url('admin/sListSurat');?>">
+   <i class="fas fa-arrow-left"></i>&ensp;Back
  </a>
  <a class="btn btn-warning btn-sm float-right" href="<?= base_url('admin/sListSuratEdit/'.$this->encrypt->encode($onesur->id_surat).'')?>"><i class="fas fa-user-edit"></i>&ensp;Edit</a>
 </div>
@@ -178,37 +178,45 @@
 <script type="text/javascript">
  window.onload = function () {
   CKEDITOR.replace( 'detailSuratKopSurat', {
-   filebrowserBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html',
-   filebrowserImageBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html?type=Images',
-   filebrowserUploadUrl : baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-   filebrowserImageUploadUrl:baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+   filebrowserBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=files',
+   filebrowserImageBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=images',
+   filebrowserFlashBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=flash',
+   filebrowserUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=files',
+   filebrowserImageUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=images',
+   filebrowserFlashUploadUrl:  baseURL+'assets/kcfinder-2.51/upload.php?type=flash',
    contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
    height: '300'  
-} );
+ } );
   CKEDITOR.replace( 'detailSuratHeaderSurat', {
-   filebrowserBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html',
-   filebrowserImageBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html?type=Images',
-   filebrowserUploadUrl : baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-   filebrowserImageUploadUrl:baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+   filebrowserBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=files',
+   filebrowserImageBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=images',
+   filebrowserFlashBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=flash',
+   filebrowserUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=files',
+   filebrowserImageUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=images',
+   filebrowserFlashUploadUrl:  baseURL+'assets/kcfinder-2.51/upload.php?type=flash',
    contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
    height: '300'  
-} );
+ } );
   CKEDITOR.replace( 'detailSuratIsiSurat', {
-   filebrowserBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html',
-   filebrowserImageBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html?type=Images',
-   filebrowserUploadUrl : baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-   filebrowserImageUploadUrl:baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+   filebrowserBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=files',
+   filebrowserImageBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=images',
+   filebrowserFlashBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=flash',
+   filebrowserUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=files',
+   filebrowserImageUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=images',
+   filebrowserFlashUploadUrl:  baseURL+'assets/kcfinder-2.51/upload.php?type=flash',
    contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
    height: '600'  
-} );
+ } );
   CKEDITOR.replace( 'detailSuratFooterSurat', {
-   filebrowserBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html',
-   filebrowserImageBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html?type=Images',
-   filebrowserUploadUrl : baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-   filebrowserImageUploadUrl:baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+   filebrowserBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=files',
+   filebrowserImageBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=images',
+   filebrowserFlashBrowseUrl : baseURL+'assets/kcfinder-2.51/browse.php?type=flash',
+   filebrowserUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=files',
+   filebrowserImageUploadUrl : baseURL+'assets/kcfinder-2.51/upload.php?type=images',
+   filebrowserFlashUploadUrl:  baseURL+'assets/kcfinder-2.51/upload.php?type=flash',
    contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
    height: '300'  
-} );
+ } );
 
   CKEDITOR.replace( 'HasilSurat', {
    filebrowserBrowseUrl : baseURL+'assets/ckfinder/ckfinder.html',
@@ -217,6 +225,6 @@
    filebrowserImageUploadUrl:baseURL+'assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
    contentsCss : baseURL+'assets/ckeditor_4.15.1_full/mystyles.css',
    height: '700'  
-} );
+ } );
 };
 </script>

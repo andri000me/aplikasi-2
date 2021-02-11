@@ -97,7 +97,7 @@
                       <!-- Kepada Yth. Surat Di Ajukan -->
                       <div class="form-group">
                         <label for="spkpKeperluan" class="col-form-label">Keperluan</label>
-                        <textarea type="text" rows="1" name="keperluan" class="form-control" id="spkpKeperluan" placeholder="Keperluan" readonly><?= $onestatus->keperluan;?></textarea>
+                        <textarea type="text" rows="1" name="keperluan" class="form-control" id="spkpKeperluan" placeholder=" Agar diperkenankan mengadakan penelitian dan meminta data mengenai data sondir terkait kegiatan-kegiatan yg dilakukan oleh DPUPR KOTA MAGELANG." readonly><?= $onestatus->keperluan;?></textarea>
                       </div>
                       <!-- / Kepada Yth. Surat Di Ajukan -->
 
@@ -225,7 +225,7 @@
                         <!-- Kepada Yth. Surat Di Ajukan -->
                         <div class="form-group">
                           <label for="spkpKeperluan" class="col-form-label">Keperluan</label>
-                          <textarea type="text" rows="1" name="keperluan" class="form-control" id="spkpKeperluan" placeholder="Keperluan" readonly><?= $onestatus->keperluan;?></textarea>
+                          <textarea type="text" rows="1" name="keperluan" class="form-control" id="spkpKeperluan" placeholder=" Agar diperkenankan mengadakan penelitian dan meminta data mengenai data sondir terkait kegiatan-kegiatan yg dilakukan oleh DPUPR KOTA MAGELANG." readonly><?= $onestatus->keperluan;?></textarea>
                         </div>
                         <!-- / Kepada Yth. Surat Di Ajukan -->
 
